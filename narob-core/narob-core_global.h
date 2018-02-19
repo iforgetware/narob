@@ -1,0 +1,12 @@
+#ifndef NAROBCORE_GLOBAL_H
+#define NAROBCORE_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(NAROBCORE_LIBRARY)
+#  define NAROBCORESHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define NAROBCORESHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // NAROBCORE_GLOBAL_H

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1600</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="currentIndex">
+    <number>2</number>
+   </property>
+   <widget class="DashboardTab" name="dashboardTab">
+    <attribute name="title">
+     <string>Dashboard</string>
+    </attribute>
+   </widget>
+   <widget class="WeatherTab" name="weatherTab">
+    <attribute name="title">
+     <string>Weather</string>
+    </attribute>
+   </widget>
+   <widget class="SettingsTab" name="settingsTab">
+    <attribute name="title">
+     <string>Settings</string>
+    </attribute>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DashboardTab</class>
+   <extends>QWidget</extends>
+   <header>dashboardtab.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WeatherTab</class>
+   <extends>QWidget</extends>
+   <header>weathertab.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SettingsTab</class>
+   <extends>QWidget</extends>
+   <header>settingstab.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
