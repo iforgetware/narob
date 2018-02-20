@@ -5,7 +5,7 @@
 #include "predictionsmodel.h"
 
 #include "settingsmodel.h"
-//#include "smtp.h"
+#include "smtp.h"
 
 #include <QTimer>
 #include <QDebug>
@@ -81,10 +81,10 @@ void PredictionTab::makeAutoPrediction()
 
     mPredictionsModel->select();
 
-//    if(ui->eToPhoneCheckBox->isChecked() ||
-//       ui->qToPhoneCheckBox->isChecked()){
-//        sendPage(prediction);
-//    }
+    if(ui->eToPhoneCheckBox->isChecked() ||
+       ui->qToPhoneCheckBox->isChecked()){
+        sendPage(prediction);
+    }
 
 }
 
@@ -263,134 +263,100 @@ void PredictionTab::predictQuarter(Prediction &prediction)
     prediction.setQDp(dLine.getYforX(prediction.densityAltitude()));
 }
 
-//void PredictionTab::sendPage(const Prediction *prediction)
-//{
-//    QDjangoQuerySet<Settings> sets;
+void PredictionTab::sendPage(const Prediction &prediction)
+{
+    if(mSettings->emailUser() == ""
+       || mSettings->emailHost() == ""
+       || mSettings->emailPW() == ""){
+        qDebug("No email settings to page with - WRITE CODE");
+    }else{
+        QMap<QString, QString> *suffixes = new QMap<QString, QString>;
 
-//    Settings *settings = new Settings;
+        suffixes->insert("Alltel", "message.alltel.com");
+        suffixes->insert("AT&T", "txt.att.net");
+        suffixes->insert("Boost Mobile", "myboostmobile.com");
+        suffixes->insert("Cricket Wireless", "mms.cricketwireless.net");
+        suffixes->insert("Sprint", "messaging.sprintpcs.com");
+        suffixes->insert("T-Mobile", "momail.net");
+        suffixes->insert("U.S. Cellular", "email.uscc.net");
+        suffixes->insert("Verizon", "vtext.com");
+        suffixes->insert("Virgin Mobile", "vmobl.com");
+        suffixes->insert("Republic Wireless", "text.republicwireless.com");
 
-//    if(!sets.at(0, settings)){
-//        qDebug("No settings in paging function - WRITE CODE");
-//    }else{
-//        QMap<QString, QString> *suffixes = new QMap<QString, QString>;
+        QString suffix = QString("@%1")
+                         .arg(suffixes->value(ui->textProviderComboBox->currentText()));
 
-//        suffixes->insert("Alltel", "message.alltel.com");
-//        suffixes->insert("AT&T", "txt.att.net");
-//        suffixes->insert("Boost Mobile", "myboostmobile.com");
-//        suffixes->insert("Cricket Wireless", "mms.cricketwireless.net");
-//        suffixes->insert("Sprint", "messaging.sprintpcs.com");
-//        suffixes->insert("T-Mobile", "momail.net");
-//        suffixes->insert("U.S. Cellular", "email.uscc.net");
-//        suffixes->insert("Verizon", "vtext.com");
-//        suffixes->insert("Virgin Mobile", "vmobl.com");
-//        suffixes->insert("Republic Wireless", "text.republicwireless.com");
+        QString body;
 
-//        QString suffix = QString("@%1")
-//                         .arg(suffixes->value(ui->textProviderComboBox->currentText()));
+        body = "Current weather\n";
+        body.append(QString("Temp -> %1\n").arg(QString::number(prediction.temperature())));
+        body.append(QString("Humid -> %1\n").arg(QString::number(prediction.humidity())));
+        body.append(QString("Press -> %1\n").arg(QString::number(prediction.pressure())));
+        body.append(QString("Vap P -> %1\n").arg(QString::number(prediction.vaporPressure())));
+        body.append(QString("Dew P -> %1\n").arg(QString::number(prediction.dewPoint())));
+        body.append(QString("D Alt -> %1\n").arg(QString::number(prediction.densityAltitude())));
+        body.append(QString("W Speed -> %1\n").arg(QString::number(prediction.windSpeed())));
+        body.append(QString("W Gust -> %1\n").arg(QString::number(prediction.windGust())));
+        body.append(QString("W Dir -> %1\n").arg(QString::number(prediction.windDirection())));
 
-//        QString body;
+        Smtp *smtp = new Smtp(mSettings->emailUser(),
+                              mSettings->emailPW(),
+                              mSettings->emailHost());
+        //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-//        body = "Current weather\n";
-//        body.append(QString("Temp -> %1\n").arg(QString::number(prediction->temperature())));
-//        body.append(QString("Humid -> %1\n").arg(QString::number(prediction->humidity())));
-//        body.append(QString("Press -> %1\n").arg(QString::number(prediction->pressure())));
-//        body.append(QString("Vap P -> %1\n").arg(QString::number(prediction->vaporPressure())));
-//        body.append(QString("Dew P -> %1\n").arg(QString::number(prediction->dewPoint())));
-//        body.append(QString("D Alt -> %1\n").arg(QString::number(prediction->densityAltitude())));
-//        body.append(QString("W Speed -> %1\n").arg(QString::number(prediction->windSpeed())));
-//        body.append(QString("W Gust -> %1\n").arg(QString::number(prediction->windGust())));
-//        body.append(QString("W Dir -> %1\n").arg(QString::number(prediction->windDirection())));
+        smtp->sendMail(mSettings->emailUser(),
+                       QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
+                       "Weather",
+                       body);
+        //delete smtp;
 
-//        Smtp *smtp = new Smtp(settings->emailUser(),
-//                              settings->emailPW(),
-//                              settings->emailHost());
-//        //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+        if(ui->eToPhoneCheckBox->isChecked()){
+            body = "Eighth predictions\n";
+            body.append(QString("By temp -> %1\n").arg(QString::number(prediction.eTp())));
+            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction.eHp())));
+            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction.ePp())));
+            body.append(QString("Average -> %1\n").arg(QString::number(prediction.eAp())));
+            body.append(QString("By d alt -> %1\n").arg(QString::number(prediction.eDp())));
 
-//        smtp->sendMail(settings->emailUser(),
-//                       QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
-//                       "Weather",
-//                       body);
-//        //delete smtp;
+            Smtp *smtpE = new Smtp(mSettings->emailUser(),
+                                   mSettings->emailPW(),
+                                   mSettings->emailHost());
+            //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-//        if(ui->eToPhoneCheckBox->isChecked()){
-//            body = "Eighth predictions\n";
-//            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->eTp())));
-//            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->eHp())));
-//            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction->ePp())));
-//            body.append(QString("Average -> %1\n").arg(QString::number(prediction->eAp())));
-//            body.append(QString("By d alt -> %1\n").arg(QString::number(prediction->eDp())));
+            smtpE->sendMail(mSettings->emailUser(),
+                           QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
+                           "Eighth",
+                           body);
+            //delete smtpE;
+        }
 
-//            Smtp *smtpE = new Smtp(settings->emailUser(),
-//                                  settings->emailPW(),
-//                                  settings->emailHost());
-//            //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+        if(ui->qToPhoneCheckBox->isChecked()){
+            body = "Quarter predictions\n";
+            body.append(QString("By temp -> %1\n").arg(QString::number(prediction.qTp())));
+            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction.qHp())));
+            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction.qPp())));
+            body.append(QString("Average -> %1\n").arg(QString::number(prediction.qAp())));
+            body.append(QString("By d alt -> %1\n").arg(QString::number(prediction.qDp())));
 
-//            smtpE->sendMail(settings->emailUser(),
-//                           QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
-//                           "Eighth",
-//                           body);
-//            //delete smtpE;
-//        }
+            Smtp *smtpQ = new Smtp(mSettings->emailUser(),
+                                  mSettings->emailPW(),
+                                  mSettings->emailHost());
+            //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-//        if(ui->qToPhoneCheckBox->isChecked()){
-//            body = "Quarter predictions\n";
-//            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->qTp())));
-//            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->qHp())));
-//            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction->qPp())));
-//            body.append(QString("Average -> %1\n").arg(QString::number(prediction->qAp())));
-//            body.append(QString("By d alt -> %1\n").arg(QString::number(prediction->qDp())));
+            smtpQ->sendMail(mSettings->emailUser(),
+                           QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
+                           "Quarter",
+                           body);
+            //delete smtpQ;
 
-//            Smtp *smtpQ = new Smtp(settings->emailUser(),
-//                                  settings->emailPW(),
-//                                  settings->emailHost());
-//            //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+        }
+    }
+}
 
-//            smtpQ->sendMail(settings->emailUser(),
-//                           QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
-//                           "Quarter",
-//                           body);
-//            //delete smtpQ;
-
-//        }
-//    }
-
-//    delete settings;
-//}
-
-//void PredictionTab::mailSent(QString status)
-//{
-//    if(status == "Message sent")
-//    {
-//        qDebug("page sent");
-//    }
-//}
-
-//#include "observation.h"
-//#include "refpt.h"
-
-//#include <QSqlQuery>
-//#include <QVariant>
-//#include <QPointF>
-
-
-//Prediction::Prediction(Vehicle *vehicle, Race *race, const QDate &date, const QTime &time) :
-//    mVehicleId(vehicle->id()),
-//    mRaceId(race->id()),
-//    mDate(date),
-//    mTime(time)
-//{
-//    setVehicleWeight(vehicle->weight());
-
-//    if(date.isValid()) {
-//        setDate(date);
-//        setTime(time);
-//    }
-
-//    getWeather();
-//    predictEighth();
-//    predictQuarter();
-//}
-
-
-
-
+void PredictionTab::mailSent(QString status)
+{
+    if(status == "Message sent")
+    {
+        qDebug("page sent");
+    }
+}

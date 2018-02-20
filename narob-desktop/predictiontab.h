@@ -48,8 +48,8 @@ private:
 private slots:
     void resetTimer(int);
     void makeAutoPrediction();
-//    void sendPage(const Prediction *prediction);
-//    void mailSent(QString);
+    void sendPage(const Prediction &prediction);
+    void mailSent(QString);
 };
 
 #endif // PREDICTIONTAB_H
