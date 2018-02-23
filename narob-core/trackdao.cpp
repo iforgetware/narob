@@ -5,7 +5,6 @@
 
 #include <QDebug>
 
-#include "track.h"
 #include "databasemanager.h"
 
 TrackDao::TrackDao(QSqlDatabase &database) :
@@ -84,7 +83,6 @@ void TrackDao::addTrack(Track &track) const
 
 void TrackDao::removeTrack(int id) const
 {
-    qDebug("in remove track in dao");
     QSqlQuery query(mDatabase);
 
     query.prepare("DELETE from tracks WHERE id=:id");

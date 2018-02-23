@@ -1,7 +1,9 @@
 #include "racedialog.h"
 #include "ui_racedialog.h"
+//#include "delegates.h"
 
 #include <QSqlRelationalDelegate>
+#include <QSqlRecord>
 #include <QDebug>
 
 RaceDialog::RaceDialog(RacesModel *model, int row, QWidget *parent) :
@@ -16,6 +18,7 @@ RaceDialog::RaceDialog(RacesModel *model, int row, QWidget *parent) :
     if(row == -1){
         Race race;
         QModelIndex rIdx = mRacesModel->addRace(race);
+
         mRacesModel->select();
         mMapper->setCurrentModelIndex(rIdx);
         connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &RaceDialog::clearEmptyAdd);
@@ -35,6 +38,12 @@ RaceDialog::~RaceDialog()
 
 void RaceDialog::setupModel()
 {
+    QSqlRecord row = mRacesModel->record();
+    qDebug("in RaceDialog setupModel");
+    qDebug() << row.fieldName(1);
+    qDebug() << row.fieldName(2);
+    qDebug() << row.fieldName(3);
+
     mMapper = new QDataWidgetMapper(this);
 
     mMapper->setItemDelegate(new QSqlRelationalDelegate(ui->trackComboBox));

@@ -5,7 +5,7 @@ Race::Race() :
 
     mDate(QDate()),
     mName(""),
-    mTrackId(1)
+    mTrackId(-1)
 {
 }
 

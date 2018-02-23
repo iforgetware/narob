@@ -15,13 +15,23 @@ TicketsWidget::TicketsWidget(TicketsModel *model,
 
     mModel = mTicketsModel;
 
-    if(trackId){
-        TicketsTrackModel* ticketsTrackModel = new TicketsTrackModel(trackId, this);
-        ticketsTrackModel->setSourceModel(mTicketsModel);
-        ui->tableView->setModel(ticketsTrackModel);
-    }else{
+//    mTicketsModel->setRelation(mTicketsModel->fieldIndex("raceId"), QSqlRelation("races", "id", "name"));
+
+//    if(trackId){
+//        TicketsTrackModel* ticketsTrackModel = new TicketsTrackModel(trackId, this);
+//        ticketsTrackModel->setSourceModel(mTicketsModel);
+//        ui->tableView->setModel(ticketsTrackModel);
+//    }else{
+//        mTicketsModel->setRelation(mTicketsModel->fieldIndex("trackId"), QSqlRelation("tracks", "id", "name"));
         ui->tableView->setModel(mTicketsModel);
-    }
+//    }
+
+//    mTicketsModel->select();
+
+    ui->tableView->setItemDelegate(new mySqlRelationalDelegate(this));
+    ui->tableView->setItemDelegateForColumn(2, new mySqlRelationalDelegate(this));
+    ui->tableView->setItemDelegateForColumn(3, new mySqlRelationalDelegate(this));
+
 
     setupColumns(mTicketsModel->mFields);
 

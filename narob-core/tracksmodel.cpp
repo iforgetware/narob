@@ -24,6 +24,11 @@ Track* TracksModel::getTrack(const int id)
     return mTracks.at(id);
 }
 
+Track* TracksModel::firstTrack()
+{
+    return mTracks.at(1);
+}
+
 QModelIndex TracksModel::addTrack(const Track &track)
 {
     int rowIndex = rowCount();

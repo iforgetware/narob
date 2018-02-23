@@ -53,7 +53,7 @@ void PredictionDao::init() const
     }
 }
 
-void PredictionDao::addPrediction(Prediction &prediction) const
+void PredictionDao::addPrediction(Prediction *prediction) const
 {
     QSqlQuery query(mDatabase);
 
@@ -123,42 +123,117 @@ void PredictionDao::addPrediction(Prediction &prediction) const
                   ":qDp"
                   ")");
 
-    query.bindValue(":raceId", prediction.raceId());
-    query.bindValue(":vehicleId", prediction.vehicleId());
+    query.bindValue(":raceId", prediction->raceId());
+    query.bindValue(":vehicleId", prediction->vehicleId());
 
-    query.bindValue(":date", prediction.date());
-    query.bindValue(":time", prediction.time());
+    query.bindValue(":date", prediction->date());
+    query.bindValue(":time", prediction->time());
 
-    query.bindValue(":vehicleWeight", prediction.vehicleWeight());
-    query.bindValue(":riderWeight", prediction.riderWeight());
+    query.bindValue(":vehicleWeight", prediction->vehicleWeight());
+    query.bindValue(":riderWeight", prediction->riderWeight());
 
-    query.bindValue(":temperature", prediction.temperature());
-    query.bindValue(":humidity", prediction.humidity());
-    query.bindValue(":pressure", prediction.pressure());
-    query.bindValue(":vaporPressure", prediction.vaporPressure());
-    query.bindValue(":dewPoint", prediction.dewPoint());
-    query.bindValue(":densityAltitude", prediction.densityAltitude());
-    query.bindValue(":windSpeed", prediction.windSpeed());
-    query.bindValue(":windGust", prediction.windGust());
-    query.bindValue(":windDirection", prediction.windDirection());
+    query.bindValue(":temperature", prediction->temperature());
+    query.bindValue(":humidity", prediction->humidity());
+    query.bindValue(":pressure", prediction->pressure());
+    query.bindValue(":vaporPressure", prediction->vaporPressure());
+    query.bindValue(":dewPoint", prediction->dewPoint());
+    query.bindValue(":densityAltitude", prediction->densityAltitude());
+    query.bindValue(":windSpeed", prediction->windSpeed());
+    query.bindValue(":windGust", prediction->windGust());
+    query.bindValue(":windDirection", prediction->windDirection());
 
-    query.bindValue(":eTp", prediction.eTp());
-    query.bindValue(":eHp", prediction.eHp());
-    query.bindValue(":ePp", prediction.ePp());
-    query.bindValue(":eAp", prediction.eAp());
-    query.bindValue(":eDp", prediction.eDp());
+    query.bindValue(":eTp", prediction->eTp());
+    query.bindValue(":eHp", prediction->eHp());
+    query.bindValue(":ePp", prediction->ePp());
+    query.bindValue(":eAp", prediction->eAp());
+    query.bindValue(":eDp", prediction->eDp());
 
-    query.bindValue(":qTp", prediction.qTp());
-    query.bindValue(":qHp", prediction.qHp());
-    query.bindValue(":qPp", prediction.qPp());
-    query.bindValue(":qAp", prediction.qAp());
-    query.bindValue(":qDp", prediction.qDp());
+    query.bindValue(":qTp", prediction->qTp());
+    query.bindValue(":qHp", prediction->qHp());
+    query.bindValue(":qPp", prediction->qPp());
+    query.bindValue(":qAp", prediction->qAp());
+    query.bindValue(":qDp", prediction->qDp());
 
     query.exec();
 
     DatabaseManager::debugQuery(query);
 
-    prediction.setId(query.lastInsertId().toInt());
+    prediction->setId(query.lastInsertId().toInt());
+}
+
+void PredictionDao::updatePrediction(const Prediction* prediction) const
+{
+    QSqlQuery query(mDatabase);
+
+    query.prepare("UPDATE predictions SET "
+                  "raceId=:raceId,"
+                  "vehicleId=:vehicleId,"
+
+                  "date=:date,"
+                  "time=:time,"
+
+                  "vehicleWeight=:vehicleWeight,"
+                  "riderWeight=:riderWeight,"
+
+                  "temperature=:temperature,"
+                  "humidity=:humidity,"
+                  "pressure=:pressure,"
+                  "vaporPressure=:vaporPressure,"
+                  "dewPoint=:dewPoint,"
+                  "densityAltitude=:densityAltitude,"
+                  "windSpeed=:windSpeed,"
+                  "windGust=:windGust,"
+                  "windDirection=:windDirection,"
+
+                  "eTp=:eTp,"
+                  "eHp=:eHp,"
+                  "ePp=:ePp,"
+                  "eAp=:eAp,"
+                  "eDp=:eDp,"
+
+                  "qTp=:qTp,"
+                  "qHp=:qHp,"
+                  "qPp=:qPp,"
+                  "qAp=:qAp,"
+                  "qDp=:qDp "
+
+                  "WHERE id=:id");
+
+    query.bindValue(":raceId", prediction->raceId());
+    query.bindValue(":vehicleId", prediction->vehicleId());
+
+    query.bindValue(":date", prediction->date());
+    query.bindValue(":time", prediction->time());
+
+    query.bindValue(":vehicleWeight", prediction->vehicleWeight());
+    query.bindValue(":riderWeight", prediction->riderWeight());
+
+    query.bindValue(":temperature", prediction->temperature());
+    query.bindValue(":humidity", prediction->humidity());
+    query.bindValue(":pressure", prediction->pressure());
+    query.bindValue(":vaporPressure", prediction->vaporPressure());
+    query.bindValue(":dewPoint", prediction->dewPoint());
+    query.bindValue(":densityAltitude", prediction->densityAltitude());
+    query.bindValue(":windSpeed", prediction->windSpeed());
+    query.bindValue(":windGust", prediction->windGust());
+    query.bindValue(":windDirection", prediction->windDirection());
+
+    query.bindValue(":eTp", prediction->eTp());
+    query.bindValue(":eHp", prediction->eHp());
+    query.bindValue(":ePp", prediction->ePp());
+    query.bindValue(":eAp", prediction->eAp());
+    query.bindValue(":eDp", prediction->eDp());
+
+    query.bindValue(":qTp", prediction->qTp());
+    query.bindValue(":qHp", prediction->qHp());
+    query.bindValue(":qPp", prediction->qPp());
+    query.bindValue(":qAp", prediction->qAp());
+    query.bindValue(":qDp", prediction->qDp());
+    query.bindValue(":id", prediction->id());
+
+    query.exec();
+
+    DatabaseManager::debugQuery(query);
 }
 
 void PredictionDao::removePrediction(int id) const

@@ -19,7 +19,8 @@ DatabaseManager::DatabaseManager(const QString &path) :
     ticketDao(*mDatabase),
     observationDao(*mDatabase),
     settingsDao(*mDatabase),
-    predictionDao(*mDatabase)
+    predictionDao(*mDatabase),
+    refPTDao(*mDatabase)
 {
     mDatabase->setDatabaseName(path);
     mDatabase->open();
@@ -33,7 +34,7 @@ DatabaseManager::DatabaseManager(const QString &path) :
     observationDao.init();
     settingsDao.init();
     predictionDao.init();
-//    refPTDao.init();
+    refPTDao.init();
 
     populateTables(); // DEV ONLY
 }

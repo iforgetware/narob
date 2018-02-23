@@ -50,17 +50,21 @@ PredictionsModel::PredictionsModel(Vehicle *vehicle, Race *race, QObject *parent
     select();
 }
 
-QModelIndex PredictionsModel::addPrediction(const Prediction &prediction)
+QModelIndex PredictionsModel::addPrediction(Prediction* prediction)
 {
     int rowIndex = rowCount();
 
     beginInsertRows(QModelIndex(), rowIndex, rowIndex);
-    Prediction* newPrediction = new Prediction(prediction);
-    mDb.predictionDao.addPrediction(*newPrediction);
-    mPredictions.append(newPrediction);
+    mDb.predictionDao.addPrediction(prediction);
+    mPredictions.append(prediction);
     endInsertRows();
 
     return index(rowIndex, 0);
+}
+
+void PredictionsModel::updatePrediction(Prediction *prediction)
+{
+    mDb.predictionDao.updatePrediction(prediction);
 }
 
 int PredictionsModel::rowCount(const QModelIndex &parent) const

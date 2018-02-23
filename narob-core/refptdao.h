@@ -1,11 +1,10 @@
 #ifndef REFPTDAO_H
 #define REFPTDAO_H
 
-#include <memory>
-#include <vector>
+#include <QSqlDatabase>
+#include <QVector>
 
-class QSqlDatabase;
-class RefPT;
+#include "refpt.h"
 
 class RefPTDao
 {
@@ -14,9 +13,8 @@ public:
     void init() const;
 
     void addRefPT(RefPT &refPT) const;
-    void updateRefPT(const RefPT &refPT) const;
     void removeRefPT(int id) const;
-    std::unique_ptr<std::vector<std::unique_ptr<RefPT>>> RefPTs() const;
+    QVector<RefPT*> refPT() const;
 
 private:
     QSqlDatabase &mDatabase;

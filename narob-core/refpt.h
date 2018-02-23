@@ -5,16 +5,17 @@
 
 #include "narob-core_global.h"
 
-class RefPT : public QDjangoModel
+class NAROBCORESHARED_EXPORT RefPT
 {
 public:
-    RefPT();
+    explicit RefPT();
+    explicit RefPT(const RefPT &refPT);
 
     int id() const { return mId; }
     void setId(const int &id) { mId = id; }
 
     int predictionId() const { return mPredictionId; }
-    void setPrediction(const int predictionId) {mPredictionId = predictionId; }
+    void setPredictionId(const int predictionId) {mPredictionId = predictionId; }
 
     int ticketId() const { return mTicketId; }
     void setTicketId(const int ticketId) { mTicketId = ticketId; }

@@ -11,6 +11,8 @@ RacesModel::RacesModel(QObject *parent) :
 {
     setTable("races");
 
+    setJoinMode(QSqlRelationalTableModel::LeftJoin);
+
     setRelation(3, QSqlRelation("tracks", "id", "name"));
 
     mFields.append(Field("date", "Date", 100, 0));

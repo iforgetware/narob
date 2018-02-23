@@ -8,6 +8,7 @@
 #include "predictionsmodel.h"
 #include "ticketsmodel.h"
 #include "observationsmodel.h"
+#include "refptmodel.h"
 
 #include "settingsmodel.h"
 
@@ -30,25 +31,26 @@ public:
     ~PredictionTab();
 
 private:
-    void getWeather(Prediction &prediction);
+    void getWeather(Prediction* prediction);
     QVector<Ticket*> validTickets(const QString &distance);
-    void predictEighth(Prediction &prediction);
-    void predictQuarter(Prediction &prediction);
+    void predictEighth(Prediction *prediction);
+    void predictQuarter(Prediction *prediction);
 
 
     Ui::PredictionTab* ui;
     Vehicle* mVehicle;
     Race* mRace;
     QTimer* mAutoTimer;
+    Settings* mSettings;
     PredictionsModel* mPredictionsModel;
     TicketsModel* mTicketsModel;
-    ObservationsModel* mObservationModel;
-    Settings* mSettings;
+    ObservationsModel* mObservationsModel;
+    RefPTModel* mRefPTModel;
 
 private slots:
     void resetTimer(int);
     void makeAutoPrediction();
-    void sendPage(const Prediction &prediction);
+    void sendPage(const Prediction *prediction);
     void mailSent(QString);
 };
 

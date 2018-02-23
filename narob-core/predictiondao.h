@@ -13,7 +13,8 @@ public:
 
     void init() const;
 
-    void addPrediction(Prediction &prediction) const;
+    void addPrediction(Prediction* prediction) const;
+    void updatePrediction(const Prediction* prediction) const;
     void removePrediction(int id) const;
     QVector<Prediction*> predictionsForVehicleAndRace(int raceId,
                                                       int vehicleId) const;

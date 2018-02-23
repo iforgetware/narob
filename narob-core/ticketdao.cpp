@@ -190,6 +190,18 @@ void TicketDao::removeTicket(int id) const
     DatabaseManager::debugQuery(query);
 }
 
+
+
+
+// maybe make this all tickets and only filter in model
+// have seperate models for each tab, update with signals if needed
+// can add filter to prediction tab's foreach
+// will not cost much
+
+
+
+
+
 QVector<Ticket*> TicketDao::ticketsForVehicle(int vehicleId) const
 {
     QSqlQuery query(mDatabase);

@@ -24,7 +24,6 @@ public:
 private:
     DatabaseManager &mDb;
     QVector<Observation*> mObservations;
-
 };
 
 #endif // OBSERVATIONSMODEL_H

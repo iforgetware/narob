@@ -13,7 +13,7 @@
 #include "observationdao.h"
 #include "settingsdao.h"
 #include "predictiondao.h"
-//#include "refptdao.h"
+#include "refptdao.h"
 
 class QSqlQuery;
 
@@ -47,7 +47,7 @@ public:
     const ObservationDao observationDao;
     const SettingsDao settingsDao;
     const PredictionDao predictionDao;
-//    const RefPTDao refPTDao;
+    const RefPTDao refPTDao;
 };
 
 #endif // DATABASEMANAGER_H

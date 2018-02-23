@@ -3,10 +3,10 @@
 Ticket::Ticket() :
     mId(-1),
 
-    mVehicleId(1),
-    mTrackId(1),
-    mRaceId(1),
-    mPredictionId(0),
+    mVehicleId(-1),
+    mTrackId(-1),
+    mRaceId(-1),
+    mPredictionId(-1),
 
     mDate(QDate()),
     mTime(QTime()),

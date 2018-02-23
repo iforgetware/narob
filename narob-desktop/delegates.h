@@ -1,7 +1,8 @@
-#ifndef DECIMALDELEGATES_H
-#define DECIMALDELEGATES_H
+#ifndef DELEGATES_H
+#define DELEGATES_H
 
 #include <QStyledItemDelegate>
+#include <QSqlRelationalDelegate>
 
 class BoolDelegate : public QStyledItemDelegate
 {
@@ -48,4 +49,20 @@ public:
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
-#endif // DECIMALDELEGATES_H
+class mySqlRelationalDelegate : public QSqlRelationalDelegate
+{
+    Q_OBJECT
+public:
+    explicit mySqlRelationalDelegate(QObject *parent = 0);
+
+    QWidget *createEditor(QWidget *aParent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+
+signals:
+
+public slots:
+
+};
+
+#endif // DELEGATES_H

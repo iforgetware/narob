@@ -15,7 +15,9 @@ class RaceDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit RaceDialog(RacesModel *model, int row = -1, QWidget *parent = 0);
+    explicit RaceDialog(RacesModel *model,
+                        int row = -1,
+                        QWidget *parent = 0);
     ~RaceDialog();
 
 private slots:

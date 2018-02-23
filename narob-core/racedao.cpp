@@ -1,11 +1,11 @@
 #include "racedao.h"
+//#include "tracksmodel.h"
 
 #include <QSqlQuery>
 #include <QVariant>
 
 //#include <QDebug>
 
-#include "race.h"
 #include "databasemanager.h"
 
 RaceDao::RaceDao(QSqlDatabase &database) :
@@ -54,6 +54,9 @@ void RaceDao::init() const
 
 void RaceDao::addRace(Race &race) const
 {
+//    TracksModel tracksModel;
+//    race.setTrackId(tracksModel.firstTrack()->id());
+
     QSqlQuery query(mDatabase);
 
     query.prepare("INSERT INTO races ("

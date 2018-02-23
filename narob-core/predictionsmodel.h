@@ -19,7 +19,8 @@ public:
                      Race *race = 0,
                      QObject *parent = 0);
 
-    QModelIndex addPrediction(const Prediction &prediction);
+    QModelIndex addPrediction(Prediction* prediction);
+    void updatePrediction(Prediction* prediction);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     bool removeRows(int row, int count, const QModelIndex& parent) override;

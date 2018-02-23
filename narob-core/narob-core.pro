@@ -50,7 +50,10 @@ SOURCES += \
     ticketstrackmodel.cpp \
     prediction.cpp \
     predictiondao.cpp \
-    predictionsmodel.cpp
+    predictionsmodel.cpp \
+    refpt.cpp \
+    refptdao.cpp \
+    refptmodel.cpp
 #    prediction.cpp \
 #    predictiondao.cpp \
 #    predictionsmodel.cpp \
@@ -83,7 +86,10 @@ HEADERS += \
     ticketstrackmodel.h \
     prediction.h \
     predictiondao.h \
-    predictionsmodel.h
+    predictionsmodel.h \
+    refpt.h \
+    refptdao.h \
+    refptmodel.h
 #    prediction.h \
 #    predictiondao.h \
 #    predictionsmodel.h \

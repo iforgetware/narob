@@ -17,6 +17,7 @@ public:
     TracksModel(QObject *parent = 0);
 
     Track* getTrack(const int id);
+    Track* firstTrack();
     QModelIndex addTrack(const Track &track);
 //    void updateTrack(const Track *track);
 

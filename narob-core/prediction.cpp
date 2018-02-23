@@ -3,8 +3,8 @@
 Prediction::Prediction() :
     mId(-1),
 
-    mRaceId(1),
-    mVehicleId(1),
+    mRaceId(-1),
+    mVehicleId(-1),
 
     mDate(QDate()),
     mTime(QTime()),

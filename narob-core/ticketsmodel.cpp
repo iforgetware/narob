@@ -8,14 +8,14 @@ TicketsModel::TicketsModel(Vehicle* vehicle, QObject* parent) :
 {
     setTable("tickets");
 
+    setRelation(fieldIndex("trackId"), QSqlRelation("tracks", "id", "name"));
+    setRelation(fieldIndex("raceId"), QSqlRelation("races", "id", "name"));
+
     QString filter = QString("vehicleId = %1").arg(mVehicle->id());
 
-//    setJoinMode(QSqlRelationalTableModel::LeftJoin);
-
-//    setRelation(fieldIndex("trackId"), QSqlRelation("tracks", "id", "name"));
-//    setRelation(fieldIndex("raceId"), QSqlRelation("races", "id", "name"));
-
     setFilter(filter);
+
+    setJoinMode(QSqlRelationalTableModel::LeftJoin);
 
     mFields.append(Field("trackId", "Track", 150, 0));
     mFields.append(Field("raceId", "Race", 150, 0));

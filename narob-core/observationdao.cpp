@@ -5,7 +5,6 @@
 
 #include <QDebug>
 
-#include "observation.h"
 #include "databasemanager.h"
 
 ObservationDao::ObservationDao(QSqlDatabase &database) :
