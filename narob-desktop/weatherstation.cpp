@@ -89,7 +89,7 @@ int relativeWind(const int &wDir, const int &wSpeed)
     }else if(wDir < 181){
         return wDir;
     }else{
-        return wDir - 360;
+        return 360 - wDir;
     }
 }
 

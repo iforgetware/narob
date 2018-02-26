@@ -1,4 +1,5 @@
 #include "ticketsmodel.h"
+#include <QDebug>
 
 TicketsModel::TicketsModel(Vehicle* vehicle, QObject* parent) :
     ModelBase(parent),
@@ -8,14 +9,9 @@ TicketsModel::TicketsModel(Vehicle* vehicle, QObject* parent) :
 {
     setTable("tickets");
 
-    setRelation(fieldIndex("trackId"), QSqlRelation("tracks", "id", "name"));
-    setRelation(fieldIndex("raceId"), QSqlRelation("races", "id", "name"));
-
     QString filter = QString("vehicleId = %1").arg(mVehicle->id());
 
     setFilter(filter);
-
-    setJoinMode(QSqlRelationalTableModel::LeftJoin);
 
     mFields.append(Field("trackId", "Track", 150, 0));
     mFields.append(Field("raceId", "Race", 150, 0));
@@ -57,12 +53,38 @@ QModelIndex TicketsModel::addTicket(const Ticket &ticket)
 
     beginInsertRows(QModelIndex(), rowIndex, rowIndex);
     Ticket* newTicket = new Ticket(ticket);
+
     mDb.ticketDao.addTicket(*newTicket);
     mTickets.append(newTicket);
     endInsertRows();
 
     return index(rowIndex, 0);
 }
+
+//void TicketsModel::getWeather(Ticket *ticket)
+//{
+//    Observation* observation = new Observation();
+
+//    observation = mDb.observationDao.observationForTime(ticket->date(), ticket->time());
+
+//    if(observation){
+//        ticket->setTemperature(observation->temperature());
+//        ticket->setHumidity(observation->humidity());
+//        ticket->setPressure(observation->pressure());
+//        ticket->setVaporPressure(observation->vaporPressure());
+//        ticket->setDewPoint(observation->dewPoint());
+//        ticket->setDensityAltitude(observation->densityAltitude());
+//        ticket->setWindSpeed(observation->windSpeed());
+//        ticket->setWindGust(observation->windGust());
+//        ticket->setWindDirection(observation->windDirection());
+//    }else{
+//        qDebug("Weather not found - WRITE CODE");
+//    }
+
+//    delete observation;
+
+//    return;
+//}
 
 int TicketsModel::rowCount(const QModelIndex &parent) const
 {

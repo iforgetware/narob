@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
 
+INCLUDEPATH += .
+
 SUBDIRS += \
     narob-core \
     narob-desktop

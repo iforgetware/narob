@@ -19,6 +19,7 @@ public:
 
     Race *getRace(const int id);
     QModelIndex addRace(const Race &race);
+    QString raceName(const int id) const;
 //    void updateRace(const Race *race);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

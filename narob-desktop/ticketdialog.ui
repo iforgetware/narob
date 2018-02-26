@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>436</width>
+    <width>680</width>
     <height>722</height>
    </rect>
   </property>
@@ -14,10 +14,142 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="3" alignment="Qt::AlignRight">
-    <widget class="QLabel" name="vehicleWeightLabel">
+   <item row="2" column="2">
+    <widget class="QComboBox" name="laneComboBox">
+     <property name="maxVisibleItems">
+      <number>2</number>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="laneLabel">
      <property name="text">
-      <string>Vehicle W.</string>
+      <string>Lane</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="2">
+    <widget class="QLineEdit" name="threeThirtyEdit"/>
+   </item>
+   <item row="1" column="4">
+    <widget class="QLineEdit" name="delayEdit"/>
+   </item>
+   <item row="0" column="4">
+    <widget class="QLineEdit" name="dialEdit"/>
+   </item>
+   <item row="0" column="2">
+    <widget class="QDateEdit" name="dateEdit"/>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="dateLabel">
+     <property name="text">
+      <string>Date</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="2">
+    <widget class="QLineEdit" name="quarterEdit"/>
+   </item>
+   <item row="13" column="0">
+    <widget class="QLabel" name="quarterLable">
+     <property name="text">
+      <string>1/4</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="2">
+    <widget class="QLineEdit" name="quarterMPHEdit"/>
+   </item>
+   <item row="14" column="0">
+    <widget class="QLabel" name="quarterMPHLable">
+     <property name="text">
+      <string>1/4 MPH</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="2">
+    <widget class="QLineEdit" name="eighthEdit"/>
+   </item>
+   <item row="12" column="2">
+    <widget class="QLineEdit" name="thousandEdit"/>
+   </item>
+   <item row="9" column="0" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="eighthLabel">
+     <property name="text">
+      <string>1/8</string>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0">
+    <widget class="QLabel" name="thousandLable">
+     <property name="text">
+      <string>1000'</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="2">
+    <widget class="QLineEdit" name="eighthMPHEdit"/>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="eighthMPHLabel">
+     <property name="text">
+      <string>1/8 MPH</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="2">
+    <widget class="QLineEdit" name="sixtyEdit"/>
+   </item>
+   <item row="6" column="0" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="reactionLabel">
+     <property name="text">
+      <string>Reaction</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="windGustLabel">
+     <property name="text">
+      <string>Wind Gust</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="3">
+    <widget class="QCheckBox" name="eighthGoodCheckBox">
+     <property name="text">
+      <string>Use 1/8</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="3">
+    <widget class="QCheckBox" name="quarterGoodCheckBox">
+     <property name="text">
+      <string>Use 1/4</string>
      </property>
     </widget>
    </item>
@@ -51,6 +183,9 @@
    <item row="2" column="4">
     <widget class="QLineEdit" name="vehicleWeightEdit"/>
    </item>
+   <item row="1" column="2">
+    <widget class="QTimeEdit" name="timeEdit"/>
+   </item>
    <item row="0" column="3" alignment="Qt::AlignRight">
     <widget class="QLabel" name="dialLabel">
      <property name="text">
@@ -65,8 +200,8 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="2">
-    <widget class="QTimeEdit" name="timeEdit"/>
+   <item row="6" column="4">
+    <widget class="QLineEdit" name="riderWeightEdit"/>
    </item>
    <item row="6" column="3" alignment="Qt::AlignRight">
     <widget class="QLabel" name="riderWeightLabel">
@@ -75,140 +210,95 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="4">
-    <widget class="QLineEdit" name="riderWeightEdit"/>
-   </item>
-   <item row="2" column="0" alignment="Qt::AlignRight">
-    <widget class="QLabel" name="laneLabel">
+   <item row="1" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="humidityLabel">
      <property name="text">
-      <string>Lane</string>
+      <string>Humidity</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="2">
-    <widget class="QComboBox" name="laneComboBox">
-     <property name="maxVisibleItems">
-      <number>2</number>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="2">
-    <widget class="QLineEdit" name="threeThirtyEdit"/>
-   </item>
-   <item row="1" column="4">
-    <widget class="QLineEdit" name="delayEdit"/>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="dateLabel">
+   <item row="2" column="3" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="vehicleWeightLabel">
      <property name="text">
-      <string>Date</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <string>Vehicle W.</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="4">
-    <widget class="QLineEdit" name="dialEdit"/>
-   </item>
-   <item row="0" column="2">
-    <widget class="QDateEdit" name="dateEdit"/>
-   </item>
-   <item row="13" column="0">
-    <widget class="QLabel" name="quarterLable">
+   <item row="6" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="vaporPressureLabel">
      <property name="text">
-      <string>1/4</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <string>Vapor Pressure</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="2">
-    <widget class="QLineEdit" name="quarterEdit"/>
-   </item>
-   <item row="14" column="0">
-    <widget class="QLabel" name="quarterMPHLable">
+   <item row="2" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="pressureLabel">
      <property name="text">
-      <string>1/4 MPH</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <string>Pressure</string>
      </property>
     </widget>
    </item>
-   <item row="14" column="2">
-    <widget class="QLineEdit" name="quarterMPHEdit"/>
-   </item>
-   <item row="15" column="4">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="2">
-    <widget class="QLineEdit" name="eighthEdit"/>
-   </item>
-   <item row="9" column="0" alignment="Qt::AlignRight">
-    <widget class="QLabel" name="eighthLabel">
+   <item row="9" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="windSpeedLabel">
      <property name="text">
-      <string>1/8</string>
+      <string>Wind Speed</string>
      </property>
     </widget>
    </item>
-   <item row="12" column="0">
-    <widget class="QLabel" name="thousandLable">
+   <item row="0" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="temperatureLabel">
      <property name="text">
-      <string>1000'</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <string>Temperature</string>
      </property>
     </widget>
    </item>
-   <item row="12" column="2">
-    <widget class="QLineEdit" name="thousandEdit"/>
-   </item>
-   <item row="10" column="0">
-    <widget class="QLabel" name="eighthMPHLabel">
+   <item row="7" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="dewPointLabel">
      <property name="text">
-      <string>1/8 MPH</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <string>Dew Point</string>
      </property>
     </widget>
    </item>
-   <item row="10" column="2">
-    <widget class="QLineEdit" name="eighthMPHEdit"/>
-   </item>
-   <item row="6" column="0" alignment="Qt::AlignRight">
-    <widget class="QLabel" name="reactionLabel">
+   <item row="8" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="densityAltitudeLabel">
      <property name="text">
-      <string>Reaction</string>
+      <string>Density Altitude</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="2">
-    <widget class="QLineEdit" name="sixtyEdit"/>
-   </item>
-   <item row="9" column="3">
-    <widget class="QCheckBox" name="eighthGoodCheckBox">
+   <item row="10" column="5" alignment="Qt::AlignRight">
+    <widget class="QLabel" name="windDirectionLabel">
      <property name="text">
-      <string>Use 1/8</string>
+      <string>Wind Direction</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="3">
-    <widget class="QCheckBox" name="quarterGoodCheckBox">
-     <property name="text">
-      <string>Use 1/4</string>
-     </property>
-    </widget>
+   <item row="0" column="6">
+    <widget class="QLineEdit" name="temperatureEdit"/>
+   </item>
+   <item row="1" column="6">
+    <widget class="QLineEdit" name="humidityEdit"/>
+   </item>
+   <item row="2" column="6">
+    <widget class="QLineEdit" name="pressureEdit"/>
+   </item>
+   <item row="6" column="6">
+    <widget class="QLineEdit" name="vaporPressureEdit"/>
+   </item>
+   <item row="7" column="6">
+    <widget class="QLineEdit" name="dewPointEdit"/>
+   </item>
+   <item row="8" column="6">
+    <widget class="QLineEdit" name="densityAltitudeEdit"/>
+   </item>
+   <item row="9" column="6">
+    <widget class="QLineEdit" name="windSpeedEdit"/>
+   </item>
+   <item row="10" column="6">
+    <widget class="QLineEdit" name="windDirectionEdit"/>
+   </item>
+   <item row="12" column="6">
+    <widget class="QLineEdit" name="windGustEdit"/>
    </item>
   </layout>
  </widget>

@@ -6,6 +6,8 @@
 #include "logbooktab.h"
 #include "predictiontab.h"
 
+#include <QDebug>
+
 RaceControlTab::RaceControlTab(Vehicle* vehicle,
                                Race* race,
                                QWidget *parent) :
@@ -23,7 +25,6 @@ RaceControlTab::RaceControlTab(Vehicle* vehicle,
                                                         mVehicle,
                                                         mRace,
                                                         this);
-
 
     TrackHistoryTab* trackHistoryTab = new TrackHistoryTab(mTicketsModel,
                                                            mRace->trackId(),

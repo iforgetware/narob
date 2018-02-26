@@ -25,7 +25,6 @@ TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
     mTicketsRaceModel->setSourceModel(mTicketsModel);
 
     ui->tableView->setModel(mTicketsRaceModel);
-//    ui->tableView->setModel(mTicketsModel);
 
     connect(ui->addButton, &QPushButton::clicked,
             this, &TicketsEditWidget::addTicket);
@@ -36,21 +35,9 @@ TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
     connect(ui->deleteButton, &QPushButton::clicked,
             this, &TicketsEditWidget::deleteTicket);
 
-    ui->tableView->setItemDelegate(new mySqlRelationalDelegate(this));
-    ui->tableView->setItemDelegateForColumn(2, new mySqlRelationalDelegate(this));
-    ui->tableView->setItemDelegateForColumn(3, new mySqlRelationalDelegate(this));
-
-//    QSqlRecord row = mTicketsModel->record();
-//    qDebug() << row.fieldName(1);
-//    qDebug() << row.fieldName(2);
-//    qDebug() << row.fieldName(3);
-//    qDebug() << row.fieldName(4);
-
     setupColumns(mTicketsModel->mFields);
 
     hideColumn(mTicketsModel->fieldIndex("vehicleId"));
-//    hideColumn(mTicketsModel->fieldIndex("tracks_name_2"));
-//    hideColumn(mTicketsModel->fieldIndex("name"));
     hideColumn(mTicketsModel->fieldIndex("trackId"));
     hideColumn(mTicketsModel->fieldIndex("raceId"));
     hideColumn(mTicketsModel->fieldIndex("predictionId"));
@@ -67,6 +54,8 @@ void TicketsEditWidget::addTicket()
                                                   this);
 
     ticketDialog->exec();
+
+
 }
 
 void TicketsEditWidget::editTicket()

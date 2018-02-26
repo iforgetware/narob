@@ -19,6 +19,7 @@ public:
     Track* getTrack(const int id);
     Track* firstTrack();
     QModelIndex addTrack(const Track &track);
+    QString trackName(const int id) const;
 //    void updateTrack(const Track *track);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

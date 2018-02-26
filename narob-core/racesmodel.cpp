@@ -42,6 +42,17 @@ QModelIndex RacesModel::addRace(const Race &race)
     return index(rowIndex, 0);
 }
 
+QString RacesModel::raceName(const int id) const
+{
+    foreach (Race* race, mRaces) {
+        if(race->id() == id){
+            return race->name();
+        }
+    }
+
+    return QString("");
+}
+
 //void RacesModel::updateRace(const Race *race)
 //{
 //    mDb.raceDao.updateRace(race);

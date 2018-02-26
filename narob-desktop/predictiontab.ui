@@ -40,54 +40,31 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="9" column="6">
-       <widget class="ProviderBox" name="textProviderComboBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="5" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="vehicleWeightLabel">
+      <item row="7" column="0">
+       <widget class="QLabel" name="windFactorLabel">
         <property name="text">
-         <string>Vehicle Weight</string>
+         <string>Wind Factor</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="6">
-       <widget class="QLineEdit" name="riderWeightEdit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="5">
-       <widget class="QLabel" name="textProviderLabel">
+      <item row="2" column="3">
+       <widget class="QCheckBox" name="trackTicketsCheckBox">
         <property name="text">
-         <string>Service Provider</string>
+         <string>Use all tickets for this track</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="6">
-       <widget class="QLineEdit" name="vehicleWeightEdit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="makePredictionButton">
+      <item row="5" column="1" alignment="Qt::AlignLeft">
+       <widget class="QLabel" name="minutesLabel">
         <property name="text">
-         <string>Make Prediction Now</string>
+         <string>Minutes between automatic predictions</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="10">
+       <widget class="QSpinBox" name="weightFactorSpinBox">
+        <property name="maximum">
+         <number>10</number>
         </property>
        </widget>
       </item>
@@ -99,10 +76,37 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="maximum">
+         <number>15</number>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
        </widget>
       </item>
-      <item row="9" column="4">
-       <widget class="QLineEdit" name="textNumberEdit">
+      <item row="2" column="9" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="vehicleWeightLabel">
+        <property name="text">
+         <string>Vehicle Weight</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="9" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="riderWeightLabel">
+        <property name="text">
+         <string>Rider Weight</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QSpinBox" name="windFactorSpinBox">
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="10">
+       <widget class="QLineEdit" name="riderWeightEdit">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -111,7 +115,24 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="3">
+      <item row="2" column="10">
+       <widget class="QLineEdit" name="vehicleWeightEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="9" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="textProviderLabel">
+        <property name="text">
+         <string>Service Provider</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="3">
        <widget class="QFrame" name="frame_2">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -137,21 +158,48 @@
         </layout>
        </widget>
       </item>
-      <item row="5" column="5" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="riderWeightLabel">
-        <property name="text">
-         <string>Rider Weight</string>
+      <item row="7" column="8">
+       <widget class="QLineEdit" name="textNumberEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </item>
-      <item row="5" column="1" alignment="Qt::AlignLeft">
-       <widget class="QLabel" name="minutesLabel">
+      <item row="2" column="1">
+       <widget class="QPushButton" name="makePredictionButton">
         <property name="text">
-         <string>Minutes between automatic predictions</string>
+         <string>Make Prediction Now</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="6" column="9" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="weightFactorLabel">
+        <property name="text">
+         <string>Weight Factor</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="QCheckBox" name="vehicleTicketsCheckBox">
+        <property name="text">
+         <string>Use all tickets for this vehicle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="10">
+       <widget class="ProviderBox" name="textProviderComboBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -163,20 +211,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="2" column="3">
-       <widget class="QCheckBox" name="trackTicketsCheckBox">
-        <property name="text">
-         <string>Use all tickets for this track</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="3">
-       <widget class="QCheckBox" name="vehicleTicketsCheckBox">
-        <property name="text">
-         <string>Use all tickets for this vehicle</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>

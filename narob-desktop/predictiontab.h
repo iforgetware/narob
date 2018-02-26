@@ -35,7 +35,8 @@ private:
     QVector<Ticket*> validTickets(const QString &distance);
     void predictEighth(Prediction *prediction);
     void predictQuarter(Prediction *prediction);
-
+    double windCorrection(int windSpeed, int windDirection);
+    double weightCorrection(double w1, double w2);
 
     Ui::PredictionTab* ui;
     Vehicle* mVehicle;

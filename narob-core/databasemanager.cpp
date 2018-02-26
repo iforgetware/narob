@@ -108,7 +108,7 @@ void DatabaseManager::populateTables() // DEV ONLY
 
     r2.setDate(QDate(2017,04,27));
     r2.setName("LODRS-4-2");
-    r2.setTrackId(3);
+    r2.setTrackId(2);
     raceDao.addRace(r2);
 
     Race r3;
@@ -153,16 +153,16 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk1.setQuarterGood(true);
     tk1.setDelay(1.090);
     tk1.setVehicleWeight(350);
-    tk1.setRiderWeight(150.4);
+    tk1.setRiderWeight(150.0);
     tk1.setTemperature(80.0);
     tk1.setHumidity(50.0);
     tk1.setPressure(30.00);
     tk1.setVaporPressure(0.54);
     tk1.setDewPoint(60.1);
     tk1.setDensityAltitude(1000);
-    tk1.setWindSpeed(10);
-    tk1.setWindGust(10);
-    tk1.setWindDirection(360);
+    tk1.setWindSpeed(0);
+    tk1.setWindGust(0);
+    tk1.setWindDirection(0);
     ticketDao.addTicket(tk1);
 
     Ticket tk2;
@@ -186,16 +186,16 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk2.setQuarterGood(true);
     tk2.setDelay(1.090);
     tk2.setVehicleWeight(350);
-    tk2.setRiderWeight(150.4);
+    tk2.setRiderWeight(150.0);
     tk2.setTemperature(85.0);
     tk2.setHumidity(60.0);
     tk2.setPressure(29.00);
     tk2.setVaporPressure(0.54);
     tk2.setDewPoint(60.1);
     tk2.setDensityAltitude(2000);
-    tk2.setWindSpeed(10);
-    tk2.setWindGust(10);
-    tk2.setWindDirection(360);
+    tk2.setWindSpeed(5);
+    tk2.setWindGust(5);
+    tk2.setWindDirection(0);
     ticketDao.addTicket(tk2);
 
     Ticket tk3;
@@ -210,25 +210,25 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk3.setReaction(0.023);
     tk3.setSixty(1.337);
     tk3.setThreeThirty(3.532);
-    tk3.setEighth(5.600);
+    tk3.setEighth(5.701);
     tk3.setEighthMPH(125.00);
     tk3.setEighthGood(true);
     tk3.setThousand(7.448);
-    tk3.setQuarter(8.700);
+    tk3.setQuarter(8.901);
     tk3.setQuarterMPH(150.00);
     tk3.setQuarterGood(true);
     tk3.setDelay(1.090);
     tk3.setVehicleWeight(350);
-    tk3.setRiderWeight(150.4);
-    tk3.setTemperature(80.0);
-    tk3.setHumidity(50.0);
-    tk3.setPressure(30.00);
+    tk3.setRiderWeight(150.0);
+    tk3.setTemperature(90.1);
+    tk3.setHumidity(70.1);
+    tk3.setPressure(28.01);
     tk3.setVaporPressure(0.54);
     tk3.setDewPoint(60.1);
-    tk3.setDensityAltitude(1000);
-    tk3.setWindSpeed(10);
-    tk3.setWindGust(10);
-    tk3.setWindDirection(360);
+    tk3.setDensityAltitude(3001);
+    tk3.setWindSpeed(5);
+    tk3.setWindGust(5);
+    tk3.setWindDirection(0);
     ticketDao.addTicket(tk3);
 
     Ticket tk4;
@@ -252,16 +252,16 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk4.setQuarterGood(true);
     tk4.setDelay(1.090);
     tk4.setVehicleWeight(350);
-    tk4.setRiderWeight(150.4);
-    tk4.setTemperature(80.0);
-    tk4.setHumidity(50.0);
-    tk4.setPressure(30.00);
+    tk4.setRiderWeight(150.0);
+    tk4.setTemperature(90.0);
+    tk4.setHumidity(70.0);
+    tk4.setPressure(28.00);
     tk4.setVaporPressure(0.54);
     tk4.setDewPoint(60.1);
-    tk4.setDensityAltitude(1000);
-    tk4.setWindSpeed(10);
-    tk4.setWindGust(10);
-    tk4.setWindDirection(360);
+    tk4.setDensityAltitude(3000);
+    tk4.setWindSpeed(0);
+    tk4.setWindGust(0);
+    tk4.setWindDirection(0);
     ticketDao.addTicket(tk4);
 
     Ticket tk5;
@@ -285,7 +285,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk5.setQuarterGood(true);
     tk5.setDelay(1.090);
     tk5.setVehicleWeight(350);
-    tk5.setRiderWeight(150.4);
+    tk5.setRiderWeight(150.0);
     tk5.setTemperature(80.0);
     tk5.setHumidity(50.0);
     tk5.setPressure(30.00);
@@ -294,7 +294,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk5.setDensityAltitude(1000);
     tk5.setWindSpeed(10);
     tk5.setWindGust(10);
-    tk5.setWindDirection(360);
+    tk5.setWindDirection(0);
     ticketDao.addTicket(tk5);
 
     Ticket tk6;
@@ -318,7 +318,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk6.setQuarterGood(true);
     tk6.setDelay(1.090);
     tk6.setVehicleWeight(350);
-    tk6.setRiderWeight(150.4);
+    tk6.setRiderWeight(150.0);
     tk6.setTemperature(85.0);
     tk6.setHumidity(60.0);
     tk6.setPressure(29.00);
@@ -327,14 +327,14 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk6.setDensityAltitude(2000);
     tk6.setWindSpeed(10);
     tk6.setWindGust(10);
-    tk6.setWindDirection(360);
+    tk6.setWindDirection(0);
     ticketDao.addTicket(tk6);
 
     Ticket tk7;
 
     tk7.setVehicleId(1);
-    tk7.setTrackId(2);
-    tk7.setRaceId(2);
+    tk7.setTrackId(1);
+    tk7.setRaceId(3);
     tk7.setDate(QDate(2017,03,11));
     tk7.setTime(QTime(10, 25));
     tk7.setLane("right");
@@ -351,7 +351,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk7.setQuarterGood(true);
     tk7.setDelay(1.090);
     tk7.setVehicleWeight(350);
-    tk7.setRiderWeight(150.4);
+    tk7.setRiderWeight(150.0);
     tk7.setTemperature(80.0);
     tk7.setHumidity(50.0);
     tk7.setPressure(30.00);
@@ -360,14 +360,14 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk7.setDensityAltitude(1000);
     tk7.setWindSpeed(10);
     tk7.setWindGust(10);
-    tk7.setWindDirection(360);
+    tk7.setWindDirection(0);
     ticketDao.addTicket(tk7);
 
     Ticket tk8;
 
     tk8.setVehicleId(1);
-    tk8.setTrackId(2);
-    tk8.setRaceId(2);
+    tk8.setTrackId(1);
+    tk8.setRaceId(3);
     tk8.setDate(QDate(2017,03,11));
     tk8.setTime(QTime(10, 25));
     tk8.setLane("right");
@@ -384,7 +384,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk8.setQuarterGood(true);
     tk8.setDelay(1.090);
     tk8.setVehicleWeight(350);
-    tk8.setRiderWeight(150.4);
+    tk8.setRiderWeight(150.0);
     tk8.setTemperature(80.0);
     tk8.setHumidity(50.0);
     tk8.setPressure(30.00);
@@ -393,7 +393,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk8.setDensityAltitude(1000);
     tk8.setWindSpeed(10);
     tk8.setWindGust(10);
-    tk8.setWindDirection(360);
+    tk8.setWindDirection(0);
     ticketDao.addTicket(tk8);
 
     Observation o1;
@@ -408,7 +408,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     o1.setDensityAltitude(3000);
     o1.setWindSpeed(10);
     o1.setWindGust(10);
-    o1.setWindDirection(360);
+    o1.setWindDirection(0);
     observationDao.addObservation(o1);
 
     Observation o2;
@@ -423,7 +423,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     o2.setDensityAltitude(10000);
     o2.setWindSpeed(10);
     o2.setWindGust(10);
-    o2.setWindDirection(360);
+    o2.setWindDirection(0);
     observationDao.addObservation(o2);
 
     qDebug("tables populated - DEV ONLY");

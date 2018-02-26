@@ -25,6 +25,8 @@ public:
     bool removeRows(int row, int count, const QModelIndex& parent) override;
 
 private:
+    void getWeather(Ticket* ticket);
+
     DatabaseManager &mDb;
     Vehicle* mVehicle;
     QVector<Ticket*> mTickets;

@@ -36,6 +36,9 @@ private:
 
     void setupModel();
     void createUi();
+    void dateChanged(const QDate& date);
+    void timeChanged(const QTime& time);
+    void setWeather();
 };
 
 #endif // TICKETDIALOG_H

@@ -1,5 +1,6 @@
 #include "ticketdialog.h"
 #include "ui_ticketdialog.h"
+#include "observationsmodel.h"
 
 TicketDialog::TicketDialog(TicketsModel *model,
                            Vehicle* vehicle,
@@ -20,6 +21,7 @@ TicketDialog::TicketDialog(TicketsModel *model,
         ticket.setVehicleId(vehicle->id());
         ticket.setTrackId(race->trackId());
         ticket.setRaceId(race->id());
+        ticket.setVehicleWeight(vehicle->weight());
 
         QModelIndex idx = mTicketsModel->addTicket(ticket);
         mTicketsModel->select();
@@ -28,6 +30,9 @@ TicketDialog::TicketDialog(TicketsModel *model,
     }else{
         mMapper->setCurrentModelIndex(mTicketsModel->index(row, 0));
     }
+
+    connect(ui->dateEdit, &QDateEdit::dateChanged, this, &TicketDialog::dateChanged);
+    connect(ui->timeEdit, &QTimeEdit::timeChanged, this, &TicketDialog::timeChanged);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &TicketDialog::onButtonBoxAccepted);
 
@@ -61,6 +66,15 @@ void TicketDialog::setupModel()
     mMapper->addMapping(ui->delayEdit, mTicketsModel->fieldIndex("delay"));
     mMapper->addMapping(ui->vehicleWeightEdit, mTicketsModel->fieldIndex("vehicleWeight"));
     mMapper->addMapping(ui->riderWeightEdit, mTicketsModel->fieldIndex("riderWeight"));
+    mMapper->addMapping(ui->temperatureEdit, mTicketsModel->fieldIndex("temperature"));
+    mMapper->addMapping(ui->humidityEdit, mTicketsModel->fieldIndex("humidity"));
+    mMapper->addMapping(ui->pressureEdit, mTicketsModel->fieldIndex("pressure"));
+    mMapper->addMapping(ui->vaporPressureEdit, mTicketsModel->fieldIndex("vaporPressure"));
+    mMapper->addMapping(ui->dewPointEdit, mTicketsModel->fieldIndex("dewPoint"));
+    mMapper->addMapping(ui->densityAltitudeEdit, mTicketsModel->fieldIndex("densityAltitude"));
+    mMapper->addMapping(ui->windSpeedEdit, mTicketsModel->fieldIndex("windSpeed"));
+    mMapper->addMapping(ui->windGustEdit, mTicketsModel->fieldIndex("windGust"));
+    mMapper->addMapping(ui->windDirectionEdit, mTicketsModel->fieldIndex("windDirection"));
 
     mMapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 }
@@ -101,4 +115,50 @@ void TicketDialog::onButtonBoxAccepted()
 void TicketDialog::clearEmptyAdd()
 {
     mTicketsModel->removeRow(mTicketsModel->rowCount()-1);
+}
+
+void TicketDialog::dateChanged(const QDate &date)
+{
+    Q_UNUSED(date);
+
+    setWeather();
+
+    return;
+}
+
+void TicketDialog::timeChanged(const QTime &time)
+{
+    Q_UNUSED(time);
+
+    setWeather();
+
+    return;
+}
+
+void TicketDialog::setWeather()
+{
+    ObservationsModel* observationsModel = new ObservationsModel(this);
+    Observation* observation = new Observation();
+
+    observation = observationsModel->observationForTime(ui->dateEdit->date(),
+                                                        ui->timeEdit->time());
+
+    if(observation){
+        ui->temperatureEdit->setText(QString::number(observation->temperature()));
+        ui->humidityEdit->setText(QString::number(observation->humidity()));
+        ui->pressureEdit->setText(QString::number(observation->pressure()));
+        ui->vaporPressureEdit->setText(QString::number(observation->vaporPressure()));
+        ui->dewPointEdit->setText(QString::number(observation->dewPoint()));
+        ui->densityAltitudeEdit->setText(QString::number(observation->densityAltitude()));
+        ui->windSpeedEdit->setText(QString::number(observation->windSpeed()));
+        ui->windGustEdit->setText(QString::number(observation->windGust()));
+        ui->windDirectionEdit->setText(QString::number(observation->windDirection()));
+    }else{
+        qDebug("Weather not found - WRITE CODE");
+    }
+
+    delete observation;
+
+    return;
+
 }

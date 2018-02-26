@@ -40,14 +40,17 @@ PredictionTab::PredictionTab(TicketsModel* model,
     ui->textProviderComboBox->setCurrentText(mSettings->textProvider());
     ui->textNumberEdit->setText(mSettings->textNumber());
 
-    ui->minutesSpinBox->setRange(1,15);
-
-    //dev only, make 5
-    ui->minutesSpinBox->setValue(1);
     mAutoTimer = new QTimer(this);
-    resetTimer(1);
+    resetTimer(ui->minutesSpinBox->value());
 
-    connect(mAutoTimer, &QTimer::timeout, this, &PredictionTab::makeAutoPrediction);
+    connect(mAutoTimer,
+            &QTimer::timeout,
+            this,
+            &PredictionTab::makeAutoPrediction);
+    connect(ui->makePredictionButton,
+            &QPushButton::clicked,
+            this,
+            &PredictionTab::makeAutoPrediction);
     connect(ui->minutesSpinBox,
             static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             this,
@@ -180,6 +183,10 @@ struct Line
         double yMean = sumY / nPoints;
         double denominator = sumX2 - sumX * xMean;
 
+        if(!denominator){
+            qDebug("denominator ZERO - WRITE CODE");
+        }
+
         mSlope = (sumXY - (sumX * yMean)) / denominator;
         mIntercept = yMean - (mSlope * xMean);
     }
@@ -200,10 +207,17 @@ void PredictionTab::predictEighth(Prediction* prediction)
     QVector<Ticket*> tickets = validTickets("eighth");
 
     foreach(Ticket* ticket, tickets){
-        tPoints.append(QPointF(ticket->temperature(), ticket->eighth()));
-        hPoints.append(QPointF(ticket->humidity(), ticket->eighth()));
-        pPoints.append(QPointF(ticket->pressure(), ticket->eighth()));
-        dPoints.append(QPointF(ticket->densityAltitude(), ticket->eighth()));
+        double adjustedEighth = ticket->eighth()
+                                - (windCorrection(ticket->windSpeed(),
+                                                 ticket->windDirection())
+                                   / 2)
+                                + (weightCorrection(prediction->riderWeight(),
+                                                   ticket->riderWeight())
+                                   / 2);
+        tPoints.append(QPointF(ticket->temperature(), adjustedEighth));
+        hPoints.append(QPointF(ticket->humidity(), adjustedEighth));
+        pPoints.append(QPointF(ticket->pressure(), adjustedEighth));
+        dPoints.append(QPointF(ticket->densityAltitude(), adjustedEighth));
 
         RefPT refPT;
 
@@ -219,11 +233,15 @@ void PredictionTab::predictEighth(Prediction* prediction)
     Line pLine(pPoints);
     Line dLine(dPoints);
 
-    prediction->setETp(tLine.getYforX(prediction->temperature()));
-    prediction->setEHp(hLine.getYforX(prediction->humidity()));
-    prediction->setEPp(pLine.getYforX(prediction->pressure()));
+    double wC = windCorrection(prediction->windSpeed(),
+                               prediction->windDirection())
+                / 2;
+
+    prediction->setETp(wC + tLine.getYforX(prediction->temperature()));
+    prediction->setEHp(wC + hLine.getYforX(prediction->humidity()));
+    prediction->setEPp(wC + pLine.getYforX(prediction->pressure()));
     prediction->setEAp((prediction->eTp() + prediction->eHp() + prediction->ePp()) / 3);
-    prediction->setEDp(dLine.getYforX(prediction->densityAltitude()));
+    prediction->setEDp(wC + dLine.getYforX(prediction->densityAltitude()));
 }
 
 void PredictionTab::predictQuarter(Prediction* prediction)
@@ -233,13 +251,24 @@ void PredictionTab::predictQuarter(Prediction* prediction)
     Points pPoints;
     Points dPoints;
 
-    QVector<Ticket*> tickets = validTickets("eighth");
+    QVector<Ticket*> tickets = validTickets("quarter");
 
     foreach(Ticket* ticket, tickets){
-        tPoints.append(QPointF(ticket->temperature(), ticket->quarter()));
-        hPoints.append(QPointF(ticket->humidity(), ticket->quarter()));
-        pPoints.append(QPointF(ticket->pressure(), ticket->quarter()));
-        dPoints.append(QPointF(ticket->densityAltitude(), ticket->quarter()));
+        double adjustedQuarter = ticket->quarter()
+                                 - windCorrection(ticket->windSpeed(),
+                                                  ticket->windDirection())
+                                 + weightCorrection(prediction->riderWeight(),
+                                                    ticket->riderWeight());
+
+        // show with and without wind if enough column space available
+
+        // ???? add instantaneous prediction ????
+        // would reset on any value change
+
+        tPoints.append(QPointF(ticket->temperature(), adjustedQuarter));
+        hPoints.append(QPointF(ticket->humidity(), adjustedQuarter));
+        pPoints.append(QPointF(ticket->pressure(), adjustedQuarter));
+        dPoints.append(QPointF(ticket->densityAltitude(), adjustedQuarter));
 
         RefPT refPT;
 
@@ -255,11 +284,43 @@ void PredictionTab::predictQuarter(Prediction* prediction)
     Line pLine(pPoints);
     Line dLine(dPoints);
 
-    prediction->setQTp(tLine.getYforX(prediction->temperature()));
-    prediction->setQHp(hLine.getYforX(prediction->humidity()));
-    prediction->setQPp(pLine.getYforX(prediction->pressure()));
+    double wC = windCorrection(prediction->windSpeed(),
+                               prediction->windDirection());
+
+    prediction->setQTp(wC + tLine.getYforX(prediction->temperature()));
+    prediction->setQHp(wC + hLine.getYforX(prediction->humidity()));
+    prediction->setQPp(wC + pLine.getYforX(prediction->pressure()));
     prediction->setQAp((prediction->qTp() + prediction->qHp() + prediction->qPp()) / 3);
-    prediction->setQDp(dLine.getYforX(prediction->densityAltitude()));
+    prediction->setQDp(wC + dLine.getYforX(prediction->densityAltitude()));
+}
+
+double PredictionTab::windCorrection(int windSpeed, int windDirection)
+{
+    double correction = 0;
+    double dFactor;
+
+    if(windDirection < 50){
+        dFactor = (50 - windDirection) * 0.02;
+        correction = ui->windFactorSpinBox->value()
+                     * 0.002
+                     * windSpeed
+                     * dFactor;
+    }
+
+    if(windDirection > 130){
+        dFactor = (windDirection - 130) * -0.02;
+        correction = ui->windFactorSpinBox->value()
+                     * 0.002
+                     * windSpeed
+                     * dFactor;
+    }
+
+    return correction;
+}
+
+double PredictionTab::weightCorrection(double w1, double w2)
+{
+    return (w1 - w2) * ui->weightFactorSpinBox->value() * 0.001;
 }
 
 void PredictionTab::sendPage(const Prediction* prediction)

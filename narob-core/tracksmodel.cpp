@@ -10,7 +10,7 @@ TracksModel::TracksModel(QObject *parent) :
     setTable("tracks");
 
     mFields.append(Field("name", "Name", 150, 0));
-    mFields.append(Field("evelavtion", "Elev", 50, 0));
+    mFields.append(Field("elevation", "Elev", 50, 0));
     mFields.append(Field("bearing", "Bear", 50, 0));
     mFields.append(Field("radio", "Radio", 50, 1));
 
@@ -40,6 +40,17 @@ QModelIndex TracksModel::addTrack(const Track &track)
     endInsertRows();
 
     return index(rowIndex, 0);
+}
+
+QString TracksModel::trackName(const int id) const
+{
+    foreach(Track* track, mTracks){
+        if(track->id() == id){
+            return(track->name());
+        }
+    }
+
+    return QString("");
 }
 
 //void TracksModel::updateTrack(const Track *track)
