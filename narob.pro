@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
 INCLUDEPATH += .
+DEPENDPATH += .
 
 SUBDIRS += \
     narob-core \

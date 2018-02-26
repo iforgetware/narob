@@ -5,8 +5,9 @@
 
 #include "settings.h"
 #include "databasemanager.h"
+#include "narob-core_global.h"
 
-class SettingsModel : public QObject
+class NAROBCORESHARED_EXPORT SettingsModel : public QObject
 {
     Q_OBJECT
 public:

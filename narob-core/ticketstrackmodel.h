@@ -3,7 +3,9 @@
 
 #include <QSortFilterProxyModel>
 
-class TicketsTrackModel : public QSortFilterProxyModel
+#include "narob-core_global.h"
+
+class NAROBCORESHARED_EXPORT TicketsTrackModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 
