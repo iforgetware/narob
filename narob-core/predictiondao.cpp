@@ -38,17 +38,22 @@ void PredictionDao::init() const
                    "windGust INTEGER,"
                    "windDirection INTEGER,"
 
+                   "windFactor INTEGER,"
+                   "weightFactor INTEGER,"
+
                    "eTp REAL,"
                    "eHp REAL,"
                    "ePp REAL,"
                    "eAp REAL,"
                    "eDp REAL,"
+                   "windCorrectionEighth REAL,"
 
                    "qTp REAL,"
                    "qHp REAL,"
                    "qPp REAL,"
                    "qAp REAL,"
-                   "qDp REAL)");
+                   "qDp REAL,"
+                   "windCorrectionQuarter REAL)");
         DatabaseManager::debugQuery(query);
     }
 }
@@ -77,17 +82,22 @@ void PredictionDao::addPrediction(Prediction *prediction) const
                   "windGust,"
                   "windDirection,"
 
+                  "windFactor,"
+                  "weightFactor,"
+
                   "eTp,"
                   "eHp,"
                   "ePp,"
                   "eAp,"
                   "eDp,"
+                  "windCorrectionEighth,"
 
                   "qTp,"
                   "qHp,"
                   "qPp,"
                   "qAp,"
-                  "qDp"
+                  "qDp,"
+                  "windCorrectionQuarter"
 
                   ") VALUES ("
 
@@ -110,17 +120,22 @@ void PredictionDao::addPrediction(Prediction *prediction) const
                   ":windGust,"
                   ":windDirection,"
 
+                  ":windFactor,"
+                  ":weightFactor,"
+
                   ":eTp,"
                   ":eHp,"
                   ":ePp,"
                   ":eAp,"
                   ":eDp,"
+                  ":windCorrectionEighth,"
 
                   ":qTp,"
                   ":qHp,"
                   ":qPp,"
                   ":qAp,"
-                  ":qDp"
+                  ":qDp,"
+                  ":windCorrectionQuarter"
                   ")");
 
     query.bindValue(":raceId", prediction->raceId());
@@ -142,17 +157,22 @@ void PredictionDao::addPrediction(Prediction *prediction) const
     query.bindValue(":windGust", prediction->windGust());
     query.bindValue(":windDirection", prediction->windDirection());
 
+    query.bindValue(":windFactor", prediction->windFactor());
+    query.bindValue(":weightFactor", prediction->weightFactor());
+
     query.bindValue(":eTp", prediction->eTp());
     query.bindValue(":eHp", prediction->eHp());
     query.bindValue(":ePp", prediction->ePp());
     query.bindValue(":eAp", prediction->eAp());
     query.bindValue(":eDp", prediction->eDp());
+    query.bindValue(":windCorrectionEighth", prediction->windCorrectionEighth());
 
     query.bindValue(":qTp", prediction->qTp());
     query.bindValue(":qHp", prediction->qHp());
     query.bindValue(":qPp", prediction->qPp());
     query.bindValue(":qAp", prediction->qAp());
     query.bindValue(":qDp", prediction->qDp());
+    query.bindValue(":windCorrectionQuarter", prediction->windCorrectionQuarter());
 
     query.exec();
 
@@ -185,17 +205,22 @@ void PredictionDao::updatePrediction(const Prediction* prediction) const
                   "windGust=:windGust,"
                   "windDirection=:windDirection,"
 
+                  "windFactor=:windFactor,"
+                  "weightFactor=:weightFactor,"
+
                   "eTp=:eTp,"
                   "eHp=:eHp,"
                   "ePp=:ePp,"
                   "eAp=:eAp,"
                   "eDp=:eDp,"
+                  "windCorrectionEighth=:windCorrectionEighth,"
 
                   "qTp=:qTp,"
                   "qHp=:qHp,"
                   "qPp=:qPp,"
                   "qAp=:qAp,"
-                  "qDp=:qDp "
+                  "qDp=:qDp,"
+                  "windCorrectionQuarter=:windCorrectionQuarter "
 
                   "WHERE id=:id");
 
@@ -218,11 +243,15 @@ void PredictionDao::updatePrediction(const Prediction* prediction) const
     query.bindValue(":windGust", prediction->windGust());
     query.bindValue(":windDirection", prediction->windDirection());
 
+    query.bindValue(":windFactor", prediction->windFactor());
+    query.bindValue(":weightFactor", prediction->weightFactor());
+
     query.bindValue(":eTp", prediction->eTp());
     query.bindValue(":eHp", prediction->eHp());
     query.bindValue(":ePp", prediction->ePp());
     query.bindValue(":eAp", prediction->eAp());
     query.bindValue(":eDp", prediction->eDp());
+    query.bindValue(":windCorrectionEighth", prediction->windCorrectionEighth());
 
     query.bindValue(":qTp", prediction->qTp());
     query.bindValue(":qHp", prediction->qHp());
@@ -230,6 +259,7 @@ void PredictionDao::updatePrediction(const Prediction* prediction) const
     query.bindValue(":qAp", prediction->qAp());
     query.bindValue(":qDp", prediction->qDp());
     query.bindValue(":id", prediction->id());
+    query.bindValue(":windCorrectionQuarter", prediction->windCorrectionQuarter());
 
     query.exec();
 
@@ -290,17 +320,22 @@ QVector<Prediction*> PredictionDao::predictionsForVehicleAndRace(int vehicleId,
         prediction->setWindGust(query.value("windGust").toInt());
         prediction->setWindDirection(query.value("windDirection").toInt());
 
+        prediction->setWindFactor(query.value("windFactor").toInt());
+        prediction->setWeightFactor(query.value("weightFactor").toInt());
+
         prediction->setETp(query.value("eTp").toDouble());
         prediction->setEHp(query.value("eHp").toDouble());
         prediction->setEPp(query.value("ePp").toDouble());
         prediction->setEAp(query.value("eAp").toDouble());
         prediction->setEDp(query.value("eDp").toDouble());
+        prediction->setWindCorrectionEighth(query.value("windCorrectionEighth").toDouble());
 
         prediction->setQTp(query.value("qTp").toDouble());
         prediction->setQHp(query.value("qHp").toDouble());
         prediction->setQPp(query.value("qPp").toDouble());
         prediction->setQAp(query.value("qAp").toDouble());
         prediction->setQDp(query.value("qDp").toDouble());
+        prediction->setWindCorrectionQuarter(query.value("windCorrectionQuarter").toDouble());
 
         list.append(prediction);
     }

@@ -22,17 +22,22 @@ Prediction::Prediction() :
     mWindGust(0),
     mWindDirection(0),
 
+    mWindFactor(0),
+    mWeightFactor(0),
+
     mETp(0),
     mEHp(0),
     mEPp(0),
     mEAp(0),
     mEDp(0),
+    mWindCorrectionEighth(0),
 
     mQTp(0),
     mQHp(0),
     mQPp(0),
     mQAp(0),
-    mQDp(0)
+    mQDp(0),
+    mWindCorrectionQuarter(0)
 {
 }
 
@@ -58,17 +63,22 @@ Prediction::Prediction(const Prediction &prediction) :
     mWindGust(prediction.windGust()),
     mWindDirection(prediction.windDirection()),
 
+    mWindFactor(prediction.windFactor()),
+    mWeightFactor(prediction.weightFactor()),
+
     mETp(prediction.eTp()),
     mEHp(prediction.eHp()),
     mEPp(prediction.ePp()),
     mEAp(prediction.eAp()),
     mEDp(prediction.eDp()),
+    mWindCorrectionEighth(prediction.windCorrectionEighth()),
 
     mQTp(prediction.qTp()),
     mQHp(prediction.qHp()),
     mQPp(prediction.qPp()),
     mQAp(prediction.qAp()),
-    mQDp(prediction.qDp())
+    mQDp(prediction.qDp()),
+    mWindCorrectionQuarter(prediction.windCorrectionQuarter())
 {
 }
 

@@ -20,8 +20,10 @@ PredictionsModel::PredictionsModel(Vehicle *vehicle, Race *race, QObject *parent
 
     mFields.append(Field("date", "Date", 100, 0));
     mFields.append(Field("time", "Time", 80, -2));
+
     mFields.append(Field("vehicleWeight", "V Weight", 70, 0));
     mFields.append(Field("riderWeight", "R Weight", 70, 1));
+
     mFields.append(Field("temperature", "Temp", 50, 1));
     mFields.append(Field("humidity", "Humid",50, 1));
     mFields.append(Field("pressure", "Pres", 50, 2));
@@ -31,16 +33,23 @@ PredictionsModel::PredictionsModel(Vehicle *vehicle, Race *race, QObject *parent
     mFields.append(Field("windSpeed", "W Speed", 70, 0));
     mFields.append(Field("windGust", "W Gust", 70, 0));
     mFields.append(Field("windDirection", "W Dir", 60, 0));
+
+    mFields.append(Field("windFactor", "Wd F", 50, 0));
+    mFields.append(Field("weightFactor", "Wt F", 50, 0));
+
     mFields.append(Field("eTp", "1/8T", 50, 3));
     mFields.append(Field("eHp", "1/8H", 50, 3));
     mFields.append(Field("ePp", "1/8P", 50, 3));
     mFields.append(Field("eAp", "1/8A", 50, 3));
     mFields.append(Field("eDp", "1/8D", 50, 3));
+    mFields.append(Field("windCorrectionEighth", "Wn CE", 50, 3));
+
     mFields.append(Field("qTp", "1/4T", 50, 3));
     mFields.append(Field("qHp", "1/4H", 50, 3));
     mFields.append(Field("qPp", "1/4P", 50, 3));
     mFields.append(Field("qAp", "1/4A", 50, 3));
     mFields.append(Field("qDp", "1/4D", 50, 3));
+    mFields.append(Field("windCorrectionQuarter", "Wn CQ", 50, 3));
 
     setHeaders();
 

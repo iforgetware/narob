@@ -79,6 +79,9 @@ void PredictionTab::makeAutoPrediction()
     prediction->setRiderWeight(ui->riderWeightEdit->text().toDouble());
     prediction->setVehicleWeight(ui->vehicleWeightEdit->text().toDouble());
 
+    prediction->setWindFactor(ui->windFactorSpinBox->value());
+    prediction->setWeightFactor(ui->weightFactorSpinBox->value());
+
     getWeather(prediction);
     predictEighth(prediction);
     predictQuarter(prediction);
@@ -242,6 +245,7 @@ void PredictionTab::predictEighth(Prediction* prediction)
     prediction->setEPp(wC + pLine.getYforX(prediction->pressure()));
     prediction->setEAp((prediction->eTp() + prediction->eHp() + prediction->ePp()) / 3);
     prediction->setEDp(wC + dLine.getYforX(prediction->densityAltitude()));
+    prediction->setWindCorrectionEighth(wC);
 }
 
 void PredictionTab::predictQuarter(Prediction* prediction)
@@ -292,6 +296,7 @@ void PredictionTab::predictQuarter(Prediction* prediction)
     prediction->setQPp(wC + pLine.getYforX(prediction->pressure()));
     prediction->setQAp((prediction->qTp() + prediction->qHp() + prediction->qPp()) / 3);
     prediction->setQDp(wC + dLine.getYforX(prediction->densityAltitude()));
+    prediction->setWindCorrectionQuarter(wC);
 }
 
 double PredictionTab::windCorrection(int windSpeed, int windDirection)

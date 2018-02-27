@@ -67,6 +67,13 @@ public:
     void setWindDirection(const int &windDirection) { mWindDirection = windDirection; }
 
 
+    int windFactor() const { return mWindFactor; }
+    void setWindFactor(const int &windFactor) { mWindFactor = windFactor; }
+
+    int weightFactor() const { return mWeightFactor; }
+    void setWeightFactor(const int &weightFactor) { mWeightFactor = weightFactor; }
+
+
     double eTp() const { return mETp; }
     void setETp(const double &eTp) { mETp = eTp; }
 
@@ -81,6 +88,9 @@ public:
 
     double eDp() const { return mEDp; }
     void setEDp(const double &eDp) { mEDp = eDp; }
+
+    double windCorrectionEighth() const { return mWindCorrectionEighth; }
+    void setWindCorrectionEighth(const double &windCorrectionEighth) { mWindCorrectionEighth = windCorrectionEighth; }
 
 
     double qTp() const { return mQTp; }
@@ -97,6 +107,9 @@ public:
 
     double qDp() const { return mQDp; }
     void setQDp(const double &qDp) { mQDp = qDp; }
+
+    double windCorrectionQuarter() const { return mWindCorrectionQuarter; }
+    void setWindCorrectionQuarter(const double &windCorrectionQuarter) { mWindCorrectionQuarter = windCorrectionQuarter; }
 
 private:
     int mId;
@@ -120,17 +133,22 @@ private:
     int mWindGust;
     int mWindDirection;
 
+    int mWindFactor;
+    int mWeightFactor;
+
     double mETp;
     double mEHp;
     double mEPp;
     double mEAp;
     double mEDp;
+    double mWindCorrectionEighth;
 
     double mQTp;
     double mQHp;
     double mQPp;
     double mQAp;
     double mQDp;
+    double mWindCorrectionQuarter;
 };
 
 #endif // PREDICTION_H
