@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->weatherTab, &WeatherTab::sendStatus, this, &MainWindow::handleStatusUpdate);
 
     ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(ui->dashboardTab));
+
+    showMaximized();
 }
 
 MainWindow::~MainWindow()

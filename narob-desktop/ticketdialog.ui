@@ -314,12 +314,21 @@
   <tabstop>thousandEdit</tabstop>
   <tabstop>quarterEdit</tabstop>
   <tabstop>quarterMPHEdit</tabstop>
+  <tabstop>eighthGoodCheckBox</tabstop>
+  <tabstop>quarterGoodCheckBox</tabstop>
   <tabstop>dialEdit</tabstop>
   <tabstop>delayEdit</tabstop>
   <tabstop>vehicleWeightEdit</tabstop>
   <tabstop>riderWeightEdit</tabstop>
-  <tabstop>eighthGoodCheckBox</tabstop>
-  <tabstop>quarterGoodCheckBox</tabstop>
+  <tabstop>temperatureEdit</tabstop>
+  <tabstop>humidityEdit</tabstop>
+  <tabstop>pressureEdit</tabstop>
+  <tabstop>vaporPressureEdit</tabstop>
+  <tabstop>dewPointEdit</tabstop>
+  <tabstop>densityAltitudeEdit</tabstop>
+  <tabstop>windSpeedEdit</tabstop>
+  <tabstop>windDirectionEdit</tabstop>
+  <tabstop>windGustEdit</tabstop>
  </tabstops>
  <resources/>
  <connections>

@@ -25,7 +25,7 @@ DatabaseManager::DatabaseManager(const QString &path) :
     mDatabase->setDatabaseName(path);
     mDatabase->open();
 
-    clearDatabase(); // DEV ONLY
+    //clearDatabase(); // DEV ONLY
 
     trackDao.init();
     raceDao.init();
@@ -36,7 +36,8 @@ DatabaseManager::DatabaseManager(const QString &path) :
     predictionDao.init();
     refPTDao.init();
 
-    populateTables(); // DEV ONLY
+    //populateTables(); // DEV ONLY
+    populateTracks();
 }
 
 DatabaseManager::~DatabaseManager()
@@ -67,6 +68,21 @@ void DatabaseManager::clearDatabase() // DEV ONLY
     }
 
     qDebug("Cleared all database tables - DEV ONLY");
+}
+
+void DatabaseManager::populateTracks()
+{
+    QSqlQuery query(mDatabase->database());
+
+    query.exec("DELETE FROM tracks");
+
+    Track t1;
+
+    t1.setName("Belle Rose");
+    t1.setElevation(8);
+    t1.setBearing(97);
+    t1.setRadio(89.5);
+    trackDao.addTrack(t1);
 }
 
 void DatabaseManager::populateTables() // DEV ONLY

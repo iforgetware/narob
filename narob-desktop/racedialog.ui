@@ -56,6 +56,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>dateEdit</tabstop>
+  <tabstop>nameEdit</tabstop>
+  <tabstop>trackComboBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

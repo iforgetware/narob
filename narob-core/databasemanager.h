@@ -38,6 +38,7 @@ private:
 
     void clearDatabase();
     void populateTables();
+    void populateTracks();
 
 public:
     const TrackDao trackDao;
