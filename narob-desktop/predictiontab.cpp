@@ -25,6 +25,12 @@ PredictionTab::PredictionTab(TicketsModel* model,
     mObservationsModel(new ObservationsModel(this)),
     mRefPTModel(new RefPTModel(this))
 {
+
+
+    // ???? add instantaneous prediction ????
+    // would reset on any value change
+
+
     ui->setupUi(this);
 
     PredictionsWidget *predictionsWidget = new PredictionsWidget(mPredictionsModel,
@@ -264,11 +270,6 @@ void PredictionTab::predictQuarter(Prediction* prediction)
                                  + weightCorrection(prediction->riderWeight(),
                                                     ticket->riderWeight());
 
-        // show with and without wind if enough column space available
-
-        // ???? add instantaneous prediction ????
-        // would reset on any value change
-
         tPoints.append(QPointF(ticket->temperature(), adjustedQuarter));
         hPoints.append(QPointF(ticket->humidity(), adjustedQuarter));
         pPoints.append(QPointF(ticket->pressure(), adjustedQuarter));
@@ -353,7 +354,6 @@ void PredictionTab::sendPage(const Prediction* prediction)
 
         QString body;
 
-        body = "Current weather\n";
         body.append(QString("Temp -> %1\n").arg(QString::number(prediction->temperature())));
         body.append(QString("Humid -> %1\n").arg(QString::number(prediction->humidity())));
         body.append(QString("Press -> %1\n").arg(QString::number(prediction->pressure())));
@@ -376,12 +376,12 @@ void PredictionTab::sendPage(const Prediction* prediction)
         //delete smtp;
 
         if(ui->eToPhoneCheckBox->isChecked()){
-            body = "Eighth predictions\n";
-            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->eTp())));
-            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->eHp())));
-            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction->ePp())));
+//            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->eTp())));
+//            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->eHp())));
+//            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction->ePp())));
             body.append(QString("Average -> %1\n").arg(QString::number(prediction->eAp())));
             body.append(QString("By d alt -> %1\n").arg(QString::number(prediction->eDp())));
+            body.append(QString("Wind correction -> %1\n").arg(QString::number(prediction->windCorrectionEighth())));
 
             Smtp *smtpE = new Smtp(mSettings->emailUser(),
                                    mSettings->emailPW(),
@@ -396,12 +396,12 @@ void PredictionTab::sendPage(const Prediction* prediction)
         }
 
         if(ui->qToPhoneCheckBox->isChecked()){
-            body = "Quarter predictions\n";
-            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->qTp())));
-            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->qHp())));
-            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction->qPp())));
+//            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->qTp())));
+//            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->qHp())));
+//            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction->qPp())));
             body.append(QString("Average -> %1\n").arg(QString::number(prediction->qAp())));
             body.append(QString("By d alt -> %1\n").arg(QString::number(prediction->qDp())));
+            body.append(QString("Wind correction -> %1\n").arg(QString::number(prediction->windCorrectionEighth())));
 
             Smtp *smtpQ = new Smtp(mSettings->emailUser(),
                                   mSettings->emailPW(),
