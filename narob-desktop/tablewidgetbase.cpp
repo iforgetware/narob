@@ -3,6 +3,8 @@
 
 #include "delegates.h"
 
+#include <QDebug>
+
 TableWidgetBase::TableWidgetBase(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TableWidgetBase)
@@ -17,25 +19,11 @@ TableWidgetBase::~TableWidgetBase()
 
 void TableWidgetBase::initTable()
 {
-    //ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    // could add the following, but would have to abstract out edit slot
-    // could also go in each widget without abstraction
-    //connect(ui->tableView, &QTableView::doubleClicked, this, "edit");
-
-    // consider this instead of manually setting widths
-
-    //ui->tableView->resizeColumnsToContents();
-
-
-    // see what this does
-
-    //ui->tableView->horizontalHeader()->setStretchLastSection();
-
     ui->tableView->verticalHeader()->setVisible(false);
-    hideColumn(0);
+    hideColumn(mModel->fieldIndex("id"));
     show();
 }
 
@@ -55,6 +43,11 @@ void TableWidgetBase::setupColumns(const Fields &fields)
     foreach(Field field, fields){
         ui->tableView->setColumnWidth(mModel->fieldIndex(field.mColumn), field.mWidth);
         switch (field.mDelegate){
+        case -3:
+            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
+                                                    new DateTimeDelegate(this));
+            break;
+
         case -2:
             ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
                                                     new TimeDelegate(this));

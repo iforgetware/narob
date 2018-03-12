@@ -18,8 +18,7 @@ PredictionsModel::PredictionsModel(Vehicle *vehicle, Race *race, QObject *parent
 
     setFilter(filter);
 
-    mFields.append(Field("date", "Date", 100, 0));
-    mFields.append(Field("time", "Time", 80, -2));
+    mFields.append(Field("dateTime", "Date       Time", 160, -3));
 
     mFields.append(Field("vehicleWeight", "V Weight", 70, 0));
     mFields.append(Field("riderWeight", "R Weight", 70, 1));
@@ -53,8 +52,7 @@ PredictionsModel::PredictionsModel(Vehicle *vehicle, Race *race, QObject *parent
 
     setHeaders();
 
-    setSort(fieldIndex("date"), Qt::DescendingOrder);
-    setSort(fieldIndex("time"), Qt::DescendingOrder);
+    setSort(fieldIndex("dateTime"), Qt::DescendingOrder);
 
     select();
 }

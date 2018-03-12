@@ -3,8 +3,7 @@
 Observation::Observation() :
     mId(-1),
 
-    mDate(QDate()),
-    mTime(QTime()),
+    mDateTime(QDateTime()),
 
     mTemperature(0),
     mHumidity(0),
@@ -21,8 +20,7 @@ Observation::Observation() :
 Observation::Observation(const Observation &observation) :
     mId(observation.id()),
 
-    mDate(observation.date()),
-    mTime(observation.time()),
+    mDateTime(observation.dateTime()),
 
     mTemperature(observation.temperature()),
     mHumidity(observation.humidity()),

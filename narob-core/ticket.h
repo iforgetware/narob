@@ -1,8 +1,7 @@
 #ifndef TICKET_H
 #define TICKET_H
 
-#include <QDate>
-#include <QTime>
+#include <QDateTime>
 
 #include "narob-core_global.h"
 
@@ -29,11 +28,8 @@ public:
     void setPredictionId(const int &predictionId) { mPredictionId = predictionId; }
 
 
-    QDate date() const { return mDate; }
-    void setDate(const QDate &Date) { mDate = Date; }
-
-    QTime time() const { return mTime; }
-    void setTime(const QTime &Time) { mTime = Time; }
+    QDateTime dateTime() const { return mDateTime; }
+    void setDateTime(const QDateTime &dateTime) { mDateTime = dateTime; }
 
 
     int vehicleWeight() const { return mVehicleWeight; }
@@ -118,8 +114,7 @@ private:
     int mRaceId;
     int mPredictionId;
 
-    QDate mDate;
-    QTime mTime;
+    QDateTime mDateTime;
 
     QString mLane;
     double mDelay;

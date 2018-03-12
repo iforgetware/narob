@@ -6,8 +6,7 @@ Prediction::Prediction() :
     mRaceId(-1),
     mVehicleId(-1),
 
-    mDate(QDate()),
-    mTime(QTime()),
+    mDateTime(QDateTime()),
 
     mVehicleWeight(0),
     mRiderWeight(0),
@@ -47,8 +46,7 @@ Prediction::Prediction(const Prediction &prediction) :
     mRaceId(prediction.raceId()),
     mVehicleId(prediction.vehicleId()),
 
-    mDate(prediction.date()),
-    mTime(prediction.time()),
+    mDateTime(prediction.dateTime()),
 
     mVehicleWeight(prediction.vehicleWeight()),
     mRiderWeight(prediction.riderWeight()),
@@ -81,34 +79,3 @@ Prediction::Prediction(const Prediction &prediction) :
     mWindCorrectionQuarter(prediction.windCorrectionQuarter())
 {
 }
-
-
-
-//QVector<Ticket*> Prediction::validTickets(const QString &distance)
-//{
-//    // should this be in the tickets model?
-//    // should just filter mTickets in model
-
-//    QVector<Ticket*> tickets;
-
-//    QString dG = QString("%1Good").arg(distance);
-
-//    QSqlQuery query;
-//    query.prepare(QString("SELECT * FROM tickets WHERE "
-//                          "vehicleId=:vehicle "
-//                          "AND "
-//                          "raceId=:raceId "
-//                          "AND "
-//                          "%1=1")
-//                  .arg(dG));
-
-//    query.bindValue(":vehicleId", mVehicleId);
-//    query.bindValue(":raceId", mRaceId);
-
-//    while(query.next()){
-//        //replace this with filtered call from model
-//    }
-
-//    return tickets;
-//}
-

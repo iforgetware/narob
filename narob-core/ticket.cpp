@@ -8,8 +8,10 @@ Ticket::Ticket() :
     mRaceId(-1),
     mPredictionId(-1),
 
-    mDate(QDate()),
-    mTime(QTime()),
+//    mDate(QDate()),
+//    mTime(QTime()),
+
+    mDateTime(QDateTime()),
 
     mLane(""),
     mDelay(0),
@@ -48,8 +50,10 @@ Ticket::Ticket(const Ticket &ticket) :
     mRaceId(ticket.raceId()),
     mPredictionId(ticket.predictionId()),
 
-    mDate(ticket.date()),
-    mTime(ticket.time()),
+//    mDate(ticket.date()),
+//    mTime(ticket.time()),
+
+    mDateTime(ticket.dateTime()),
 
     mLane(ticket.lane()),
     mDelay(ticket.delay()),

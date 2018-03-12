@@ -25,7 +25,7 @@ DatabaseManager::DatabaseManager(const QString &path) :
     mDatabase->setDatabaseName(path);
     mDatabase->open();
 
-    //clearDatabase(); // DEV ONLY
+    clearDatabase(); // DEV ONLY
 
     trackDao.init();
     raceDao.init();
@@ -36,8 +36,8 @@ DatabaseManager::DatabaseManager(const QString &path) :
     predictionDao.init();
     refPTDao.init();
 
-    //populateTables(); // DEV ONLY
-    populateTracks();
+    populateTables(); // DEV ONLY
+    //populateTracks(); // DEV ONLY
 }
 
 DatabaseManager::~DatabaseManager()
@@ -153,8 +153,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk1.setVehicleId(1);
     tk1.setTrackId(1);
     tk1.setRaceId(1);
-    tk1.setDate(QDate(2017,03,11));
-    tk1.setTime(QTime(10, 25));
+    tk1.setDateTime(QDateTime(QDate(2017,03,11),QTime(10, 25)));
     tk1.setLane("right");
     tk1.setDial(8.80);
     tk1.setReaction(0.023);
@@ -186,8 +185,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk2.setVehicleId(1);
     tk2.setTrackId(1);
     tk2.setRaceId(1);
-    tk2.setDate(QDate(2017,03,11));
-    tk2.setTime(QTime(11, 25));
+    tk2.setDateTime(QDateTime(QDate(2017,03,11), QTime(11, 25)));
     tk2.setLane("right");
     tk2.setDial(8.80);
     tk2.setReaction(0.023);
@@ -219,8 +217,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk3.setVehicleId(1);
     tk3.setTrackId(2);
     tk3.setRaceId(2);
-    tk3.setDate(QDate(2017,03,11));
-    tk3.setTime(QTime(10, 25));
+    tk3.setDateTime(QDateTime(QDate(2017,03,11), QTime(10, 25)));
     tk3.setLane("right");
     tk3.setDial(8.80);
     tk3.setReaction(0.023);
@@ -252,8 +249,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk4.setVehicleId(1);
     tk4.setTrackId(2);
     tk4.setRaceId(2);
-    tk4.setDate(QDate(2017,03,11));
-    tk4.setTime(QTime(10, 25));
+    tk4.setDateTime(QDateTime(QDate(2017,03,11), QTime(10, 25)));
     tk4.setLane("right");
     tk4.setDial(8.80);
     tk4.setReaction(0.023);
@@ -285,8 +281,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk5.setVehicleId(1);
     tk5.setTrackId(1);
     tk5.setRaceId(3);
-    tk5.setDate(QDate(2017,03,11));
-    tk5.setTime(QTime(10, 25));
+    tk5.setDateTime(QDateTime(QDate(2017,03,11), QTime(10, 25)));
     tk5.setLane("right");
     tk5.setDial(8.80);
     tk5.setReaction(0.023);
@@ -318,8 +313,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk6.setVehicleId(1);
     tk6.setTrackId(1);
     tk6.setRaceId(3);
-    tk6.setDate(QDate(2017,03,11));
-    tk6.setTime(QTime(11, 25));
+    tk6.setDateTime(QDateTime(QDate(2017,03,11), QTime(11, 25)));
     tk6.setLane("right");
     tk6.setDial(8.80);
     tk6.setReaction(0.023);
@@ -351,8 +345,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk7.setVehicleId(1);
     tk7.setTrackId(1);
     tk7.setRaceId(3);
-    tk7.setDate(QDate(2017,03,11));
-    tk7.setTime(QTime(10, 25));
+    tk7.setDateTime(QDateTime(QDate(2017,03,11), QTime(10, 25)));
     tk7.setLane("right");
     tk7.setDial(8.80);
     tk7.setReaction(0.023);
@@ -384,8 +377,7 @@ void DatabaseManager::populateTables() // DEV ONLY
     tk8.setVehicleId(1);
     tk8.setTrackId(1);
     tk8.setRaceId(3);
-    tk8.setDate(QDate(2017,03,11));
-    tk8.setTime(QTime(10, 25));
+    tk8.setDateTime(QDateTime(QDate(2017,03,11), QTime(10, 25)));
     tk8.setLane("right");
     tk8.setDial(8.80);
     tk8.setReaction(0.023);
@@ -414,8 +406,7 @@ void DatabaseManager::populateTables() // DEV ONLY
 
     Observation o1;
 
-    o1.setDate(QDate(2017,03,11));
-    o1.setTime(QTime(12, 25));
+    o1.setDateTime(QDateTime(QDate(2017,03,11), QTime(12, 25)));
     o1.setTemperature(90.0);
     o1.setHumidity(70.0);
     o1.setPressure(28.00);
@@ -429,8 +420,7 @@ void DatabaseManager::populateTables() // DEV ONLY
 
     Observation o2;
 
-    o2.setDate(QDate(2017,03,11));
-    o2.setTime(QTime(10, 25));
+    o2.setDateTime(QDateTime(QDate(2017,03,11), QTime(10, 25)));
     o2.setTemperature(80.0);
     o2.setHumidity(50.0);
     o2.setPressure(30.00);

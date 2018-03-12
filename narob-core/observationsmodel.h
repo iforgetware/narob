@@ -16,7 +16,7 @@ public:
 
     QModelIndex addObservation(const Observation &observation);
     Observation* lastObservation();
-    Observation* observationForTime(QDate date, QTime time);
+    Observation* observationForTime(QDateTime dateTime);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     bool removeRows(int row, int count, const QModelIndex& parent) override;

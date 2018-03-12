@@ -15,8 +15,7 @@ TicketsModel::TicketsModel(Vehicle* vehicle, QObject* parent) :
 
     mFields.append(Field("trackId", "Track", 150, 0));
     mFields.append(Field("raceId", "Race", 150, 0));
-    mFields.append(Field("date", "Date", 100, 0));
-    mFields.append(Field("time", "Time", 80, -2));
+    mFields.append(Field("dateTime", "Date       Time", 160, -3));
     mFields.append(Field("lane", "Lane", 50, 0));
     mFields.append(Field("delay", "Delay", 50, 3));
     mFields.append(Field("reaction", "R/T", 50, 3));

@@ -19,8 +19,7 @@ void ObservationDao::init() const
         query.exec("CREATE TABLE observations ("
                    "id INTEGER PRIMARY KEY,"
 
-                   "date TEXT,"
-                   "time TEXT,"
+                   "dateTime TEXT,"
 
                    "temperature REAL,"
                    "humidity REAL,"
@@ -40,8 +39,7 @@ void ObservationDao::addObservation(Observation &observation) const
     QSqlQuery query(mDatabase);
 
     query.prepare("INSERT INTO observations ("
-                  "date,"
-                  "time,"
+                  "dateTime,"
 
                   "temperature,"
                   "humidity,"
@@ -55,8 +53,7 @@ void ObservationDao::addObservation(Observation &observation) const
 
                   ") VALUES ("
 
-                  ":date,"
-                  ":time,"
+                  ":dateTime,"
 
                   ":temperature,"
                   ":humidity,"
@@ -69,8 +66,7 @@ void ObservationDao::addObservation(Observation &observation) const
                   ":windDirection"
                   ")");
 
-    query.bindValue(":date", observation.date());
-    query.bindValue(":time", observation.time());
+    query.bindValue(":dateTime", observation.dateTime());
 
     query.bindValue(":temperature", observation.temperature());
     query.bindValue(":humidity", observation.humidity());
@@ -103,15 +99,13 @@ void ObservationDao::removeObservation(int id) const
     DatabaseManager::debugQuery(query);
 }
 
-Observation* ObservationDao::observationForTime(QDate date, QTime time) const
+Observation* ObservationDao::observationForTime(QDateTime dateTime) const
 {
     QSqlQuery query(mDatabase);
 
     query.prepare("SELECT * FROM observations WHERE "
-                  "date = :date AND "
-                  "time = :time");
-    query.bindValue(":date", date);
-    query.bindValue(":time", time);
+                  "dateTime = :dateTime");
+    query.bindValue(":dateTime", dateTime);
 
     query.exec();
     DatabaseManager::debugQuery(query);
@@ -129,8 +123,7 @@ Observation* ObservationDao::latestObservation() const
 
     query.prepare("SELECT * FROM observations "
                   "ORDER BY "
-                  "date DESC,"
-                  "time DESC "
+                  "dateTime DESC "
                   "LIMIT 1");
 
     query.exec();
@@ -149,8 +142,7 @@ void ObservationDao::populateObservation(Observation* observation,
     if(query.next()){
         observation->setId(query.value("id").toInt());
 
-        observation->setDate(query.value("date").toDate());
-        observation->setTime(query.value("time").toTime());
+        observation->setDateTime(query.value("dateTime").toDateTime());
 
         observation->setTemperature(query.value("temperature").toDouble());
         observation->setHumidity(query.value("humidity").toDouble());
@@ -168,8 +160,7 @@ QVector<Observation*> ObservationDao::observations() const
 {
     QSqlQuery query("SELECT * FROM observations "
                     "ORDER BY "
-                    "date DESC,"
-                    "time DESC"
+                    "dateTime DESC"
                     , mDatabase);
 
     query.exec();
@@ -181,8 +172,7 @@ QVector<Observation*> ObservationDao::observations() const
 
         observation->setId(query.value("id").toInt());
 
-        observation->setDate(query.value("date").toDate());
-        observation->setTime(query.value("time").toTime());
+        observation->setDateTime(query.value("dateTime").toDateTime());
 
         observation->setTemperature(query.value("temperature").toDouble());
         observation->setHumidity(query.value("humidity").toDouble());

@@ -24,6 +24,7 @@ QString BoolDelegate::displayText(const QVariant &value, const QLocale &locale) 
     }
 }
 
+
 TimeDelegate::TimeDelegate(QObject *parent):
     QStyledItemDelegate(parent)
 {
@@ -35,6 +36,20 @@ QString TimeDelegate::displayText(const QVariant &value, const QLocale &locale) 
 
     return formattedTime;
 }
+
+
+DateTimeDelegate::DateTimeDelegate(QObject *parent) :
+    QStyledItemDelegate(parent)
+{
+}
+
+QString DateTimeDelegate::displayText(const QVariant &value, const QLocale &locale) const
+{
+    QString formattedDateTime = locale.toString(value.toDateTime(), "M/d/yyyy h:mmA");
+
+    return formattedDateTime;
+}
+
 
 OneDecimalDelegate::OneDecimalDelegate(QObject *parent):
     QStyledItemDelegate(parent)
@@ -48,6 +63,7 @@ QString OneDecimalDelegate::displayText(const QVariant &value, const QLocale &lo
     return formattedNumber;
 }
 
+
 TwoDecimalDelegate::TwoDecimalDelegate(QObject *parent):
     QStyledItemDelegate(parent)
 {
@@ -59,6 +75,7 @@ QString TwoDecimalDelegate::displayText(const QVariant &value, const QLocale &lo
 
     return formattedNumber;
 }
+
 
 ThreeDecimalDelegate::ThreeDecimalDelegate(QObject *parent):
     QStyledItemDelegate(parent)

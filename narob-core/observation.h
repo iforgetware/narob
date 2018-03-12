@@ -1,8 +1,7 @@
 #ifndef OBSERVATION_H
 #define OBSERVATION_H
 
-#include <QDate>
-#include <QTime>
+#include <QDateTime>
 
 #include "narob-core_global.h"
 
@@ -16,11 +15,8 @@ public:
     void setId(const int &id) { mId = id; }
 
 
-    QDate date() const { return mDate; }
-    void setDate(const QDate &Date) { mDate = Date; }
-
-    QTime time() const { return mTime; }
-    void setTime(const QTime &Time) { mTime = Time; }
+    QDateTime dateTime() const { return mDateTime; }
+    void setDateTime(const QDateTime &dateTime) { mDateTime = dateTime; }
 
 
     double temperature() const { return mTemperature; }
@@ -53,8 +49,7 @@ public:
 private:
     int mId;
 
-    QDate mDate;
-    QTime mTime;
+    QDateTime mDateTime;
 
     double mTemperature;
     double mHumidity;

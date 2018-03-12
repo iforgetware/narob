@@ -39,10 +39,10 @@ RaceDialog::~RaceDialog()
 void RaceDialog::setupModel()
 {
     QSqlRecord row = mRacesModel->record();
-    qDebug("in RaceDialog setupModel");
-    qDebug() << row.fieldName(1);
-    qDebug() << row.fieldName(2);
-    qDebug() << row.fieldName(3);
+//    qDebug("in RaceDialog setupModel");
+//    qDebug() << row.fieldName(1);
+//    qDebug() << row.fieldName(2);
+//    qDebug() << row.fieldName(3);
 
     mMapper = new QDataWidgetMapper(this);
 

@@ -31,8 +31,10 @@ TicketDialog::TicketDialog(TicketsModel *model,
         mMapper->setCurrentModelIndex(mTicketsModel->index(row, 0));
     }
 
-    connect(ui->dateEdit, &QDateEdit::dateChanged, this, &TicketDialog::dateChanged);
-    connect(ui->timeEdit, &QTimeEdit::timeChanged, this, &TicketDialog::timeChanged);
+//    connect(ui->dateEdit, &QDateEdit::dateChanged, this, &TicketDialog::dateChanged);
+//    connect(ui->timeEdit, &QTimeEdit::timeChanged, this, &TicketDialog::timeChanged);
+
+    connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &TicketDialog::dateTimeChanged);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &TicketDialog::onButtonBoxAccepted);
 
@@ -49,8 +51,9 @@ void TicketDialog::setupModel()
     mMapper = new QDataWidgetMapper(this);
 
     mMapper->setModel(mTicketsModel);
-    mMapper->addMapping(ui->dateEdit, mTicketsModel->fieldIndex("date"));
-    mMapper->addMapping(ui->timeEdit, mTicketsModel->fieldIndex("time"));
+//    mMapper->addMapping(ui->dateEdit, mTicketsModel->fieldIndex("date"));
+//    mMapper->addMapping(ui->timeEdit, mTicketsModel->fieldIndex("time"));
+    mMapper->addMapping(ui->dateTimeEdit, mTicketsModel->fieldIndex("dateTime"));
     mMapper->addMapping(ui->laneComboBox, mTicketsModel->fieldIndex("lane"));
     mMapper->addMapping(ui->dialEdit, mTicketsModel->fieldIndex("dial"));
     mMapper->addMapping(ui->reactionEdit, mTicketsModel->fieldIndex("reaction"));
@@ -117,18 +120,27 @@ void TicketDialog::clearEmptyAdd()
     mTicketsModel->removeRow(mTicketsModel->rowCount()-1);
 }
 
-void TicketDialog::dateChanged(const QDate &date)
+//void TicketDialog::dateChanged(const QDate &date)
+//{
+//    Q_UNUSED(date);
+
+//    setWeather();
+
+//    return;
+//}
+
+//void TicketDialog::timeChanged(const QTime &time)
+//{
+//    Q_UNUSED(time);
+
+//    setWeather();
+
+//    return;
+//}
+
+void TicketDialog::dateTimeChanged(const QDateTime &dateTime)
 {
-    Q_UNUSED(date);
-
-    setWeather();
-
-    return;
-}
-
-void TicketDialog::timeChanged(const QTime &time)
-{
-    Q_UNUSED(time);
+    Q_UNUSED(dateTime);
 
     setWeather();
 
@@ -140,8 +152,7 @@ void TicketDialog::setWeather()
     ObservationsModel* observationsModel = new ObservationsModel(this);
     Observation* observation = new Observation();
 
-    observation = observationsModel->observationForTime(ui->dateEdit->date(),
-                                                        ui->timeEdit->time());
+    observation = observationsModel->observationForTime(ui->dateTimeEdit->dateTime());
 
     if(observation){
         ui->temperatureEdit->setText(QString::number(observation->temperature()));

@@ -36,8 +36,9 @@ private:
 
     void setupModel();
     void createUi();
-    void dateChanged(const QDate& date);
-    void timeChanged(const QTime& time);
+//    void dateChanged(const QDate& date);
+//    void timeChanged(const QTime& time);
+    void dateTimeChanged(const QDateTime& dateTime);
     void setWeather();
 };
 

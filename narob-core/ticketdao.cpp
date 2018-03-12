@@ -24,8 +24,7 @@ void TicketDao::init() const
                    "raceId INTEGER,"
                    "predictionId INTEGER,"
 
-                   "date TEXT,"
-                   "time TEXT,"
+                   "dateTime TEXT,"
 
                    "lane TEXT,"
                    "delay REAL,"
@@ -67,8 +66,7 @@ void TicketDao::addTicket(Ticket &ticket) const
                   "raceId,"
                   "predictionId,"
 
-                  "date,"
-                  "time,"
+                  "dateTime,"
 
                   "lane,"
                   "delay,"
@@ -104,8 +102,7 @@ void TicketDao::addTicket(Ticket &ticket) const
                   ":raceId,"
                   ":predictionId,"
 
-                  ":date,"
-                  ":time,"
+                  ":dateTime,"
 
                   ":lane,"
                   ":delay,"
@@ -140,8 +137,7 @@ void TicketDao::addTicket(Ticket &ticket) const
     query.bindValue(":raceId", ticket.raceId());
     query.bindValue(":predictionId", ticket.predictionId());
 
-    query.bindValue(":date", ticket.date());
-    query.bindValue(":time", ticket.time());
+    query.bindValue(":dateTime", ticket.dateTime());
 
     query.bindValue(":lane", ticket.lane());
     query.bindValue(":delay", ticket.delay());
@@ -190,18 +186,6 @@ void TicketDao::removeTicket(int id) const
     DatabaseManager::debugQuery(query);
 }
 
-
-
-
-// maybe make this all tickets and only filter in model
-// have seperate models for each tab, update with signals if needed
-// can add filter to prediction tab's foreach
-// will not cost much
-
-
-
-
-
 QVector<Ticket*> TicketDao::ticketsForVehicle(int vehicleId) const
 {
     QSqlQuery query(mDatabase);
@@ -223,8 +207,7 @@ QVector<Ticket*> TicketDao::ticketsForVehicle(int vehicleId) const
         ticket->setRaceId(query.value("raceId").toInt());
         ticket->setPredictionId(query.value("predictionId").toInt());
 
-        ticket->setDate(query.value("date").toDate());
-        ticket->setTime(query.value("time").toTime());
+        ticket->setDateTime(query.value("dateTime").toDateTime());
 
         ticket->setLane(query.value("lane").toString());
         ticket->setDelay(query.value("delay").toDouble());

@@ -22,8 +22,7 @@ void PredictionDao::init() const
                    "raceId INTEGER,"
                    "vehicleId INTEGER,"
 
-                   "date TEXT,"
-                   "time TEXT,"
+                   "dateTime TEXT,"
 
                    "vehicleWeight INTEGER,"
                    "riderWeight REAL,"
@@ -66,8 +65,7 @@ void PredictionDao::addPrediction(Prediction *prediction) const
                   "raceId,"
                   "vehicleId,"
 
-                  "date,"
-                  "time,"
+                  "dateTime,"
 
                   "vehicleWeight,"
                   "riderWeight,"
@@ -104,8 +102,7 @@ void PredictionDao::addPrediction(Prediction *prediction) const
                   ":raceId,"
                   ":vehicleId,"
 
-                  ":date,"
-                  ":time,"
+                  ":dateTime,"
 
                   ":vehicleWeight,"
                   ":riderWeight,"
@@ -141,8 +138,7 @@ void PredictionDao::addPrediction(Prediction *prediction) const
     query.bindValue(":raceId", prediction->raceId());
     query.bindValue(":vehicleId", prediction->vehicleId());
 
-    query.bindValue(":date", prediction->date());
-    query.bindValue(":time", prediction->time());
+    query.bindValue(":dateTime", prediction->dateTime());
 
     query.bindValue(":vehicleWeight", prediction->vehicleWeight());
     query.bindValue(":riderWeight", prediction->riderWeight());
@@ -189,8 +185,7 @@ void PredictionDao::updatePrediction(const Prediction* prediction) const
                   "raceId=:raceId,"
                   "vehicleId=:vehicleId,"
 
-                  "date=:date,"
-                  "time=:time,"
+                  "dateTime=:dateTime,"
 
                   "vehicleWeight=:vehicleWeight,"
                   "riderWeight=:riderWeight,"
@@ -227,8 +222,7 @@ void PredictionDao::updatePrediction(const Prediction* prediction) const
     query.bindValue(":raceId", prediction->raceId());
     query.bindValue(":vehicleId", prediction->vehicleId());
 
-    query.bindValue(":date", prediction->date());
-    query.bindValue(":time", prediction->time());
+    query.bindValue(":dateTime", prediction->dateTime());
 
     query.bindValue(":vehicleWeight", prediction->vehicleWeight());
     query.bindValue(":riderWeight", prediction->riderWeight());
@@ -285,14 +279,15 @@ QVector<Prediction*> PredictionDao::predictionsForVehicleAndRace(int vehicleId,
     QSqlQuery query(mDatabase);
     query.prepare("SELECT * FROM predictions WHERE "
                   "raceId = :raceId AND "
-                  "vehicleId = :vehicleId"
+                  "vehicleId = :vehicleId "
                   "ORDER BY "
-                  "date DESC,"
-                  "time DESC");
+                  "dateTime DESC");
     query.bindValue(":raceId", raceId);
     query.bindValue(":vehicleId", vehicleId);
 
     query.exec();
+
+    DatabaseManager::debugQuery(query);
 
     QVector<Prediction*> list;
 
@@ -304,8 +299,7 @@ QVector<Prediction*> PredictionDao::predictionsForVehicleAndRace(int vehicleId,
         prediction->setRaceId(query.value("raceId").toInt());
         prediction->setVehicleId(query.value("vehicleId").toInt());
 
-        prediction->setDate(query.value("date").toDate());
-        prediction->setTime(query.value("time").toTime());
+        prediction->setDateTime(query.value("dateTime").toDateTime());
 
         prediction->setVehicleWeight(query.value("vehicleWeight").toInt());
         prediction->setRiderWeight(query.value("riderWeight").toDouble());

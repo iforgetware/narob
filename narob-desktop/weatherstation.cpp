@@ -147,8 +147,10 @@ void WeatherStation::writeToDB()
 {
     Observation o;
 
-    o.setDate(QDate::currentDate());
-    o.setTime(QTime(QTime::currentTime().hour(), QTime::currentTime().minute()));
+    QDateTime cDT;
+    cDT.setDate(QDate::currentDate());
+    cDT.setTime(QTime(QTime::currentTime().hour(), QTime::currentTime().minute()));
+    o.setDateTime(cDT);
 
     o.setTemperature(formatNum(mTemps / mSampleCount, 1));
     o.setHumidity(formatNum(mHums / mSampleCount, 1));

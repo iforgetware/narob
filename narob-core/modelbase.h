@@ -1,7 +1,6 @@
 #ifndef MODELBASE_H
 #define MODELBASE_H
 
-#include <QStringList>
 #include <QSqlRelationalTableModel>
 
 #include "narob-core_global.h"

@@ -15,7 +15,7 @@ public:
 
     void addObservation(Observation &observation) const;
     void removeObservation(int id) const;
-    Observation* observationForTime(QDate date, QTime time) const;
+    Observation* observationForTime(QDateTime dateTime) const;
     Observation* latestObservation() const;
     QVector<Observation*> observations() const;
 

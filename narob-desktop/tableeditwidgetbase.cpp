@@ -29,13 +29,8 @@ void TableEditWidgetBase::initTable()
 
     //ui->tableView->resizeColumnsToContents();
 
-
-    // see what this does
-
-    //ui->tableView->horizontalHeader()->setStretchLastSection();
-
     ui->tableView->verticalHeader()->setVisible(false);
-    hideColumn(0);
+    hideColumn(mModel->fieldIndex("id"));
     show();
 }
 
@@ -69,6 +64,11 @@ void TableEditWidgetBase::setupColumns(const Fields &fields)
     foreach(Field field, fields){
         ui->tableView->setColumnWidth(mModel->fieldIndex(field.mColumn), field.mWidth);
         switch (field.mDelegate){
+        case -3:
+            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
+                                                    new DateTimeDelegate(this));
+            break;
+
         case -2:
             ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
                                                     new TimeDelegate(this));

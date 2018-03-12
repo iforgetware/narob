@@ -2,8 +2,7 @@
 #define PREDICTION_H
 
 #include <QVector>
-#include <QDate>
-#include <QTime>
+#include <QDateTime>
 
 #include "narob-core_global.h"
 
@@ -25,11 +24,8 @@ public:
     void setVehicleId(int vehicleId) { mVehicleId = vehicleId; }
 
 
-    QDate date() const { return mDate; }
-    void setDate(const QDate &Date) { mDate = Date; }
-
-    QTime time() const { return mTime; }
-    void setTime(const QTime &Time) { mTime = Time; }
+    QDateTime dateTime() const { return mDateTime; }
+    void setDateTime(const QDateTime &dateTime) { mDateTime = dateTime; }
 
 
     int vehicleWeight() const { return mVehicleWeight; }
@@ -117,8 +113,7 @@ private:
     int mRaceId;
     int mVehicleId;
 
-    QDate mDate;
-    QTime mTime;
+    QDateTime mDateTime;
 
     int mVehicleWeight;
     double mRiderWeight;

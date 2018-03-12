@@ -7,8 +7,7 @@ ObservationsModel::ObservationsModel(QObject *parent) :
 {
     setTable("observations");
 
-    mFields.append(Field("date", "Date", 100, 0));
-    mFields.append(Field("time", "Time", 80, -2));
+    mFields.append(Field("dateTime", "Date       Time", 160, -3));
     mFields.append(Field("temperature", "Temp", 50, 1));
     mFields.append(Field("humidity", "Humid",50, 1));
     mFields.append(Field("pressure", "Pres", 50, 2));
@@ -21,8 +20,7 @@ ObservationsModel::ObservationsModel(QObject *parent) :
 
     setHeaders();
 
-    setSort(fieldIndex("date"), Qt::DescendingOrder);
-    setSort(fieldIndex("time"), Qt::DescendingOrder);
+    setSort(fieldIndex("dateTime"), Qt::DescendingOrder);
 
     select();
 }
@@ -48,9 +46,9 @@ Observation* ObservationsModel::lastObservation()
     return observation;
 }
 
-Observation* ObservationsModel::observationForTime(QDate date, QTime time)
+Observation* ObservationsModel::observationForTime(QDateTime dateTime)
 {
-    return mDb.observationDao.observationForTime(date, time);
+    return mDb.observationDao.observationForTime(dateTime);
 }
 
 int ObservationsModel::rowCount(const QModelIndex &parent) const

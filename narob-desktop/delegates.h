@@ -25,6 +25,16 @@ public:
 };
 
 
+class DateTimeDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    explicit DateTimeDelegate(QObject* parent = 0);
+    QString displayText(const QVariant &value, const QLocale &locale) const;
+};
+
+
 class OneDecimalDelegate : public QStyledItemDelegate
 {
     Q_OBJECT

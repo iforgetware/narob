@@ -27,8 +27,22 @@ PredictionTab::PredictionTab(TicketsModel* model,
 {
 
 
+
+
+
+
+
+
     // ???? add instantaneous prediction ????
     // would reset on any value change
+
+
+
+
+
+
+
+
 
 
     ui->setupUi(this);
@@ -107,13 +121,11 @@ void PredictionTab::getWeather(Prediction* prediction)
 {
     Observation* observation = new Observation();
 
-    if(prediction->date().isValid() && prediction->time().isValid()){
-        observation = mObservationsModel->observationForTime(prediction->date(),
-                                                            prediction->time());
+    if(prediction->dateTime().isValid()){
+        observation = mObservationsModel->observationForTime(prediction->dateTime());
     }else{
         observation = mObservationsModel->lastObservation();
-        prediction->setDate(observation->date());
-        prediction->setTime(observation->time());
+        prediction->setDateTime(observation->dateTime());
     }
 
     if(observation){
