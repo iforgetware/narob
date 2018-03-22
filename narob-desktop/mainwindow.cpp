@@ -3,7 +3,7 @@
 
 #include "racecontroltab.h"
 
-#include "track.h"
+//#include "tracks.h"
 
 #include <QDebug>
 
@@ -11,6 +11,7 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    mDBM(new DatabaseManager()),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -49,7 +50,7 @@ void MainWindow::handleOpenRaceControl(Vehicle* vehicle, Race* race)
     RaceControlTab *raceControlTab = new RaceControlTab(vehicle, race, this);
 
     ui->tabWidget->addTab(raceControlTab,
-                          vehicle->number() + " @ " + race->name());
+                          vehicle->value("number") + " @ " + race->value("name"));
 
     ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(raceControlTab));
 }

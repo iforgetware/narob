@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QDataWidgetMapper>
 
-#include "racesmodel.h"
+#include "races.h"
 
 namespace Ui {
 class RaceDialog;
@@ -15,14 +15,15 @@ class RaceDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit RaceDialog(RacesModel *model,
-                        int row = -1,
+    explicit RaceDialog(int row = -1,
                         QWidget *parent = 0);
     ~RaceDialog();
 
+signals:
+    void ready();
+
 private slots:
     void onButtonBoxAccepted();
-    void clearEmptyAdd();
 
 private:
     Ui::RaceDialog *ui;

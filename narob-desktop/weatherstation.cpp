@@ -1,5 +1,4 @@
 #include "weatherstation.h"
-#include "observation.h"
 
 #include <QDate>
 #include <QDebug>
@@ -150,17 +149,17 @@ void WeatherStation::writeToDB()
     QDateTime cDT;
     cDT.setDate(QDate::currentDate());
     cDT.setTime(QTime(QTime::currentTime().hour(), QTime::currentTime().minute()));
-    o.setDateTime(cDT);
+    o.setValue("dateTime", cDT);
 
-    o.setTemperature(formatNum(mTemps / mSampleCount, 1));
-    o.setHumidity(formatNum(mHums / mSampleCount, 1));
-    o.setPressure(formatNum(mPres / mSampleCount, 2));
-    o.setVaporPressure(formatNum(mVPs / mSampleCount, 2));
-    o.setDewPoint(formatNum(mDpts / mSampleCount, 1));
-    o.setDensityAltitude(mDAs / mSampleCount);
-    o.setWindSpeed(mWSpeeds / mSampleCount);
-    o.setWindGust(mWGusts / mSampleCount);
-    o.setWindDirection(mWDirs / mSampleCount);
+    o.setValue("temperature", formatNum(mTemps / mSampleCount, 1));
+    o.setValue("humidity", formatNum(mHums / mSampleCount, 1));
+    o.setValue("pressure", formatNum(mPres / mSampleCount, 2));
+    o.setValue("vaporPressure", formatNum(mVPs / mSampleCount, 2));
+    o.setValue("dewPoint", formatNum(mDpts / mSampleCount, 1));
+    o.setValue("densityAltitude", mDAs / mSampleCount);
+    o.setValue("windSpeed", mWSpeeds / mSampleCount);
+    o.setValue("windGust", mWGusts / mSampleCount);
+    o.setValue("windDirection", mWDirs / mSampleCount);
 
     mObservationsModel->addObservation(o);
 
@@ -175,15 +174,15 @@ void WeatherStation::writeToDB()
                             "Wind Speed: %7      "
                             "Wind Gust: %8      "
                             "Wind Direction: %9")
-                    .arg(o.temperature())
-                    .arg(o.humidity())
-                    .arg(o.pressure())
-                    .arg(o.vaporPressure())
-                    .arg(o.dewPoint())
-                    .arg(o.densityAltitude())
-                    .arg(o.windSpeed())
-                    .arg(o.windGust())
-                    .arg(o.windDirection()));
+                    .arg(o.value("temperature"))
+                    .arg(o.value("humidity"))
+                    .arg(o.value("pressure"))
+                    .arg(o.value("vaporPressure"))
+                    .arg(o.value("dewPoint"))
+                    .arg(o.value("densityAltitude"))
+                    .arg(o.value("windSpeed"))
+                    .arg(o.value("windGust"))
+                    .arg(o.value("windDirection")));
 
     mTemps = 0;
     mHums = 0;

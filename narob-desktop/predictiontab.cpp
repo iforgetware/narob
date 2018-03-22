@@ -3,9 +3,9 @@
 #include "predictiontab.h"
 #include "ui_predictiontab.h"
 #include "predictionswidget.h"
-#include "predictionsmodel.h"
+#include "predictions.h"
 
-#include "settingsmodel.h"
+//#include "settingsmodel.h"
 #include "smtp.h"
 
 #include <QTimer>
@@ -23,7 +23,7 @@ PredictionTab::PredictionTab(TicketsModel* model,
     mPredictionsModel(new PredictionsModel(mVehicle, mRace, this)),
     mTicketsModel(model),
     mObservationsModel(new ObservationsModel(this)),
-    mRefPTModel(new RefPTModel(this))
+    mRefPTsModel(new RefPTsModel(this))
 {
 
 
@@ -47,18 +47,19 @@ PredictionTab::PredictionTab(TicketsModel* model,
 
     ui->setupUi(this);
 
-    PredictionsWidget *predictionsWidget = new PredictionsWidget(mPredictionsModel,
+    PredictionsWidget *predictionsWidget = new PredictionsWidget(mVehicle,
+                                                                 mRace,
                                                                  this);
 
     ui->gridLayout_2->addWidget(predictionsWidget, 0, 0);
 
-    ui->vehicleWeightEdit->setText(QString::number(mVehicle->weight()));
+    ui->vehicleWeightEdit->setText(QString::number(mVehicle->value("weight").toInt()));
 
-    SettingsModel* settingsModel = new SettingsModel();
-    mSettings = settingsModel->getSettings();
+//    SettingsModel* settingsModel = new SettingsModel();
+//    mSettings = settingsModel->getSettings();
 
-    ui->textProviderComboBox->setCurrentText(mSettings->textProvider());
-    ui->textNumberEdit->setText(mSettings->textNumber());
+    ui->textProviderComboBox->setCurrentText("Verizon"); //mSettings->textProvider());
+    ui->textNumberEdit->setText("5042895449"); //mSettings->textNumber());
 
     mAutoTimer = new QTimer(this);
     resetTimer(ui->minutesSpinBox->value());
@@ -90,17 +91,17 @@ void PredictionTab::resetTimer(int i)
 
 void PredictionTab::makeAutoPrediction()
 {
-    Prediction* prediction = new Prediction();
+    Prediction prediction;
 
     mPredictionsModel->addPrediction(prediction);
 
-    prediction->setVehicleId(mVehicle->id());
-    prediction->setRaceId(mRace->id());
-    prediction->setRiderWeight(ui->riderWeightEdit->text().toDouble());
-    prediction->setVehicleWeight(ui->vehicleWeightEdit->text().toDouble());
+    prediction.setValue("vehicleId", mVehicle->value("id"));
+    prediction.setValue("raceId", mRace->value("id"));
+    prediction.setValue("riderWeight", ui->riderWeightEdit->text().toDouble());
+    prediction.setValue("vehicleWeight", ui->vehicleWeightEdit->text().toDouble());
 
-    prediction->setWindFactor(ui->windFactorSpinBox->value());
-    prediction->setWeightFactor(ui->weightFactorSpinBox->value());
+    prediction.setValue("windFactor", ui->windFactorSpinBox->value());
+    prediction.setValue("weightFactor", ui->weightFactorSpinBox->value());
 
     getWeather(prediction);
     predictEighth(prediction);
@@ -117,27 +118,27 @@ void PredictionTab::makeAutoPrediction()
 
 }
 
-void PredictionTab::getWeather(Prediction* prediction)
+void PredictionTab::getWeather(Prediction &prediction)
 {
     Observation* observation = new Observation();
 
-    if(prediction->dateTime().isValid()){
-        observation = mObservationsModel->observationForTime(prediction->dateTime());
+    if(prediction.value("dateTime").toDateTime().isValid()){
+        observation = mObservationsModel->observationForTime(prediction.value("dateTime").toDateTime());
     }else{
         observation = mObservationsModel->lastObservation();
-        prediction->setDateTime(observation->dateTime());
+        prediction.setValue("DateTime", observation->value("dateTime").toDateTime());
     }
 
     if(observation){
-        prediction->setTemperature(observation->temperature());
-        prediction->setHumidity(observation->humidity());
-        prediction->setPressure(observation->pressure());
-        prediction->setVaporPressure(observation->vaporPressure());
-        prediction->setDewPoint(observation->dewPoint());
-        prediction->setDensityAltitude(observation->densityAltitude());
-        prediction->setWindSpeed(observation->windSpeed());
-        prediction->setWindGust(observation->windGust());
-        prediction->setWindDirection(observation->windDirection());
+        prediction.setValue("temperature", observation->value("temperature"));
+        prediction.setValue("humidity", observation->value("humidity"));
+        prediction.setValue("pressure", observation->value("pressure"));
+        prediction.setValue("vaporPressure", observation->value("vaporPressure"));
+        prediction.setValue("dewPoint", observation->value("dewPoint"));
+        prediction.setValue("densityAltitude" ,observation->value("densityAltitude"));
+        prediction.setValue("windSpeed", observation->value("windSpeed"));
+        prediction.setValue("windGust", observation->value("windGust"));
+        prediction.setValue("windDirection", observation->value("windDirection"));
     }else{
         qDebug("Weather not found - WRITE CODE");
     }
@@ -155,20 +156,20 @@ QVector<Ticket*> PredictionTab::validTickets(const QString &distance)
         valid = false;
 
         if(!ui->vehicleTicketsCheckBox->isChecked()){
-           valid = ticket->trackId() == mRace->trackId();
+           valid = ticket->value("trackId") == mRace->value("trackId");
         }
 
         if(!ui->trackTicketsCheckBox->isChecked()){
-           valid = ticket->raceId() == mRace->id();
+           valid = ticket->value("raceId") == mRace->value("id");
         }
 
         if(valid){
             if(distance == "eighth"){
-                valid = ticket->eighthGood();
+                valid = ticket->value("eighthGood").toBool();
             }
 
             if(distance == "quarter"){
-                valid = ticket->quarterGood();
+                valid = ticket->value("quarterGood").toBool();
             }
         }
 
@@ -218,7 +219,7 @@ struct Line
     }
 };
 
-void PredictionTab::predictEighth(Prediction* prediction)
+void PredictionTab::predictEighth(Prediction &prediction)
 {
     Points tPoints;
     Points hPoints;
@@ -228,25 +229,25 @@ void PredictionTab::predictEighth(Prediction* prediction)
     QVector<Ticket*> tickets = validTickets("eighth");
 
     foreach(Ticket* ticket, tickets){
-        double adjustedEighth = ticket->eighth()
-                                - (windCorrection(ticket->windSpeed(),
-                                                 ticket->windDirection())
+        double adjustedEighth = ticket->value("eighth").toDouble()
+                                - (windCorrection(ticket->value("windSpeed").toInt(),
+                                   ticket->value("windDirection").toInt())
                                    / 2)
-                                + (weightCorrection(prediction->riderWeight(),
-                                                   ticket->riderWeight())
+                                + (weightCorrection(prediction.value("riderWeight").toDouble(),
+                                                   ticket->value("riderWeight").toDouble())
                                    / 2);
-        tPoints.append(QPointF(ticket->temperature(), adjustedEighth));
-        hPoints.append(QPointF(ticket->humidity(), adjustedEighth));
-        pPoints.append(QPointF(ticket->pressure(), adjustedEighth));
-        dPoints.append(QPointF(ticket->densityAltitude(), adjustedEighth));
+        tPoints.append(QPointF(ticket->value("temperature").toDouble(), adjustedEighth));
+        hPoints.append(QPointF(ticket->value("humidity").toDouble(), adjustedEighth));
+        pPoints.append(QPointF(ticket->value("pressure").toDouble(), adjustedEighth));
+        dPoints.append(QPointF(ticket->value("densityAltitude").toInt(), adjustedEighth));
 
         RefPT refPT;
 
-        refPT.setPredictionId(prediction->id());
-        refPT.setTicketId(ticket->id());
-        refPT.setDistance("eighth");
+        refPT.setValue("predictionId", prediction.value("id").toInt());
+        refPT.setValue("ticketId", ticket->value("id").toInt());
+        refPT.setValue("distance", "eighth");
 
-        mRefPTModel->addRefPT(refPT);
+        mRefPTsModel->addRefPT(refPT);
     }
 
     Line tLine(tPoints);
@@ -254,19 +255,21 @@ void PredictionTab::predictEighth(Prediction* prediction)
     Line pLine(pPoints);
     Line dLine(dPoints);
 
-    double wC = windCorrection(prediction->windSpeed(),
-                               prediction->windDirection())
+    double wC = windCorrection(prediction.value("windSpeed").toInt(),
+                               prediction.value("windDirection").toInt())
                 / 2;
 
-    prediction->setETp(wC + tLine.getYforX(prediction->temperature()));
-    prediction->setEHp(wC + hLine.getYforX(prediction->humidity()));
-    prediction->setEPp(wC + pLine.getYforX(prediction->pressure()));
-    prediction->setEAp((prediction->eTp() + prediction->eHp() + prediction->ePp()) / 3);
-    prediction->setEDp(wC + dLine.getYforX(prediction->densityAltitude()));
-    prediction->setWindCorrectionEighth(wC);
+    prediction.setValue("eTp", wC + tLine.getYforX(prediction.value("temperature").toDouble()));
+    prediction.setValue("eHp", wC + hLine.getYforX(prediction.value("humidity").toDouble()));
+    prediction.setValue("ePp", wC + pLine.getYforX(prediction.value("pressure").toDouble()));
+    prediction.setValue("eAp", ((prediction.value("eTp").toDouble()
+                                  + prediction.value("eHp").toDouble()
+                                  + prediction.value("ePp").toDouble()) / 3));
+    prediction.setValue("eDp", wC + dLine.getYforX(prediction.value("densityAltitude").toInt()));
+    prediction.setValue("windCorrectionEighth", wC);
 }
 
-void PredictionTab::predictQuarter(Prediction* prediction)
+void PredictionTab::predictQuarter(Prediction &prediction)
 {
     Points tPoints;
     Points hPoints;
@@ -276,24 +279,24 @@ void PredictionTab::predictQuarter(Prediction* prediction)
     QVector<Ticket*> tickets = validTickets("quarter");
 
     foreach(Ticket* ticket, tickets){
-        double adjustedQuarter = ticket->quarter()
-                                 - windCorrection(ticket->windSpeed(),
-                                                  ticket->windDirection())
-                                 + weightCorrection(prediction->riderWeight(),
-                                                    ticket->riderWeight());
+        double adjustedQuarter = ticket->value("quarter").toDouble()
+                                 - windCorrection(ticket->value("windSpeed").toInt(),
+                                                  ticket->value("windDirection").toInt())
+                                 + weightCorrection(prediction.value("riderWeight").toDouble(),
+                                                    ticket->value("riderWeight").toDouble());
 
-        tPoints.append(QPointF(ticket->temperature(), adjustedQuarter));
-        hPoints.append(QPointF(ticket->humidity(), adjustedQuarter));
-        pPoints.append(QPointF(ticket->pressure(), adjustedQuarter));
-        dPoints.append(QPointF(ticket->densityAltitude(), adjustedQuarter));
+        tPoints.append(QPointF(ticket->value("temperature").toDouble(), adjustedQuarter));
+        hPoints.append(QPointF(ticket->value("humidity").toDouble(), adjustedQuarter));
+        pPoints.append(QPointF(ticket->value("pressure").toDouble(), adjustedQuarter));
+        dPoints.append(QPointF(ticket->value("densityAltitude").toInt(), adjustedQuarter));
 
         RefPT refPT;
 
-        refPT.setPredictionId(prediction->id());
-        refPT.setTicketId(ticket->id());
-        refPT.setDistance("quarter");
+        refPT.setValue("predictionId", prediction.value("id").toInt());
+        refPT.setValue("ticketId", ticket->value("id").toInt());
+        refPT.setValue("distance", "quarter");
 
-        mRefPTModel->addRefPT(refPT);
+        mRefPTsModel->addRefPT(refPT);
     }
 
     Line tLine(tPoints);
@@ -301,15 +304,17 @@ void PredictionTab::predictQuarter(Prediction* prediction)
     Line pLine(pPoints);
     Line dLine(dPoints);
 
-    double wC = windCorrection(prediction->windSpeed(),
-                               prediction->windDirection());
+    double wC = windCorrection(prediction.value("windSpeed").toInt(),
+                               prediction.value("windDirection").toInt());
 
-    prediction->setQTp(wC + tLine.getYforX(prediction->temperature()));
-    prediction->setQHp(wC + hLine.getYforX(prediction->humidity()));
-    prediction->setQPp(wC + pLine.getYforX(prediction->pressure()));
-    prediction->setQAp((prediction->qTp() + prediction->qHp() + prediction->qPp()) / 3);
-    prediction->setQDp(wC + dLine.getYforX(prediction->densityAltitude()));
-    prediction->setWindCorrectionQuarter(wC);
+    prediction.setValue("qTp", wC + tLine.getYforX(prediction.value("temperature").toDouble()));
+    prediction.setValue("qHp", wC + hLine.getYforX(prediction.value("humidity").toDouble()));
+    prediction.setValue("qPp", wC + pLine.getYforX(prediction.value("pressure").toDouble()));
+    prediction.setValue("qAp", (prediction.value("qTp").toDouble()
+                                 + prediction.value("qHp").toDouble()
+                                 + prediction.value("qPp").toDouble()) / 3);
+    prediction.setValue("qDp", wC + dLine.getYforX(prediction.value("densityAltitude").toInt()));
+    prediction.setValue("windCorrectionQuarter", wC);
 }
 
 double PredictionTab::windCorrection(int windSpeed, int windDirection)
@@ -341,13 +346,13 @@ double PredictionTab::weightCorrection(double w1, double w2)
     return (w1 - w2) * ui->weightFactorSpinBox->value() * 0.001;
 }
 
-void PredictionTab::sendPage(const Prediction* prediction)
+void PredictionTab::sendPage(const Prediction &prediction)
 {
-    if(mSettings->emailUser() == ""
-       || mSettings->emailHost() == ""
-       || mSettings->emailPW() == ""){
-        qDebug("No email settings to page with - WRITE CODE");
-    }else{
+//    if(mSettings->emailUser() == ""
+//       || mSettings->emailHost() == ""
+//       || mSettings->emailPW() == ""){
+//        qDebug("No email settings to page with - WRITE CODE");
+//    }else{
         QMap<QString, QString> *suffixes = new QMap<QString, QString>;
 
         suffixes->insert("Alltel", "message.alltel.com");
@@ -366,22 +371,24 @@ void PredictionTab::sendPage(const Prediction* prediction)
 
         QString body;
 
-        body.append(QString("Temp -> %1\n").arg(QString::number(prediction->temperature())));
-        body.append(QString("Humid -> %1\n").arg(QString::number(prediction->humidity())));
-        body.append(QString("Press -> %1\n").arg(QString::number(prediction->pressure())));
-        body.append(QString("Vap P -> %1\n").arg(QString::number(prediction->vaporPressure())));
-        body.append(QString("Dew P -> %1\n").arg(QString::number(prediction->dewPoint())));
-        body.append(QString("D Alt -> %1\n").arg(QString::number(prediction->densityAltitude())));
-        body.append(QString("W Speed -> %1\n").arg(QString::number(prediction->windSpeed())));
-        body.append(QString("W Gust -> %1\n").arg(QString::number(prediction->windGust())));
-        body.append(QString("W Dir -> %1\n").arg(QString::number(prediction->windDirection())));
+        body.append(QString("Temp -> %1\n").arg(QString::number(prediction.value("temperature").toDouble())));
+        body.append(QString("Humid -> %1\n").arg(QString::number(prediction.value("humidity").toDouble())));
+        body.append(QString("Press -> %1\n").arg(QString::number(prediction.value("pressure").toDouble())));
+        body.append(QString("Vap P -> %1\n").arg(QString::number(prediction.value("vaporPressure").toDouble())));
+        body.append(QString("Dew P -> %1\n").arg(QString::number(prediction.value("dewPoint").toDouble())));
+        body.append(QString("D Alt -> %1\n").arg(QString::number(prediction.value("densityAltitude").toInt())));
+        body.append(QString("W Speed -> %1\n").arg(QString::number(prediction.value("windSpeed").toInt())));
+        body.append(QString("W Gust -> %1\n").arg(QString::number(prediction.value("windGust").toInt())));
+        body.append(QString("W Dir -> %1\n").arg(QString::number(prediction.value("windDirection").toInt())));
 
-        Smtp *smtp = new Smtp(mSettings->emailUser(),
-                              mSettings->emailPW(),
-                              mSettings->emailHost());
+        qDebug("predTab 387, set pw");
+
+        Smtp *smtp = new Smtp("davesspeedshop@gmail.com", //mSettings->emailUser(),
+                              "", //mSettings->emailPW(),
+                              "smtp.gmail.com"); //mSettings->emailHost());
         //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-        smtp->sendMail(mSettings->emailUser(),
+        smtp->sendMail("davesspeedshop@gmail.com", //mSettings->emailUser(),
                        QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
                        "Weather",
                        body);
@@ -391,16 +398,18 @@ void PredictionTab::sendPage(const Prediction* prediction)
 //            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->eTp())));
 //            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->eHp())));
 //            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction->ePp())));
-            body.append(QString("Average -> %1\n").arg(QString::number(prediction->eAp())));
-            body.append(QString("By d alt -> %1\n").arg(QString::number(prediction->eDp())));
-            body.append(QString("Wind correction -> %1\n").arg(QString::number(prediction->windCorrectionEighth())));
+            body.append(QString("Average -> %1\n").arg(QString::number(prediction.value("eAp").toDouble())));
+            body.append(QString("By d alt -> %1\n").arg(QString::number(prediction.value("eDp").toDouble())));
+            body.append(QString("Wind correction -> %1\n").arg(QString::number(prediction.value("windCorrectionEighth").toDouble())));
 
-            Smtp *smtpE = new Smtp(mSettings->emailUser(),
-                                   mSettings->emailPW(),
-                                   mSettings->emailHost());
+            qDebug("predTab 408, set pw");
+
+            Smtp *smtpE = new Smtp("davesspeedshop@gmail.com", //mSettings->emailUser(),
+                                  "", //mSettings->emailPW(),
+                                  "smtp.gmail.com"); //mSettings->emailHost());
             //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-            smtpE->sendMail(mSettings->emailUser(),
+            smtpE->sendMail("davesspeedshop@gmail.com", //mSettings->emailUser(),
                            QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
                            "Eighth",
                            body);
@@ -411,23 +420,25 @@ void PredictionTab::sendPage(const Prediction* prediction)
 //            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->qTp())));
 //            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->qHp())));
 //            body.append(QString("By pressure -> %1\n").arg(QString::number(prediction->qPp())));
-            body.append(QString("Average -> %1\n").arg(QString::number(prediction->qAp())));
-            body.append(QString("By d alt -> %1\n").arg(QString::number(prediction->qDp())));
-            body.append(QString("Wind correction -> %1\n").arg(QString::number(prediction->windCorrectionEighth())));
+            body.append(QString("Average -> %1\n").arg(QString::number(prediction.value("qAp").toDouble())));
+            body.append(QString("By d alt -> %1\n").arg(QString::number(prediction.value("qDp").toDouble())));
+            body.append(QString("Wind correction -> %1\n").arg(QString::number(prediction.value("windCorrectionEighth").toDouble())));
 
-            Smtp *smtpQ = new Smtp(mSettings->emailUser(),
-                                  mSettings->emailPW(),
-                                  mSettings->emailHost());
+            qDebug("predTab 430, set pw");
+
+            Smtp *smtpQ = new Smtp("davesspeedshop@gmail.com", //mSettings->emailUser(),
+                                  "", //mSettings->emailPW(),
+                                  "smtp.gmail.com"); //mSettings->emailHost());
             //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-            smtpQ->sendMail(mSettings->emailUser(),
+            smtpQ->sendMail("davesspeedshop.@gmail.com", //mSettings->emailUser(),
                            QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
                            "Quarter",
                            body);
             //delete smtpQ;
 
         }
-    }
+//    }
 }
 
 void PredictionTab::mailSent(QString status)

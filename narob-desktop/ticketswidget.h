@@ -1,18 +1,16 @@
 #ifndef TICKETSWIDGET_H
 #define TICKETSWIDGET_H
 
-#include "ticketsmodel.h"
-#include "tablewidgetbase.h"
+#include "tickets.h"
+#include "tabledisplaywidgetbase.h"
 #include "ui_tablewidgetbase.h"
 
-class TicketsWidget : public TableWidgetBase
+class TicketsWidget : public TableDisplayWidgetBase
 {
     Q_OBJECT
 
 public:
-    explicit TicketsWidget(TicketsModel* model,
-                           int trackId = 0,
-                           QWidget* parent = 0);
+    explicit TicketsWidget(QWidget* parent = 0);
 
 private:
     TicketsModel* mTicketsModel;

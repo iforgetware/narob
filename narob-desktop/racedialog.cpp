@@ -1,27 +1,20 @@
 #include "racedialog.h"
 #include "ui_racedialog.h"
-//#include "delegates.h"
 
-#include <QSqlRelationalDelegate>
-#include <QSqlRecord>
 #include <QDebug>
+#include <QSqlRelationalDelegate>
 
-RaceDialog::RaceDialog(RacesModel *model, int row, QWidget *parent) :
+RaceDialog::RaceDialog(int row, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::RaceDialog),
-    mRacesModel(model)
+    ui(new Ui::RaceDialog)
 {
     ui->setupUi(this);
 
     setupModel();
 
     if(row == -1){
-        Race race;
-        QModelIndex rIdx = mRacesModel->addRace(race);
-
-        mRacesModel->select();
-        mMapper->setCurrentModelIndex(rIdx);
-        connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &RaceDialog::clearEmptyAdd);
+        mRacesModel->insertRow(mRacesModel->rowCount(QModelIndex()));
+        mMapper->toLast();
     }else{
         mMapper->setCurrentModelIndex(mRacesModel->index(row, 0));
     }
@@ -38,11 +31,10 @@ RaceDialog::~RaceDialog()
 
 void RaceDialog::setupModel()
 {
-    QSqlRecord row = mRacesModel->record();
-//    qDebug("in RaceDialog setupModel");
-//    qDebug() << row.fieldName(1);
-//    qDebug() << row.fieldName(2);
-//    qDebug() << row.fieldName(3);
+    mRacesModel = new QSqlTableModel(this);
+    mRacesModel->setTable("tracks");
+    mRacesModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    mRacesModel->select();
 
     mMapper = new QDataWidgetMapper(this);
 
@@ -68,9 +60,5 @@ void RaceDialog::onButtonBoxAccepted()
 {
     mMapper->submit();
     mRacesModel->submitAll();
-}
-
-void RaceDialog::clearEmptyAdd()
-{
-    mRacesModel->removeRow(mRacesModel->rowCount()-1);
+    emit ready();
 }

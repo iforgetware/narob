@@ -3,9 +3,8 @@
 
 #include <QDialog>
 #include <QDataWidgetMapper>
-//#include <QMessageBox>
 
-#include "vehiclesmodel.h"
+#include "vehicles.h"
 
 namespace Ui {
 class VehicleDialog;
@@ -16,12 +15,14 @@ class VehicleDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit VehicleDialog(VehiclesModel *model, int row = -1, QWidget *parent = 0);
+    explicit VehicleDialog(int row = -1, QWidget *parent = 0);
     ~VehicleDialog();
+
+signals:
+    void ready();
 
 private slots:
     void onButtonBoxAccepted();
-    void clearEmptyAdd();
 
 private:
     Ui::VehicleDialog *ui;

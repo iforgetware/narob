@@ -3,8 +3,9 @@
 
 #include <QMainWindow>
 
-#include "vehicle.h"
-#include "race.h"
+#include "vehicles.h"
+#include "races.h"
+#include "databasemanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,8 @@ public:
 
 private:
     void init();
+
+    DatabaseManager *mDBM;
 
     Ui::MainWindow *ui;
 

@@ -1,54 +1,42 @@
 #ifndef DATABASEMANAGER_H
 #define DATABASEMANAGER_H
 
-#include <memory>
+#include "tracks.h"
+#include "races.h"
+#include "vehicles.h"
+#include "tickets.h"
+#include "observations.h"
+#include "predictions.h"
+#include "refpts.h"
 
-#include <QString>
+#include <QObject>
 #include <QSqlDatabase>
-
-#include "trackdao.h"
-#include "racedao.h"
-#include "vehicledao.h"
-#include "ticketdao.h"
-#include "observationdao.h"
-#include "settingsdao.h"
-#include "predictiondao.h"
-#include "refptdao.h"
 
 class QSqlQuery;
 
 const QString DATABASE_FILENAME = "narob.sqlite";
 
-class DatabaseManager
+class DatabaseManager : public QObject
 {
+    Q_OBJECT
+
 public:
-    static DatabaseManager& instance();
+    explicit DatabaseManager(QObject *parent = 0);
     ~DatabaseManager();
 
     static void debugQuery(const QSqlQuery& query);
 
-    QSqlDatabase database() { return *mDatabase; }
-
-protected:
-    DatabaseManager(const QString& path = DATABASE_FILENAME);
-    DatabaseManager& operator=(const DatabaseManager& rhs);
-
 private:
-    std::unique_ptr<QSqlDatabase> mDatabase;
-
-    void clearDatabase();
-    void populateTables();
-    void populateTracks();
+    QSqlDatabase mDatabase;
 
 public:
-    const TrackDao trackDao;
-    const RaceDao raceDao;
-    const VehicleDao vehicleDao;
-    const TicketDao ticketDao;
-    const ObservationDao observationDao;
-    const SettingsDao settingsDao;
-    const PredictionDao predictionDao;
-    const RefPTDao refPTDao;
+    Tracks tracks;
+    Races races;
+    Vehicles vehicles;
+    Tickets tickets;
+    Observations observations;
+    Predictions predictions;
+    RefPTs refPTs;
 };
 
 #endif // DATABASEMANAGER_H

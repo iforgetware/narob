@@ -26,7 +26,7 @@ SOURCES += \
     mainwindow.cpp \
     dashboardtab.cpp \
     weathertab.cpp \
-    settingstab.cpp \
+#    settingstab.cpp \
     racecontroltab.cpp \
     ticketentrytab.cpp \
     trackhistorytab.cpp \
@@ -48,13 +48,14 @@ SOURCES += \
     weatherstation.cpp \
     ticketseditwidget.cpp \
     predictionswidget.cpp \
-    smtp.cpp
+    smtp.cpp \
+    tabledisplaywidgetbase.cpp
 
 HEADERS += \
     mainwindow.h \
     dashboardtab.h \
     weathertab.h \
-    settingstab.h \
+#    settingstab.h \
     racecontroltab.h \
     trackhistorytab.h \
     ticketentrytab.h \
@@ -76,13 +77,14 @@ HEADERS += \
     weatherstation.h \
     ticketseditwidget.h \
     predictionswidget.h \
-    smtp.h
+    smtp.h \
+    tabledisplaywidgetbase.h
 
 FORMS += \
     mainwindow.ui \
     dashboardtab.ui \
     weathertab.ui \
-    settingstab.ui \
+ #   settingstab.ui \
     tableeditwidgetbase.ui \
     tablewidgetbase.ui \
     trackdialog.ui \

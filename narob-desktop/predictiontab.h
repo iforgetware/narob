@@ -2,15 +2,14 @@
 #define PREDICTIONTAB_H
 
 #include "modelbase.h"
-#include "prediction.h"
-#include "vehicle.h"
-#include "race.h"
-#include "predictionsmodel.h"
-#include "ticketsmodel.h"
-#include "observationsmodel.h"
-#include "refptmodel.h"
+#include "predictions.h"
+#include "vehicles.h"
+#include "races.h"
+#include "tickets.h"
+#include "observations.h"
+#include "refpts.h"
 
-#include "settingsmodel.h"
+//#include "settingsmodel.h"
 
 #include <QWidget>
 #include <QTimer>
@@ -42,11 +41,11 @@ private:
     Vehicle* mVehicle;
     Race* mRace;
     QTimer* mAutoTimer;
-    Settings* mSettings;
+//    Settings* mSettings;
     PredictionsModel* mPredictionsModel;
     TicketsModel* mTicketsModel;
     ObservationsModel* mObservationsModel;
-    RefPTModel* mRefPTModel;
+    RefPTsModel* mRefPTsModel;
 
 private slots:
     void resetTimer(int);

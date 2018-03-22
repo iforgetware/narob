@@ -2,6 +2,34 @@
 #define NAROBCORE_GLOBAL_H
 
 #include <QtCore/qglobal.h>
+#include <QVector>
+
+struct Field
+{
+    QString mColumn;
+    QString mHeading;
+    int mWidth;
+    int mDelegate;
+
+    Field ()
+    {
+        mColumn = "";
+        mHeading = "";
+        mWidth = 0;
+        mDelegate = 0;
+    }
+
+    Field (QString column, QString heading, int width, int decimals)
+    {
+        mColumn = column;
+        mHeading = heading;
+        mWidth = width;
+        mDelegate = decimals;
+    }
+};
+
+typedef QVector<Field> Fields;
+
 
 #if defined(NAROBCORE_LIBRARY)
 #  define NAROBCORESHARED_EXPORT Q_DECL_EXPORT

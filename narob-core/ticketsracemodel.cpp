@@ -14,8 +14,3 @@ bool TicketsRaceModel::filterAcceptsRow(int sourceRow, const QModelIndex &source
 
     return sourceModel()->data(raceIndex).toInt() == mRaceId;
 }
-
-//bool TicketsRaceModel::lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const
-//{
-
-//}

@@ -5,10 +5,10 @@
 
 #include <QDebug>
 
-TicketsWidget::TicketsWidget(TicketsModel *model,
+TicketsWidget::TicketsWidget(TicketsModel model,
                              int trackId,
                              QWidget* parent) :
-    TableWidgetBase(parent),
+    TableDisplayWidgetBase(parent),
     mTicketsModel(model)
 {
     setTitle("Tickets");
@@ -26,7 +26,7 @@ TicketsWidget::TicketsWidget(TicketsModel *model,
     ui->tableView->setItemDelegateForColumn(2, new TrackColumnDelegate(this));
     ui->tableView->setItemDelegateForColumn(3, new RaceColumnDelegate(this));
 
-    setupColumns(mTicketsModel->mFields);
+    setupColumns(mTicketsModel->fields());
 
     hideColumn(mTicketsModel->fieldIndex("vehicleId"));
     hideColumn(mTicketsModel->fieldIndex("predictionId"));

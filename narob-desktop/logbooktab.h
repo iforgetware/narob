@@ -3,8 +3,8 @@
 
 #include <QWidget>
 
-#include "vehicle.h"
-#include "ticketsmodel.h"
+#include "vehicles.h"
+#include "tickets.h"
 
 namespace Ui {
 class LogbookTab;

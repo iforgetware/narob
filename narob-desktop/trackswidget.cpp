@@ -2,7 +2,8 @@
 
 #include "trackdialog.h"
 
-TracksWidget::TracksWidget(QWidget *parent) : TableEditWidgetBase(parent)
+TracksWidget::TracksWidget(QWidget *parent) :
+    TableEditWidgetBase(parent)
 {
     setTitle("Tracks");
 
@@ -12,26 +13,28 @@ TracksWidget::TracksWidget(QWidget *parent) : TableEditWidgetBase(parent)
 
     ui->tableView->setModel(mTracksModel);
 
-    connect(ui->addButton, &QPushButton::clicked,
-            this, &TracksWidget::addTrack);
-
-    connect(ui->editButton, &QPushButton::clicked,
-            this, &TracksWidget::editTrack);
-
-    connect(ui->deleteButton, &QPushButton::clicked,
-            this, &TracksWidget::deleteTrack);
-
-    // see note in tablewidgetbase.cpp
-
-    setupColumns(mTracksModel->mFields);
+    setupColumns(mTracksModel->fields());
 
     initTable();
+
+    connect(mAddButton, &QPushButton::clicked,
+            this, &TracksWidget::addTrack);
+
+    connect(mEditButton, &QPushButton::clicked,
+            this, &TracksWidget::editTrack);
+
+    connect(mDeleteButton, &QPushButton::clicked,
+            this, &TracksWidget::deleteTrack);
+
+    connect(ui->tableView, &QTableView::doubleClicked,
+            this, &TracksWidget::editTrack);
 }
 
 void TracksWidget::addTrack()
 {
-    TrackDialog *trackDialog = new TrackDialog(mTracksModel, -1, this);
-//    connect(trackDialog, &TrackDialog::ready, this, &TracksWidget::updateModels);
+    TrackDialog *trackDialog = new TrackDialog();
+    connect(trackDialog, &TrackDialog::ready,
+            this, &TracksWidget::updateModels);
 
     trackDialog->exec();
 }
@@ -41,8 +44,9 @@ void TracksWidget::editTrack()
     if(selected()){
         int tRow = getSelection();
 
-        TrackDialog *trackDialog = new TrackDialog(mTracksModel, tRow, this);
-//        connect(trackDialog, &TrackDialog::ready, this, &TracksWidget::updateModels);
+        TrackDialog *trackDialog = new TrackDialog(tRow);
+        connect(trackDialog, &TrackDialog::ready,
+                this, &TracksWidget::updateModels);
 
         trackDialog->exec();
     }
@@ -54,6 +58,7 @@ void TracksWidget::deleteTrack()
         int tRow = getSelection();
 
         mTracksModel->removeRow(tRow);
+        mTracksModel->submitAll();
         updateModels();
     }
 }

@@ -1,18 +1,16 @@
-#include "tableeditwidgetbase.h"
-#include "ui_tableeditwidgetbase.h"
+#include <QHBoxLayout>
+#include <QPushButton>
 
-#include "delegates.h"
+#include "tableeditwidgetbase.h"
+#include "ui_tablewidgetbase.h"
 
 TableEditWidgetBase::TableEditWidgetBase(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::TableEditWidgetBase)
+    TableWidgetBase(parent)
 {
-    ui->setupUi(this);
 }
 
 TableEditWidgetBase::~TableEditWidgetBase()
 {
-    delete ui;
 }
 
 void TableEditWidgetBase::initTable()
@@ -21,16 +19,32 @@ void TableEditWidgetBase::initTable()
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    // could add the following, but would have to abstract out edit slot
-    // could also go in each widget without abstraction
-    //connect(ui->tableView, &QTableView::doubleClicked, this, "edit");
-
-    // consider this instead of manually setting widths
-
-    //ui->tableView->resizeColumnsToContents();
-
     ui->tableView->verticalHeader()->setVisible(false);
     hideColumn(mModel->fieldIndex("id"));
+
+    mAddButton = new QPushButton("Add", this);
+    mEditButton = new QPushButton("Edit", this);
+    mDeleteButton = new QPushButton("Delete", this);
+
+    QFrame* buttonFrame = new QFrame(this);
+    QHBoxLayout* bFLayout = new QHBoxLayout(buttonFrame);
+
+    bFLayout->addWidget(mAddButton);
+    bFLayout->addSpacerItem(new QSpacerItem(1,
+                                            1,
+                                            QSizePolicy::Expanding,
+                                            QSizePolicy::Fixed));
+    bFLayout->addWidget(mEditButton);
+    bFLayout->addSpacerItem(new QSpacerItem(1,
+                                            1,
+                                            QSizePolicy::Expanding,
+                                            QSizePolicy::Fixed));
+    bFLayout->addWidget(mDeleteButton);
+
+    buttonFrame->setLayout(bFLayout);
+
+    ui->gridLayout->addWidget(buttonFrame);
+
     show();
 }
 
@@ -45,57 +59,5 @@ int TableEditWidgetBase::getSelection()
         return ui->tableView->selectionModel()->currentIndex().row();
     }else{
         return 0;
-    }
-}
-
-void TableEditWidgetBase::setTitle(const QString &title)
-{
-    mTitle = title;
-    ui->title->setText(mTitle);
-}
-
-void TableEditWidgetBase::hideColumn(const int &column)
-{
-    ui->tableView->setColumnHidden(column, true);
-}
-
-void TableEditWidgetBase::setupColumns(const Fields &fields)
-{
-    foreach(Field field, fields){
-        ui->tableView->setColumnWidth(mModel->fieldIndex(field.mColumn), field.mWidth);
-        switch (field.mDelegate){
-        case -3:
-            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
-                                                    new DateTimeDelegate(this));
-            break;
-
-        case -2:
-            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
-                                                    new TimeDelegate(this));
-            break;
-
-        case -1:
-            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
-                                                    new BoolDelegate(this));
-            break;
-
-        case 1:
-            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
-                                                    new OneDecimalDelegate(this));
-            break;
-
-        case 2:
-            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
-                                                    new TwoDecimalDelegate(this));
-            break;
-
-        case 3:
-            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
-                                                    new ThreeDecimalDelegate(this));
-            break;
-
-        default:
-            break;
-        }
     }
 }

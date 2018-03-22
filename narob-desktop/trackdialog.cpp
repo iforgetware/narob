@@ -3,21 +3,17 @@
 
 #include <QDebug>
 
-TrackDialog::TrackDialog(TracksModel *model, int row, QWidget *parent) :
+TrackDialog::TrackDialog(int row, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::TrackDialog),
-    mTracksModel(model)
+    ui(new Ui::TrackDialog)
 {
     ui->setupUi(this);
 
     setupModel();
 
     if(row == -1){
-        Track track;
-        QModelIndex tIdx = mTracksModel->addTrack(track);
-        mTracksModel->select();
-        mMapper->setCurrentModelIndex(tIdx);
-        connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &TrackDialog::clearEmptyAdd);
+        mTracksModel->insertRow(mTracksModel->rowCount(QModelIndex()));
+        mMapper->toLast();
     }else{
         mMapper->setCurrentModelIndex(mTracksModel->index(row, 0));
     }
@@ -34,6 +30,11 @@ TrackDialog::~TrackDialog()
 
 void TrackDialog::setupModel()
 {
+    mTracksModel = new TracksModel(this);
+    mTracksModel->setTable("tracks");
+    mTracksModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    mTracksModel->select();
+
     mMapper = new QDataWidgetMapper(this);
     mMapper->setModel(mTracksModel);
     mMapper->addMapping(ui->nameEdit, 1);
@@ -54,9 +55,5 @@ void TrackDialog::onButtonBoxAccepted()
 {
     mMapper->submit();
     mTracksModel->submitAll();
-}
-
-void TrackDialog::clearEmptyAdd()
-{
-    mTracksModel->removeRow(mTracksModel->rowCount()-1);
+    emit ready();
 }

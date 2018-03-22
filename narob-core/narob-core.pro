@@ -28,32 +28,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     databasemanager.cpp \
     modelbase.cpp \
-    track.cpp \
-    trackdao.cpp \
-    tracksmodel.cpp \
-    race.cpp \
-    racedao.cpp \
-    racesmodel.cpp \
-    vehicle.cpp \
-    vehicledao.cpp \
-    vehiclesmodel.cpp \
     ticket.cpp \
     ticketdao.cpp \
     ticketsmodel.cpp \
-    observation.cpp \
-    observationdao.cpp \
-    observationsmodel.cpp \
     settings.cpp \
     settingsdao.cpp \
     settingsmodel.cpp \
     ticketsracemodel.cpp \
     ticketstrackmodel.cpp \
-    prediction.cpp \
-    predictiondao.cpp \
-    predictionsmodel.cpp \
-    refpt.cpp \
-    refptdao.cpp \
-    refptmodel.cpp
+    dbtablebase.cpp \
+    dbrecordbase.cpp \
+    races.cpp \
+    vehicles.cpp \
+    tickets.cpp \
+    observations.cpp \
+    predictions.cpp \
+    refpts.cpp \
+    tracks.cpp
 #    prediction.cpp \
 #    predictiondao.cpp \
 #    predictionsmodel.cpp \
@@ -64,32 +55,20 @@ HEADERS += \
     databasemanager.h \
     narob-core_global.h \
     modelbase.h \
-    track.h \
-    trackdao.h \
-    tracksmodel.h \
-    race.h \
-    racedao.h \
-    racesmodel.h \
-    vehicle.h \
-    vehicledao.h \
-    vehiclesmodel.h \
-    ticket.h \
-    ticketdao.h \
-    ticketsmodel.h \
-    observation.h \
-    observationdao.h \
-    observationsmodel.h \
     settings.h \
     settingsdao.h \
     settingsmodel.h \
     ticketsracemodel.h \
     ticketstrackmodel.h \
-    prediction.h \
-    predictiondao.h \
-    predictionsmodel.h \
-    refpt.h \
-    refptdao.h \
-    refptmodel.h
+    dbtablebase.h \
+    dbrecordbase.h \
+    races.h \
+    vehicles.h \
+    tickets.h \
+    observations.h \
+    predictions.h \
+    refpts.h \
+    tracks.h
 #    prediction.h \
 #    predictiondao.h \
 #    predictionsmodel.h \

@@ -3,9 +3,9 @@
 
 #include <QWidget>
 
-#include "vehicle.h"
-#include "race.h"
-#include "ticketsmodel.h"
+#include "vehicles.h"
+#include "races.h"
+#include "tickets.h"
 
 namespace Ui {
 class TicketEntryTab;

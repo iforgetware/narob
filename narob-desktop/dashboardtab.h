@@ -3,9 +3,9 @@
 
 #include <QWidget>
 
-#include "vehicle.h"
-#include "race.h"
-#include "track.h"
+#include "vehicles.h"
+#include "races.h"
+#include "tracks.h"
 
 namespace Ui {
 class DashboardTab;

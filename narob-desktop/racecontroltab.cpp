@@ -1,6 +1,6 @@
 #include "racecontroltab.h"
 #include "ui_racecontroltab.h"
-#include "ticketsmodel.h"
+#include "tickets.h"
 #include "ticketentrytab.h"
 #include "trackhistorytab.h"
 #include "logbooktab.h"
@@ -27,7 +27,7 @@ RaceControlTab::RaceControlTab(Vehicle* vehicle,
                                                         this);
 
     TrackHistoryTab* trackHistoryTab = new TrackHistoryTab(mTicketsModel,
-                                                           mRace->trackId(),
+                                                           mRace->value("trackId"),
                                                            this);
 
 

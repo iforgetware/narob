@@ -1,23 +1,41 @@
+#include <QSqlQuery>
+#include <QSqlField>
+
 #include "settings.h"
 
-Settings::Settings() :
-    mId(1),
-
-    mEmailUser(""),
-    mEmailPW(""),
-    mEmailHost(""),
-    mTextNumber(""),
-    mTextProvider("")
+Fields setSettingsFields()
 {
+    Fields retFields;
+
+    retFields.append(Field("id", "id", 0, 0));
+    retFields.append(Field("emailUser", "Email User", 250, -4));
+    retFields.append(Field("emailPW", "Email Password", 250, -4));
+    retFields.append(Field("emailHost", "Email Host", 250, -4));
+    retFields.append(Field("textNumber", "Text Number", 150, -4));
+    retFields.append(Field("textProvider", "Text Provider", 150, -4));
+
+    return retFields;
 }
 
-Settings::Settings(const Settings &settings) :
-    mId(1),
+Fields settingsFields = setSettingsFields();
 
-    mEmailUser(settings.emailUser()),
-    mEmailPW(settings.emailPW()),
-    mEmailHost(settings.emailHost()),
-    mTextNumber(settings.textNumber()),
-    mTextProvider(settings.textProvider())
+Settings::Settings() :
+    DbTableBase()
 {
+    mFields = settingsFields;
+    mTable = "settings";
+}
+
+
+Settings::Settings() :
+    DbRecordBase()
+{
+    mFields = settingsFields;
+    init("settings");
+}
+
+SettingsModel::SettingsModel(QObject *parent) :
+    ModelBase(parent)
+{
+    mFields = settingsFields;
 }

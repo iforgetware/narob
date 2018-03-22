@@ -1,9 +1,9 @@
 #ifndef TRACKSWIDGET_H
 #define TRACKSWIDGET_H
 
-#include "tracksmodel.h"
+#include "tracks.h"
 #include "tableeditwidgetbase.h"
-#include "ui_tableeditwidgetbase.h"
+#include "ui_tablewidgetbase.h"
 
 class TracksWidget : public TableEditWidgetBase
 {

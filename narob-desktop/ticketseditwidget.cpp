@@ -1,30 +1,30 @@
 #include "ticketseditwidget.h"
 
-#include "ticketsracemodel.h"
 #include "ticketdialog.h"
 
 #include "delegates.h"
 
-#include <QDebug>
-#include <QSqlRecord>
-
-TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
-                                     Vehicle *vehicle,
+TicketsEditWidget::TicketsEditWidget(Vehicle *vehicle,
                                      Race *race,
                                      QWidget *parent) :
     TableEditWidgetBase(parent),
-    mTicketsModel(model),
     mVehicle(vehicle),
     mRace(race)
 {
     setTitle("Tickets");
 
+    mTicketsModel = new TicketsModel(mVehicle, ui->tableView);
+
     mModel = mTicketsModel;
 
-    mTicketsRaceModel = new TicketsRaceModel(mRace->id(), this);
+    mTicketsRaceModel = new TicketsRaceModel(mRace->value("id"), this);
     mTicketsRaceModel->setSourceModel(mTicketsModel);
 
     ui->tableView->setModel(mTicketsRaceModel);
+
+    setupColumns(mTicketsModel->mFields);
+
+    initTable();
 
     connect(ui->addButton, &QPushButton::clicked,
             this, &TicketsEditWidget::addTicket);
@@ -35,27 +35,25 @@ TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
     connect(ui->deleteButton, &QPushButton::clicked,
             this, &TicketsEditWidget::deleteTicket);
 
-    setupColumns(mTicketsModel->mFields);
+    connect(ui->tableView, &QTableView::doubleClicked,
+            this, &TicketsEditWidget::editTrack);
 
     hideColumn(mTicketsModel->fieldIndex("vehicleId"));
     hideColumn(mTicketsModel->fieldIndex("trackId"));
     hideColumn(mTicketsModel->fieldIndex("raceId"));
     hideColumn(mTicketsModel->fieldIndex("predictionId"));
-
-    initTable();
 }
 
 void TicketsEditWidget::addTicket()
 {
-    TicketDialog *ticketDialog = new TicketDialog(mTicketsModel,
-                                                  mVehicle,
+    TicketDialog *ticketDialog = new TicketDialog(mVehicle,
                                                   mRace,
                                                   -1,
                                                   this);
+    connect(ticketDialog, &TicketDialog::ready,
+            this,&TicketsEditWidget::updateModels);
 
     ticketDialog->exec();
-
-
 }
 
 void TicketsEditWidget::editTicket()
@@ -63,11 +61,12 @@ void TicketsEditWidget::editTicket()
     if(selected()){
         int tRow = getSelection();
 
-        TicketDialog *ticketDialog = new TicketDialog(mTicketsModel,
-                                                      mVehicle,
+        TicketDialog *ticketDialog = new TicketDialog(mVehicle,
                                                       mRace,
                                                       tRow,
                                                       this);
+        connect(ticketDialog, &TicketDialog::ready,
+                this,&TicketsEditWidget::updateModels);
 
         ticketDialog->exec();
     }
@@ -80,5 +79,11 @@ void TicketsEditWidget::deleteTicket()
 
         mTicketsRaceModel->removeRow(tRow);
         mTicketsModel->select();
+        updateModels();
     }
+}
+
+void TicketsEditWidget::updateModels()
+{
+    mTicketsModel->select();
 }

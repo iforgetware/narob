@@ -1,9 +1,9 @@
 #include "raceswidget.h"
 
 #include "racedialog.h"
-#include <QDebug>
 
-RacesWidget::RacesWidget(QWidget *parent) : TableEditWidgetBase(parent)
+RacesWidget::RacesWidget(QWidget *parent) :
+    TableEditWidgetBase(parent)
 {
     setTitle("Races");
 
@@ -13,23 +13,28 @@ RacesWidget::RacesWidget(QWidget *parent) : TableEditWidgetBase(parent)
 
     ui->tableView->setModel(mRacesModel);
 
-    connect(ui->addButton, &QPushButton::clicked,
-            this, &RacesWidget::addRace);
-
-    connect(ui->editButton, &QPushButton::clicked,
-            this, &RacesWidget::editRace);
-
-    connect(ui->deleteButton, &QPushButton::clicked,
-            this, &RacesWidget::deleteRace);
-
     setupColumns(mRacesModel->mFields);
 
     initTable();
+
+    connect(mAddButton, &QPushButton::clicked,
+            this, &RacesWidget::addRace);
+
+    connect(mEditButton, &QPushButton::clicked,
+            this, &RacesWidget::editRace);
+
+    connect(mDeleteButton, &QPushButton::clicked,
+            this, &RacesWidget::deleteRace);
+
+    connect(ui->tableView, &QTableView::doubleClicked,
+            this, &RacesWidget::editRace);
 }
 
 void RacesWidget::addRace()
 {
-    RaceDialog *raceDialog = new RaceDialog(mRacesModel, -1, this);
+    RaceDialog *raceDialog = new RaceDialog();
+    connect(raceDialog, &RaceDialog::ready,
+            this, &RacesWidget::updateModels);
 
     raceDialog->exec();
 }
@@ -39,7 +44,9 @@ void RacesWidget::editRace()
     if(selected()){
         int rRow = getSelection();
 
-        RaceDialog *raceDialog = new RaceDialog(mRacesModel, rRow, this);
+        RaceDialog *raceDialog = new RaceDialog(rRow, this);
+        connect(raceDialog, &RaceDialog::ready,
+                this, &RacesWidget::updateModels);
 
         raceDialog->exec();
     }
@@ -51,8 +58,14 @@ void RacesWidget::deleteRace()
         int rRow = getSelection();
 
         mRacesModel->removeRow(rRow);
-        mRacesModel->select();
+        mRacesModel->submitAll();
+        updateModels();
     }
+}
+
+void RacesWidget::updateModels()
+{
+    mRacesModel->select();
 }
 
 Race* RacesWidget::getSelectedRace()

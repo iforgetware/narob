@@ -1,21 +1,17 @@
 #include "vehicledialog.h"
 #include "ui_vehicledialog.h"
 
-VehicleDialog::VehicleDialog(VehiclesModel *model, int row, QWidget *parent) :
+VehicleDialog::VehicleDialog(int row, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::VehicleDialog),
-    mVehiclesModel(model)
+    ui(new Ui::VehicleDialog)
 {
     ui->setupUi(this);
 
     setupModel();
 
     if(row == -1){
-        Vehicle vehicle;
-        QModelIndex tIdx = mVehiclesModel->addVehicle(vehicle);
-        mVehiclesModel->select();
-        mMapper->setCurrentModelIndex(tIdx);
-        connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &VehicleDialog::clearEmptyAdd);
+        mVehiclesModel->insertRow(mVehiclesModel->rowCount(QModelIndex()));
+        mMapper->toLast();
     }else{
         mMapper->setCurrentModelIndex(mVehiclesModel->index(row, 0));
     }
@@ -32,6 +28,11 @@ VehicleDialog::~VehicleDialog()
 
 void VehicleDialog::setupModel()
 {
+    mVehiclesModel = new VehiclesModel(this);
+    mVehiclesModel->setTable("tracks");
+    mVehiclesModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    mVehiclesModel->select();
+
     mMapper = new QDataWidgetMapper(this);
     mMapper->setModel(mVehiclesModel);
     mMapper->addMapping(ui->numberEdit, 1);
@@ -50,9 +51,5 @@ void VehicleDialog::onButtonBoxAccepted()
 {
     mMapper->submit();
     mVehiclesModel->submitAll();
-}
-
-void VehicleDialog::clearEmptyAdd()
-{
-    mVehiclesModel->removeRow(mVehiclesModel->rowCount()-1);
+    emit ready();
 }

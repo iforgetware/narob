@@ -1,9 +1,65 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include <QSqlRecord>
+
+#include "dbtablebase.h"
+#include "dbrecordbase.h"
+#include "modelbase.h"
+
 #include "narob-core_global.h"
 
+class Settings : public DbTableBase
+{
+public:
+    explicit Settings();
+};
+
+
+class Setting : public DbRecordBase
+{
+public:
+    explicit Setting();
+};
+
+
+class SettingsModel : public ModelBase
+{
+    Q_OBJECT
+
+public:
+    explicit SettingsModel(QObject *parent = 0);
+
+    Track *getSettings(const int row);
+};
+
 #include <QString>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// manually create settings for now
+
+
+
+
+
+
+
+
+
+
+
 
 class NAROBCORESHARED_EXPORT Settings
 {

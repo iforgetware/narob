@@ -4,9 +4,9 @@
 #include <QDialog>
 #include <QDataWidgetMapper>
 
-#include "ticketsmodel.h"
-#include "vehicle.h"
-#include "race.h"
+#include "tickets.h"
+#include "vehicles.h"
+#include "races.h"
 
 namespace Ui {
 class TicketDialog;
@@ -17,27 +17,27 @@ class TicketDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TicketDialog(TicketsModel *model,
-                          Vehicle* vehicle,
+    explicit TicketDialog(Vehicle* vehicle,
                           Race* race,
                           int row = -1,
                           QWidget *parent = 0);
     ~TicketDialog();
 
+signals:
+    void ready();
+
 private slots:
     void onButtonBoxAccepted();
-    void clearEmptyAdd();
 
 private:
     Ui::TicketDialog *ui;
     TicketsModel *mTicketsModel;
+    Vehicle mVehicle;
 
     QDataWidgetMapper *mMapper;
 
     void setupModel();
     void createUi();
-//    void dateChanged(const QDate& date);
-//    void timeChanged(const QTime& time);
     void dateTimeChanged(const QDateTime& dateTime);
     void setWeather();
 };

@@ -17,16 +17,6 @@ TableWidgetBase::~TableWidgetBase()
     delete ui;
 }
 
-void TableWidgetBase::initTable()
-{
-    ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    ui->tableView->verticalHeader()->setVisible(false);
-    hideColumn(mModel->fieldIndex("id"));
-    show();
-}
-
 void TableWidgetBase::setTitle(const QString &title)
 {
     mTitle = title;

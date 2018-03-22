@@ -3,9 +3,8 @@
 
 #include <QDialog>
 #include <QDataWidgetMapper>
-//#include <QMessageBox>
 
-#include "tracksmodel.h"
+#include "tracks.h"
 
 namespace Ui {
 class TrackDialog;
@@ -16,15 +15,14 @@ class TrackDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TrackDialog(TracksModel *model, int row = -1, QWidget *parent = 0);
+    explicit TrackDialog(int row = -1, QWidget *parent = 0);
     ~TrackDialog();
 
 signals:
-//    void ready();
+    void ready();
 
 private slots:
     void onButtonBoxAccepted();
-    void clearEmptyAdd();
 
 private:
     Ui::TrackDialog *ui;

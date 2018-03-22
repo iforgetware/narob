@@ -1,15 +1,11 @@
 #ifndef TABLEEDITWIDGETBASE_H
 #define TABLEEDITWIDGETBASE_H
 
-#include <QWidget>
+#include <QPushButton>
 
-#include "modelbase.h"
+#include "tablewidgetbase.h"
 
-namespace Ui {
-class TableEditWidgetBase;
-}
-
-class TableEditWidgetBase : public QWidget
+class TableEditWidgetBase : public TableWidgetBase
 {
     Q_OBJECT
 
@@ -22,16 +18,10 @@ public:
     bool selected();
     int getSelection();
 
-    void setTitle(const QString &title);
-    void hideColumn(const int &column);
-    void setupColumns(const Fields &fields);
-
 protected:
-    Ui::TableEditWidgetBase *ui;
-    ModelBase *mModel;
-
-private:
-    QString mTitle;
+    QPushButton *mAddButton;
+    QPushButton *mEditButton;
+    QPushButton *mDeleteButton;
 };
 
 #endif // TABLEEDITWIDGETBASE_H

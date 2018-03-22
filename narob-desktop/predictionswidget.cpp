@@ -1,11 +1,11 @@
 #include "predictionswidget.h"
 
-PredictionsWidget::PredictionsWidget(PredictionsModel* model,
-                                     QWidget *parent) :
-    TableWidgetBase(parent),
-    mPredictionsModel(model)
+PredictionsWidget::PredictionsWidget(QWidget *parent) :
+    TableWidgetBase(parent)
 {
     setTitle("Predictions");
+
+    mPredictionsModel = new PredictionsModel(ui->tableView);
 
     mModel = mPredictionsModel;
 

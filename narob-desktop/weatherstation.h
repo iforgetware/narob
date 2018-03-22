@@ -3,13 +3,12 @@
 
 #include <QSerialPort>
 #include <QSerialPortInfo>
-#include <QSerialPortInfo>
 #include <QTime>
 #include <QTimer>
 
 #include <QObject>
 
-#include "observationsmodel.h"
+#include "observations.h"
 #include "weathertab.h"
 
 class WeatherTab;

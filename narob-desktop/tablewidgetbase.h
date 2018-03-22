@@ -17,11 +17,6 @@ public:
     explicit TableWidgetBase(QWidget *parent = 0);
     ~TableWidgetBase();
 
-    void initTable();
-
-    bool selected();
-    int getSelection();
-
     void setTitle(const QString &title);
     void hideColumn(const int &column);
     void setupColumns(const Fields &fields);
@@ -29,8 +24,6 @@ public:
 protected:
     Ui::TableWidgetBase *ui;
     ModelBase *mModel;
-
-private:
     QString mTitle;
 };
 

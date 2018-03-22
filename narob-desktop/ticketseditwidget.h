@@ -1,23 +1,20 @@
 #ifndef TICKETSEDITWIDGET_H
 #define TICKETSEDITWIDGET_H
 
-#include "ticketsmodel.h"
+#include "tickets.h"
 #include "ticketsracemodel.h"
 #include "tableeditwidgetbase.h"
-#include "ui_tableeditwidgetbase.h"
+#include "ui_tablewidgetbase.h"
 
-#include "vehicle.h"
-#include "race.h"
-
-using namespace std;
+#include "vehicles.h"
+#include "races.h"
 
 class TicketsEditWidget : public TableEditWidgetBase
 {
     Q_OBJECT
 
 public:
-    explicit TicketsEditWidget(TicketsModel* model,
-                               Vehicle* vehicle,
+    explicit TicketsEditWidget(Vehicle* vehicle,
                                Race* race,
                                QWidget *parent = 0);
 
@@ -25,6 +22,8 @@ private slots:
     void addTicket();
     void editTicket();
     void deleteTicket();
+
+    void updateModels();
 
 private:
     TicketsModel *mTicketsModel;

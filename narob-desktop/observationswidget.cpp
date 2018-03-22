@@ -1,16 +1,17 @@
 #include "observationswidget.h"
 
-ObservationsWidget::ObservationsWidget(ObservationsModel *model, QWidget *parent) :
-    TableWidgetBase(parent),
-    mObservationsModel(model)
+ObservationsWidget::ObservationsWidget(QWidget *parent) :
+    TableDisplayWidgetBase(parent)
 {
     setTitle("Observations");
+
+    mObservationsModel = new ObservationsModel(ui->tableView);
 
     mModel = mObservationsModel;
 
     ui->tableView->setModel(mObservationsModel);
 
-    setupColumns(mObservationsModel->mFields);
+    setupColumns(mObservationsModel->fields());
 
     initTable();
 }
