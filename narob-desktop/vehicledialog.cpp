@@ -29,9 +29,6 @@ VehicleDialog::~VehicleDialog()
 void VehicleDialog::setupModel()
 {
     mVehiclesModel = new VehiclesModel(this);
-    mVehiclesModel->setTable("tracks");
-    mVehiclesModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    mVehiclesModel->select();
 
     mMapper = new QDataWidgetMapper(this);
     mMapper->setModel(mVehiclesModel);

@@ -27,7 +27,7 @@ RaceControlTab::RaceControlTab(Vehicle* vehicle,
                                                         this);
 
     TrackHistoryTab* trackHistoryTab = new TrackHistoryTab(mTicketsModel,
-                                                           mRace->value("trackId"),
+                                                           mRace->value("trackId").toInt(),
                                                            this);
 
 

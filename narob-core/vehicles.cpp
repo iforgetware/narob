@@ -1,14 +1,12 @@
-#include <QSqlQuery>
-#include <QSqlField>
-
 #include "vehicles.h"
 
 Fields setVehicleFields()
 {
     Fields retFields;
 
-    retFields.append(Field("number", "Number", 70, 0));
-    retFields.append(Field("compClass", "Class", 70, 0));
+    retFields.append(Field("id", "id", 0, 0));
+    retFields.append(Field("number", "Number", 70, -4));
+    retFields.append(Field("compClass", "Class", 70, -4));
     retFields.append(Field("weight", "Weight", 70, 0));
 
     return retFields;
@@ -51,9 +49,4 @@ Vehicle* VehiclesModel::getVehicle(const int row)
         vehicle->setValue(field.mColumn, rec.value(field.mColumn));
     }
     return vehicle;
-}
-
-Vehicle* VehiclesModel::firstVehicle()
-{
-    return getVehicle(1);
 }

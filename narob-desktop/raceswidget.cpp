@@ -13,7 +13,7 @@ RacesWidget::RacesWidget(QWidget *parent) :
 
     ui->tableView->setModel(mRacesModel);
 
-    setupColumns(mRacesModel->mFields);
+    setupColumns(mRacesModel->fields());
 
     initTable();
 
@@ -23,16 +23,15 @@ RacesWidget::RacesWidget(QWidget *parent) :
     connect(mEditButton, &QPushButton::clicked,
             this, &RacesWidget::editRace);
 
-    connect(mDeleteButton, &QPushButton::clicked,
-            this, &RacesWidget::deleteRace);
-
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &RacesWidget::editRace);
+
+    hideColumn(mRacesModel->fieldIndex("trackId"));
 }
 
 void RacesWidget::addRace()
 {
-    RaceDialog *raceDialog = new RaceDialog();
+    RaceDialog *raceDialog = new RaceDialog(-1, this);
     connect(raceDialog, &RaceDialog::ready,
             this, &RacesWidget::updateModels);
 
@@ -50,22 +49,6 @@ void RacesWidget::editRace()
 
         raceDialog->exec();
     }
-}
-
-void RacesWidget::deleteRace()
-{
-    if(selected()){
-        int rRow = getSelection();
-
-        mRacesModel->removeRow(rRow);
-        mRacesModel->submitAll();
-        updateModels();
-    }
-}
-
-void RacesWidget::updateModels()
-{
-    mRacesModel->select();
 }
 
 Race* RacesWidget::getSelectedRace()

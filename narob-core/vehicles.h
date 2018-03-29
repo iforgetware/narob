@@ -1,8 +1,6 @@
 #ifndef VEHICLES_H
 #define VEHICLES_H
 
-#include <QSqlRecord>
-
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
 #include "modelbase.h"
@@ -16,14 +14,14 @@ public:
 };
 
 
-class Vehicle : public DbRecordBase
+class NAROBCORESHARED_EXPORT Vehicle : public DbRecordBase
 {
 public:
     explicit Vehicle();
 };
 
 
-class VehiclesModel : public ModelBase
+class NAROBCORESHARED_EXPORT VehiclesModel : public ModelBase
 {
     Q_OBJECT
 

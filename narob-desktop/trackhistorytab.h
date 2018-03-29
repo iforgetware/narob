@@ -3,9 +3,9 @@
 
 #include <QWidget>
 
-#include "vehicle.h"
-#include "track.h"
-#include "ticketsmodel.h"
+#include "vehicles.h"
+#include "tracks.h"
+#include "tickets.h"
 
 namespace Ui {
 class TrackHistoryTab;

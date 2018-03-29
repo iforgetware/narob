@@ -15,12 +15,12 @@ public:
 };
 
 
-class TimeDelegate : public QStyledItemDelegate
+class DateDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 
 public:
-    explicit TimeDelegate(QObject *parent = 0);
+    explicit DateDelegate(QObject *parent = 0);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 

@@ -1,8 +1,6 @@
 #ifndef RACES_H
 #define RACES_H
 
-#include <QSqlRecord>
-
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
 #include "modelbase.h"
@@ -16,14 +14,14 @@ public:
 };
 
 
-class Race : public DbRecordBase
+class NAROBCORESHARED_EXPORT Race : public DbRecordBase
 {
 public:
     explicit Race();
 };
 
 
-class RacesModel : public ModelBase
+class NAROBCORESHARED_EXPORT RacesModel : public ModelBase
 {
     Q_OBJECT
 
@@ -31,7 +29,6 @@ public:
     explicit RacesModel(QObject *parent = 0);
 
     Race *getRace(const int row);
-    Race* firstRace();
 };
 
 #endif // RACES_H

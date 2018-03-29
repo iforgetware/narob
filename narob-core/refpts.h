@@ -1,8 +1,6 @@
 #ifndef REFPTS_H
 #define REFPTS_H
 
-#include <QSqlRecord>
-
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
 #include "modelbase.h"
@@ -16,19 +14,21 @@ public:
 };
 
 
-class RefPT : public DbRecordBase
+class NAROBCORESHARED_EXPORT RefPT : public DbRecordBase
 {
 public:
     explicit RefPT();
 };
 
 
-class RefPTsModel : public ModelBase
+class NAROBCORESHARED_EXPORT RefPTsModel : public ModelBase
 {
     Q_OBJECT
 
 public:
     explicit RefPTsModel(QObject *parent = 0);
+
+    void addRefPT(RefPT refPT);
 };
 
 #endif // REFPTS_H

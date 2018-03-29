@@ -1,6 +1,3 @@
-#include <QSqlQuery>
-#include <QSqlField>
-
 #include "races.h"
 
 Fields setRaceFields()
@@ -8,8 +5,8 @@ Fields setRaceFields()
     Fields retFields;
 
     retFields.append(Field("id", "id", 0, 0));
-    retFields.append(Field("date", "Date", 100, 0));
-    retFields.append(Field("name", "Name", 150, 0));
+    retFields.append(Field("date", "Date", 100, -2));
+    retFields.append(Field("name", "Name", 150, -4));
     retFields.append(Field("trackId", "Track", 150, 0));
 
     return retFields;
@@ -39,7 +36,7 @@ RacesModel::RacesModel(QObject *parent) :
 
     setJoinMode(QSqlRelationalTableModel::LeftJoin);
 
-    setRelation(3, QSqlRelation("tracks", "id", "name"));
+    setRelation(3, QSqlRelation("tracks", "id", "name, trackId as trackId"));
 
     mFields = raceFields;
 
@@ -52,13 +49,10 @@ Race* RacesModel::getRace(const int row)
 {
     QSqlRecord rec = record(row);
     Race *race = new Race();
+    int i = 0;
     foreach (Field field, mFields) {
         race->setValue(field.mColumn, rec.value(field.mColumn));
+        i++;
     }
     return race;
-}
-
-Race* RacesModel::firstRace()
-{
-    return getRace(1);
 }

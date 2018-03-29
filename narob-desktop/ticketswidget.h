@@ -10,7 +10,9 @@ class TicketsWidget : public TableDisplayWidgetBase
     Q_OBJECT
 
 public:
-    explicit TicketsWidget(QWidget* parent = 0);
+    explicit TicketsWidget(TicketsModel *model,
+                           int trackId,
+                           QWidget* parent = 0);
 
 private:
     TicketsModel* mTicketsModel;

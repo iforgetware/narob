@@ -1,8 +1,7 @@
 #ifndef OBSERVATIONS_H
 #define OBSERVATIONS_H
 
-#include <QSqlRecord>
-#include <QSortFilterProxyModel>
+#include <QDateTime>
 
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
@@ -17,23 +16,24 @@ public:
 };
 
 
-class Observation : public DbRecordBase
+class NAROBCORESHARED_EXPORT Observation : public DbRecordBase
 {
 public:
     explicit Observation();
 };
 
 
-class ObservationsModel : public ModelBase
+class NAROBCORESHARED_EXPORT ObservationsModel : public ModelBase
 {
     Q_OBJECT
 
 public:
     explicit ObservationsModel(QObject *parent = 0);
 
+    void addObservation(Observation &observation);
     Observation *getObservation(const int row);
-    Observation* lastObservation();
-    Observation* observationForTime(QDateTime dateTime);
+    Observation *lastObservation();
+    Observation *observationForTime(QDateTime dateTime);
 };
 
 

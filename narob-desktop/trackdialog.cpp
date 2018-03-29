@@ -31,9 +31,6 @@ TrackDialog::~TrackDialog()
 void TrackDialog::setupModel()
 {
     mTracksModel = new TracksModel(this);
-    mTracksModel->setTable("tracks");
-    mTracksModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    mTracksModel->select();
 
     mMapper = new QDataWidgetMapper(this);
     mMapper->setModel(mTracksModel);

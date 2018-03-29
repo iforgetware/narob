@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-TicketsWidget::TicketsWidget(TicketsModel model,
+TicketsWidget::TicketsWidget(TicketsModel *model,
                              int trackId,
                              QWidget* parent) :
     TableDisplayWidgetBase(parent),

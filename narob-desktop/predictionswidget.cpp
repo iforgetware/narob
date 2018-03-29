@@ -1,17 +1,17 @@
 #include "predictionswidget.h"
 
-PredictionsWidget::PredictionsWidget(QWidget *parent) :
-    TableWidgetBase(parent)
+PredictionsWidget::PredictionsWidget(PredictionsModel *model,
+                                     QWidget *parent) :
+    TableDisplayWidgetBase(parent),
+    mPredictionsModel(model)
 {
     setTitle("Predictions");
-
-    mPredictionsModel = new PredictionsModel(ui->tableView);
 
     mModel = mPredictionsModel;
 
     ui->tableView->setModel(mPredictionsModel);
 
-    setupColumns(mPredictionsModel->mFields);
+    setupColumns(mPredictionsModel->fields());
 
     hideColumn(mPredictionsModel->fieldIndex("raceId"));
     hideColumn(mPredictionsModel->fieldIndex("vehicleId"));

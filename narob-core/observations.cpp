@@ -1,6 +1,4 @@
 #include <QSqlQuery>
-#include <QSqlField>
-#include <QSortFilterProxyModel>
 
 #include "observations.h"
 
@@ -49,6 +47,15 @@ ObservationsModel::ObservationsModel(QObject *parent) :
 
     setHeaders();
 
+    setSort(fieldIndex("dateTime"), Qt::DescendingOrder);
+
+    select();
+}
+
+void ObservationsModel::addObservation(Observation &observation)
+{
+    insertRecord(-1, observation);
+    submitAll();
     select();
 }
 

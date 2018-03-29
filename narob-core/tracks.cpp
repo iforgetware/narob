@@ -1,6 +1,3 @@
-#include <QSqlQuery>
-#include <QSqlField>
-
 #include "tracks.h"
 
 Fields setTrackFields()
@@ -53,9 +50,4 @@ Track* TracksModel::getTrack(const int row)
         track->setValue(field.mColumn, rec.value(field.mColumn));
     }
     return track;
-}
-
-Track* TracksModel::firstTrack()
-{
-    return getTrack(1);
 }

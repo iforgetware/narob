@@ -40,7 +40,7 @@ void TableWidgetBase::setupColumns(const Fields &fields)
 
         case -2:
             ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
-                                                    new TimeDelegate(this));
+                                                    new DateDelegate(this));
             break;
 
         case -1:

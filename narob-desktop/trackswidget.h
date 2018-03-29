@@ -12,14 +12,9 @@ class TracksWidget : public TableEditWidgetBase
 public:
     explicit TracksWidget(QWidget *parent = 0);
 
-    Track* getSelectedTrack();
-
 private slots:
     void addTrack();
     void editTrack();
-    void deleteTrack();
-
-    void updateModels();
 
 private:
     TracksModel *mTracksModel;

@@ -10,7 +10,8 @@ class PredictionsWidget : public TableDisplayWidgetBase
     Q_OBJECT
 
 public:
-    explicit PredictionsWidget(QWidget* parent = 0);
+    explicit PredictionsWidget(PredictionsModel *model,
+                               QWidget* parent = 0);
 
 private:
     PredictionsModel* mPredictionsModel;

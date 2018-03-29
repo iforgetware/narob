@@ -43,9 +43,9 @@ void DatabaseManager::debugQuery(const QSqlQuery& query)
 
 void DatabaseManager::clearDatabase() // DEV ONLY
 {
-    QSqlQuery query(mDatabase->database());
+    QSqlQuery query;
 
-    QStringList tables = mDatabase->tables();
+    QStringList tables = mDatabase.tables();
 
     foreach (QString table, tables){
         if(table != "settings"){

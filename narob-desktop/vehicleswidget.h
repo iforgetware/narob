@@ -1,9 +1,9 @@
 #ifndef VEHICLESWIDGET_H
 #define VEHICLESWIDGET_H
 
-#include "vehiclesmodel.h"
+#include "vehicles.h"
 #include "tableeditwidgetbase.h"
-#include "ui_tableeditwidgetbase.h"
+#include "ui_tablewidgetbase.h"
 
 class VehiclesWidget : public TableEditWidgetBase
 {
@@ -17,7 +17,6 @@ public:
 private slots:
     void addVehicle();
     void editVehicle();
-    void deleteVehicle();
 
 private:
     VehiclesModel *mVehiclesModel;

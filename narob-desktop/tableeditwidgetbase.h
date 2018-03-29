@@ -18,6 +18,10 @@ public:
     bool selected();
     int getSelection();
 
+    void deleteSelectedRow();
+
+    void updateModels();
+
 protected:
     QPushButton *mAddButton;
     QPushButton *mEditButton;

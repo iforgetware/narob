@@ -1,6 +1,3 @@
-#include <QSqlQuery>
-#include <QSqlField>
-
 #include "refpts.h"
 
 Fields setRefPTFields()
@@ -37,5 +34,12 @@ RefPTsModel::RefPTsModel(QObject *parent) :
 {
     setTable("refPTs");
 
+    select();
+}
+
+void RefPTsModel::addRefPT(RefPT refPT)
+{
+    insertRecord(-1, refPT);
+    submitAll();
     select();
 }

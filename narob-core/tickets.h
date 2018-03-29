@@ -1,7 +1,7 @@
 #ifndef TICKETS_H
 #define TICKETS_H
 
-#include <QSqlRecord>
+#include <QVector>
 
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
@@ -17,21 +17,21 @@ public:
 };
 
 
-class Ticket : public DbRecordBase
+class NAROBCORESHARED_EXPORT Ticket : public DbRecordBase
 {
 public:
     explicit Ticket();
 };
 
 
-class TicketsModel : public ModelBase
+class NAROBCORESHARED_EXPORT TicketsModel : public ModelBase
 {
     Q_OBJECT
 
 public:
     explicit TicketsModel(Vehicle *vehicle,
                           QObject *parent = 0);
-
+    QVector<Ticket*> tickets();
 
 private:
     Vehicle *mVehicle;

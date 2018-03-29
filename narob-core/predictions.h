@@ -1,13 +1,12 @@
 #ifndef PREDICTIONS_H
 #define PREDICTIONS_H
 
-#include <QSqlRecord>
-
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
 #include "modelbase.h"
-#include "vehicle.h"
-#include "race.h"
+
+#include "vehicles.h"
+#include "races.h"
 
 #include "narob-core_global.h"
 
@@ -18,14 +17,14 @@ public:
 };
 
 
-class Prediction : public DbRecordBase
+class NAROBCORESHARED_EXPORT Prediction : public DbRecordBase
 {
 public:
     explicit Prediction();
 };
 
 
-class PredictionsModel : public ModelBase
+class NAROBCORESHARED_EXPORT PredictionsModel : public ModelBase
 {
     Q_OBJECT
 
@@ -33,9 +32,7 @@ public:
     explicit PredictionsModel(Vehicle *vehicle,
                               Race *race,
                               QObject *parent = 0);
-    void updatePrediction(Prediction *prediction);
-
-//    Prediction *getPrediction(const int row);
+    void addPrediction(Prediction &prediction);
 
 private:
     Vehicle *mVehicle;

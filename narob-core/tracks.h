@@ -1,8 +1,6 @@
 #ifndef TRACKS_H
 #define TRACKS_H
 
-#include <QSqlRecord>
-
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
 #include "modelbase.h"
@@ -16,14 +14,14 @@ public:
 };
 
 
-class Track : public DbRecordBase
+class NAROBCORESHARED_EXPORT Track : public DbRecordBase
 {
 public:
     explicit Track();
 };
 
 
-class TracksModel : public ModelBase
+class NAROBCORESHARED_EXPORT TracksModel : public ModelBase
 {
     Q_OBJECT
 
@@ -31,7 +29,6 @@ public:
     explicit TracksModel(QObject *parent = 0);
 
     Track *getTrack(const int row);
-    Track* firstTrack();
 };
 
 #endif // TRACKS_H
