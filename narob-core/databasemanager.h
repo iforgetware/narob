@@ -16,7 +16,7 @@ class QSqlQuery;
 
 const QString DATABASE_FILENAME = "narob.sqlite";
 
-class DatabaseManager : public QObject
+class NAROBCORESHARED_EXPORT DatabaseManager : public QObject
 {
     Q_OBJECT
 
@@ -28,6 +28,9 @@ public:
 
 private:
     QSqlDatabase mDatabase;
+    void clearDatabase();
+//    void populateTracks();
+//    void populateTables();
 
 public:
     Tracks tracks;

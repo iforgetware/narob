@@ -1,7 +1,7 @@
 #ifndef WEATHERTAB_H
 #define WEATHERTAB_H
 
-#include "observationsmodel.h"
+#include "observations.h"
 #include "observationswidget.h"
 #include "weatherstation.h"
 
@@ -27,7 +27,6 @@ signals:
 
 private:
     Ui::WeatherTab *ui;
-
     void startWeatherStation();
 
     ObservationsModel *mObservationsModel;

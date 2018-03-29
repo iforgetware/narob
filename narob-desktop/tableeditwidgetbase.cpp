@@ -45,6 +45,9 @@ void TableEditWidgetBase::initTable()
 
     ui->gridLayout->addWidget(buttonFrame);
 
+    connect(mDeleteButton, &QPushButton::clicked,
+            this, &TableEditWidgetBase::deleteSelectedRow);
+
     show();
 }
 
@@ -60,4 +63,18 @@ int TableEditWidgetBase::getSelection()
     }else{
         return 0;
     }
+}
+
+void TableEditWidgetBase::deleteSelectedRow()
+{
+    if(selected()){
+        mModel->removeRow(getSelection());
+        mModel->submitAll();
+        updateModels();
+    }
+}
+
+void TableEditWidgetBase::updateModels()
+{
+    mModel->select();
 }

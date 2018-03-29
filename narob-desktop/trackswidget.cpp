@@ -23,16 +23,13 @@ TracksWidget::TracksWidget(QWidget *parent) :
     connect(mEditButton, &QPushButton::clicked,
             this, &TracksWidget::editTrack);
 
-    connect(mDeleteButton, &QPushButton::clicked,
-            this, &TracksWidget::deleteTrack);
-
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &TracksWidget::editTrack);
 }
 
 void TracksWidget::addTrack()
 {
-    TrackDialog *trackDialog = new TrackDialog();
+    TrackDialog *trackDialog = new TrackDialog(-1, this);
     connect(trackDialog, &TrackDialog::ready,
             this, &TracksWidget::updateModels);
 
@@ -44,31 +41,10 @@ void TracksWidget::editTrack()
     if(selected()){
         int tRow = getSelection();
 
-        TrackDialog *trackDialog = new TrackDialog(tRow);
+        TrackDialog *trackDialog = new TrackDialog(tRow, this);
         connect(trackDialog, &TrackDialog::ready,
                 this, &TracksWidget::updateModels);
 
         trackDialog->exec();
     }
-}
-
-void TracksWidget::deleteTrack()
-{
-    if(selected()){
-        int tRow = getSelection();
-
-        mTracksModel->removeRow(tRow);
-        mTracksModel->submitAll();
-        updateModels();
-    }
-}
-
-void TracksWidget::updateModels()
-{
-    mTracksModel->select();
-}
-
-Track* TracksWidget::getSelectedTrack()
-{
-    return mTracksModel->getTrack(getSelection());
 }

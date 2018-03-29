@@ -2,35 +2,33 @@
 
 #include "vehicledialog.h"
 
-VehiclesWidget::VehiclesWidget(QWidget *parent) : TableEditWidgetBase(parent)
+VehiclesWidget::VehiclesWidget(QWidget *parent) :
+    TableEditWidgetBase(parent)
 {
     setTitle("Vehicles");
 
     mVehiclesModel = new VehiclesModel(ui->tableView);
 
-    // are both of these needed?
-
     mModel = mVehiclesModel;
 
     ui->tableView->setModel(mVehiclesModel);
 
-    connect(ui->addButton, &QPushButton::clicked,
-            this, &VehiclesWidget::addVehicle);
-
-    connect(ui->editButton, &QPushButton::clicked,
-            this, &VehiclesWidget::editVehicle);
-
-    connect(ui->deleteButton, &QPushButton::clicked,
-            this, &VehiclesWidget::deleteVehicle);
-
-    setupColumns(mVehiclesModel->mFields);
+    setupColumns(mVehiclesModel->fields());
 
     initTable();
+
+    connect(mAddButton, &QPushButton::clicked,
+            this, &VehiclesWidget::addVehicle);
+
+    connect(mEditButton, &QPushButton::clicked,
+            this, &VehiclesWidget::editVehicle);
 }
 
 void VehiclesWidget::addVehicle()
 {
-    VehicleDialog *vehicleDialog = new VehicleDialog(mVehiclesModel, -1, this);
+    VehicleDialog *vehicleDialog = new VehicleDialog(-1, this);
+    connect(vehicleDialog, &VehicleDialog::ready,
+            this, &VehiclesWidget::updateModels);
 
     vehicleDialog->exec();
 }
@@ -40,19 +38,11 @@ void VehiclesWidget::editVehicle()
     if(selected()){
         int tRow = getSelection();
 
-        VehicleDialog *vehicleDialog = new VehicleDialog(mVehiclesModel, tRow, this);
+        VehicleDialog *vehicleDialog = new VehicleDialog(tRow, this);
+        connect(vehicleDialog, &VehicleDialog::ready,
+                this, &VehiclesWidget::updateModels);
 
         vehicleDialog->exec();
-    }
-}
-
-void VehiclesWidget::deleteVehicle()
-{
-    if(selected()){
-        int tRow = getSelection();
-
-        mVehiclesModel->removeRow(tRow);
-        mVehiclesModel->select();
     }
 }
 

@@ -28,12 +28,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     databasemanager.cpp \
     modelbase.cpp \
-    ticket.cpp \
-    ticketdao.cpp \
-    ticketsmodel.cpp \
-    settings.cpp \
-    settingsdao.cpp \
-    settingsmodel.cpp \
+#    settings.cpp \
+#    settingsdao.cpp \
+#    settingsmodel.cpp \
     ticketsracemodel.cpp \
     ticketstrackmodel.cpp \
     dbtablebase.cpp \
@@ -45,19 +42,14 @@ SOURCES += \
     predictions.cpp \
     refpts.cpp \
     tracks.cpp
-#    prediction.cpp \
-#    predictiondao.cpp \
-#    predictionsmodel.cpp \
-#    refpt.cpp \
-#    refptdao.cpp
 
 HEADERS += \
     databasemanager.h \
     narob-core_global.h \
     modelbase.h \
-    settings.h \
-    settingsdao.h \
-    settingsmodel.h \
+#    settings.h \
+#    settingsdao.h \
+#    settingsmodel.h \
     ticketsracemodel.h \
     ticketstrackmodel.h \
     dbtablebase.h \
@@ -69,8 +61,3 @@ HEADERS += \
     predictions.h \
     refpts.h \
     tracks.h
-#    prediction.h \
-#    predictiondao.h \
-#    predictionsmodel.h \
-#    refpt.h \
-#    refptdao.h

@@ -31,9 +31,6 @@ TrackDialog::~TrackDialog()
 void TrackDialog::setupModel()
 {
     mTracksModel = new TracksModel(this);
-    mTracksModel->setTable("tracks");
-    mTracksModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    mTracksModel->select();
 
     mMapper = new QDataWidgetMapper(this);
     mMapper->setModel(mTracksModel);
@@ -53,6 +50,7 @@ void TrackDialog::createUi()
 
 void TrackDialog::onButtonBoxAccepted()
 {
+    qDebug("track dialog accepted");
     mMapper->submit();
     mTracksModel->submitAll();
     emit ready();

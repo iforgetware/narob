@@ -1,42 +1,41 @@
+#include    <QDebug>
+
 #include "ticketseditwidget.h"
 
 #include "ticketdialog.h"
 
-#include "delegates.h"
-
-TicketsEditWidget::TicketsEditWidget(Vehicle *vehicle,
+TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
+                                     Vehicle *vehicle,
                                      Race *race,
                                      QWidget *parent) :
     TableEditWidgetBase(parent),
+    mTicketsModel(model),
     mVehicle(vehicle),
     mRace(race)
 {
     setTitle("Tickets");
 
-    mTicketsModel = new TicketsModel(mVehicle, ui->tableView);
+    //mTicketsModel = new TicketsModel(mVehicle, ui->tableView);
 
     mModel = mTicketsModel;
 
-    mTicketsRaceModel = new TicketsRaceModel(mRace->value("id"), this);
+    mTicketsRaceModel = new TicketsRaceModel(mRace->value("id").toInt(), this);
     mTicketsRaceModel->setSourceModel(mTicketsModel);
 
     ui->tableView->setModel(mTicketsRaceModel);
 
-    setupColumns(mTicketsModel->mFields);
+    setupColumns(mTicketsModel->fields());
 
     initTable();
 
-    connect(ui->addButton, &QPushButton::clicked,
+    connect(mAddButton, &QPushButton::clicked,
             this, &TicketsEditWidget::addTicket);
 
-    connect(ui->editButton, &QPushButton::clicked,
+    connect(mEditButton, &QPushButton::clicked,
             this, &TicketsEditWidget::editTicket);
 
-    connect(ui->deleteButton, &QPushButton::clicked,
-            this, &TicketsEditWidget::deleteTicket);
-
     connect(ui->tableView, &QTableView::doubleClicked,
-            this, &TicketsEditWidget::editTrack);
+            this, &TicketsEditWidget::editTicket);
 
     hideColumn(mTicketsModel->fieldIndex("vehicleId"));
     hideColumn(mTicketsModel->fieldIndex("trackId"));
@@ -70,20 +69,4 @@ void TicketsEditWidget::editTicket()
 
         ticketDialog->exec();
     }
-}
-
-void TicketsEditWidget::deleteTicket()
-{
-    if(selected()){
-        int tRow = getSelection();
-
-        mTicketsRaceModel->removeRow(tRow);
-        mTicketsModel->select();
-        updateModels();
-    }
-}
-
-void TicketsEditWidget::updateModels()
-{
-    mTicketsModel->select();
 }

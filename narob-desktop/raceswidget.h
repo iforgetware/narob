@@ -17,9 +17,6 @@ public:
 private slots:
     void addRace();
     void editRace();
-    void deleteRace();
-
-    void updateModels();
 
 private:
     RacesModel *mRacesModel;

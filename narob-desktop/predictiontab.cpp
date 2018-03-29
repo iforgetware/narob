@@ -47,8 +47,7 @@ PredictionTab::PredictionTab(TicketsModel* model,
 
     ui->setupUi(this);
 
-    PredictionsWidget *predictionsWidget = new PredictionsWidget(mVehicle,
-                                                                 mRace,
+    PredictionsWidget *predictionsWidget = new PredictionsWidget(mPredictionsModel,
                                                                  this);
 
     ui->gridLayout_2->addWidget(predictionsWidget, 0, 0);
@@ -93,10 +92,8 @@ void PredictionTab::makeAutoPrediction()
 {
     Prediction prediction;
 
-    mPredictionsModel->addPrediction(prediction);
-
-    prediction.setValue("vehicleId", mVehicle->value("id"));
-    prediction.setValue("raceId", mRace->value("id"));
+    prediction.setValue("vehicleId", mVehicle->value("id").toInt());
+    prediction.setValue("raceId", mRace->value("id").toInt());
     prediction.setValue("riderWeight", ui->riderWeightEdit->text().toDouble());
     prediction.setValue("vehicleWeight", ui->vehicleWeightEdit->text().toDouble());
 
@@ -107,9 +104,7 @@ void PredictionTab::makeAutoPrediction()
     predictEighth(prediction);
     predictQuarter(prediction);
 
-    mPredictionsModel->updatePrediction(prediction);
-
-    mPredictionsModel->select();
+    mPredictionsModel->addPrediction(prediction);
 
     if(ui->eToPhoneCheckBox->isChecked() ||
        ui->qToPhoneCheckBox->isChecked()){

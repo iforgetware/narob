@@ -7,6 +7,7 @@
 #include "tickets.h"
 #include "vehicles.h"
 #include "races.h"
+#include "tracks.h"
 
 namespace Ui {
 class TicketDialog;
@@ -32,7 +33,8 @@ private slots:
 private:
     Ui::TicketDialog *ui;
     TicketsModel *mTicketsModel;
-    Vehicle mVehicle;
+    Vehicle *mVehicle;
+    Race *mRace;
 
     QDataWidgetMapper *mMapper;
 

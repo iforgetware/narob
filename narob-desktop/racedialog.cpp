@@ -31,10 +31,7 @@ RaceDialog::~RaceDialog()
 
 void RaceDialog::setupModel()
 {
-    mRacesModel = new QSqlTableModel(this);
-    mRacesModel->setTable("tracks");
-    mRacesModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    mRacesModel->select();
+    mRacesModel = new RacesModel(this);
 
     mMapper = new QDataWidgetMapper(this);
 

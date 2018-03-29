@@ -14,16 +14,14 @@ class TicketsEditWidget : public TableEditWidgetBase
     Q_OBJECT
 
 public:
-    explicit TicketsEditWidget(Vehicle* vehicle,
+    explicit TicketsEditWidget(TicketsModel *model,
+                               Vehicle* vehicle,
                                Race* race,
                                QWidget *parent = 0);
 
 private slots:
     void addTicket();
     void editTicket();
-    void deleteTicket();
-
-    void updateModels();
 
 private:
     TicketsModel *mTicketsModel;

@@ -5,8 +5,8 @@
 #include <QDebug>
 #include <QSqlRecord>
 
-#include "racesmodel.h"
-#include "tracksmodel.h"
+#include "races.h"
+#include "tracks.h"
 
 BoolDelegate::BoolDelegate(QObject *parent):
     QStyledItemDelegate(parent)
@@ -25,16 +25,16 @@ QString BoolDelegate::displayText(const QVariant &value, const QLocale &locale) 
 }
 
 
-TimeDelegate::TimeDelegate(QObject *parent):
+DateDelegate::DateDelegate(QObject *parent):
     QStyledItemDelegate(parent)
 {
 }
 
-QString TimeDelegate::displayText(const QVariant &value, const QLocale &locale) const
+QString DateDelegate::displayText(const QVariant &value, const QLocale &locale) const
 {
-    QString formattedTime = locale.toString(value.toTime(), "h:mmA");
+    QString formattedDate = locale.toString(value.toDate(), "M/d/yyyy");
 
-    return formattedTime;
+    return formattedDate;
 }
 
 
@@ -100,7 +100,7 @@ QString RaceColumnDelegate::displayText(const QVariant &value, const QLocale &lo
     Q_UNUSED(locale);
 
     RacesModel* racesModel = new RacesModel();
-    return racesModel->raceName(value.toInt());
+    return racesModel->getRace(value.toInt())->value("name").toString();
 }
 
 
@@ -114,5 +114,5 @@ QString TrackColumnDelegate::displayText(const QVariant &value, const QLocale &l
     Q_UNUSED(locale);
 
     TracksModel* tracksModel = new TracksModel();
-    return tracksModel->trackName(value.toInt());
+    return tracksModel->getTrack(value.toInt())->value("name").toString();
 }

@@ -50,7 +50,9 @@ void MainWindow::handleOpenRaceControl(Vehicle* vehicle, Race* race)
     RaceControlTab *raceControlTab = new RaceControlTab(vehicle, race, this);
 
     ui->tabWidget->addTab(raceControlTab,
-                          vehicle->value("number") + " @ " + race->value("name"));
+                          vehicle->value("number").toString()
+                          + " @ "
+                          + race->value("name").toString());
 
     ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(raceControlTab));
 }

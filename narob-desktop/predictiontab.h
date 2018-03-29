@@ -30,10 +30,10 @@ public:
     ~PredictionTab();
 
 private:
-    void getWeather(Prediction* prediction);
+    void getWeather(Prediction &prediction);
     QVector<Ticket*> validTickets(const QString &distance);
-    void predictEighth(Prediction *prediction);
-    void predictQuarter(Prediction *prediction);
+    void predictEighth(Prediction &prediction);
+    void predictQuarter(Prediction &prediction);
     double windCorrection(int windSpeed, int windDirection);
     double weightCorrection(double w1, double w2);
 
@@ -50,7 +50,7 @@ private:
 private slots:
     void resetTimer(int);
     void makeAutoPrediction();
-    void sendPage(const Prediction *prediction);
+    void sendPage(const Prediction &prediction);
     void mailSent(QString);
 };
 

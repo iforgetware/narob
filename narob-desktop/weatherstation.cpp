@@ -174,15 +174,15 @@ void WeatherStation::writeToDB()
                             "Wind Speed: %7      "
                             "Wind Gust: %8      "
                             "Wind Direction: %9")
-                    .arg(o.value("temperature"))
-                    .arg(o.value("humidity"))
-                    .arg(o.value("pressure"))
-                    .arg(o.value("vaporPressure"))
-                    .arg(o.value("dewPoint"))
-                    .arg(o.value("densityAltitude"))
-                    .arg(o.value("windSpeed"))
-                    .arg(o.value("windGust"))
-                    .arg(o.value("windDirection")));
+                    .arg(o.value("temperature").toDouble())
+                    .arg(o.value("humidity").toDouble())
+                    .arg(o.value("pressure").toDouble())
+                    .arg(o.value("vaporPressure").toDouble())
+                    .arg(o.value("dewPoint").toDouble())
+                    .arg(o.value("densityAltitude").toInt())
+                    .arg(o.value("windSpeed").toInt())
+                    .arg(o.value("windGust").toInt())
+                    .arg(o.value("windDirection").toInt()));
 
     mTemps = 0;
     mHums = 0;
