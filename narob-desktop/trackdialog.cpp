@@ -50,7 +50,6 @@ void TrackDialog::createUi()
 
 void TrackDialog::onButtonBoxAccepted()
 {
-    qDebug("track dialog accepted");
     mMapper->submit();
     mTracksModel->submitAll();
     emit ready();

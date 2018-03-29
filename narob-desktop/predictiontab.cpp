@@ -148,16 +148,19 @@ QVector<Ticket*> PredictionTab::validTickets(const QString &distance)
     bool valid;
 
     foreach(Ticket* ticket, mTicketsModel->tickets()){
-        valid = false;
+        valid = true;
 
         if(!ui->vehicleTicketsCheckBox->isChecked()){
-           valid = ticket->value("trackId") == mRace->value("trackId");
+            valid = ticket->value("trackId") == mRace->value("trackId");
+
+            if(!ui->trackTicketsCheckBox->isChecked()){
+                valid = ticket->value("raceId") == mRace->value("id");
+            }
         }
 
-        if(!ui->trackTicketsCheckBox->isChecked()){
-           valid = ticket->value("raceId") == mRace->value("id");
-        }
-
+        qDebug("before distance checks");
+        qDebug() << distance;
+        qDebug() << valid;
         if(valid){
             if(distance == "eighth"){
                 valid = ticket->value("eighthGood").toBool();
@@ -167,6 +170,8 @@ QVector<Ticket*> PredictionTab::validTickets(const QString &distance)
                 valid = ticket->value("quarterGood").toBool();
             }
         }
+        qDebug("after distance checks");
+        qDebug() << valid;
 
         if(valid){
             tickets.append(ticket);
