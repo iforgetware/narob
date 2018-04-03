@@ -67,6 +67,7 @@ void MainWindow::handleCloseTab(int index)
     if(index != ui->tabWidget->indexOf(ui->dashboardTab)
        && index != ui->tabWidget->indexOf(ui->weatherTab)
        && index != ui->tabWidget->indexOf(ui->settingsTab)){
+        delete ui->tabWidget->currentWidget();
         ui->tabWidget->removeTab(index);
     }
 }

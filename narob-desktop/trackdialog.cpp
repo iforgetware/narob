@@ -11,6 +11,8 @@ TrackDialog::TrackDialog(int row, QWidget *parent) :
 
     setupModel();
 
+    createUi();
+
     if(row == -1){
         mTracksModel->insertRow(mTracksModel->rowCount(QModelIndex()));
         mMapper->toLast();
@@ -19,8 +21,6 @@ TrackDialog::TrackDialog(int row, QWidget *parent) :
     }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &TrackDialog::onButtonBoxAccepted);
-
-    createUi();
 }
 
 TrackDialog::~TrackDialog()

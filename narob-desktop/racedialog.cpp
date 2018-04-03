@@ -12,6 +12,8 @@ RaceDialog::RaceDialog(int row, QWidget *parent) :
 
     setupModel();
 
+    createUi();
+
     if(row == -1){
         mRacesModel->insertRow(mRacesModel->rowCount(QModelIndex()));
         mMapper->toLast();
@@ -20,8 +22,6 @@ RaceDialog::RaceDialog(int row, QWidget *parent) :
     }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &RaceDialog::onButtonBoxAccepted);
-
-    createUi();
 }
 
 RaceDialog::~RaceDialog()

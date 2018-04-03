@@ -9,6 +9,8 @@ VehicleDialog::VehicleDialog(int row, QWidget *parent) :
 
     setupModel();
 
+    createUi();
+
     if(row == -1){
         mVehiclesModel->insertRow(mVehiclesModel->rowCount(QModelIndex()));
         mMapper->toLast();
@@ -17,8 +19,6 @@ VehicleDialog::VehicleDialog(int row, QWidget *parent) :
     }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &VehicleDialog::onButtonBoxAccepted);
-
-    createUi();
 }
 
 VehicleDialog::~VehicleDialog()

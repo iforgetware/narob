@@ -100,7 +100,7 @@ QString RaceColumnDelegate::displayText(const QVariant &value, const QLocale &lo
     Q_UNUSED(locale);
 
     RacesModel* racesModel = new RacesModel();
-    return racesModel->getRace(value.toInt())->value("name").toString();
+    return racesModel->raceForId(value.toInt())->value("name").toString();
 }
 
 
@@ -114,5 +114,5 @@ QString TrackColumnDelegate::displayText(const QVariant &value, const QLocale &l
     Q_UNUSED(locale);
 
     TracksModel* tracksModel = new TracksModel();
-    return tracksModel->getTrack(value.toInt())->value("name").toString();
+    return tracksModel->trackForId(value.toInt())->value("name").toString();
 }

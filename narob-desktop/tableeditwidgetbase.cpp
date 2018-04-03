@@ -65,6 +65,15 @@ int TableEditWidgetBase::getSelection()
     }
 }
 
+QModelIndex TableEditWidgetBase::getSelectionIndex()
+{
+    if(selected()){
+        return ui->tableView->selectionModel()->currentIndex();
+    }else{
+        return QModelIndex();
+    }
+}
+
 void TableEditWidgetBase::deleteSelectedRow()
 {
     if(selected()){

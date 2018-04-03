@@ -1,3 +1,5 @@
+#include <QSqlQuery>
+
 #include "races.h"
 
 Fields setRaceFields()
@@ -54,5 +56,26 @@ Race* RacesModel::getRace(const int row)
         race->setValue(field.mColumn, rec.value(field.mColumn));
         i++;
     }
+    return race;
+}
+
+Race *RacesModel::raceForId(const int id)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM races "
+                  "WHERE id = :id");
+    query.bindValue(":id", id);
+
+    query.exec();
+
+    Race *race = new Race();
+
+    if(query.next()){
+
+        foreach (Field field, mFields) {
+            race->setValue(field.mColumn, query.value(field.mColumn));
+        }
+    }
+
     return race;
 }

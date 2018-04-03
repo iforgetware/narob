@@ -76,6 +76,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
         <property name="maximum">
          <number>15</number>
         </property>
@@ -225,8 +228,18 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>makePredictionButton</tabstop>
+  <tabstop>minutesSpinBox</tabstop>
+  <tabstop>trackTicketsCheckBox</tabstop>
+  <tabstop>vehicleTicketsCheckBox</tabstop>
+  <tabstop>windFactorSpinBox</tabstop>
   <tabstop>eToPhoneCheckBox</tabstop>
   <tabstop>qToPhoneCheckBox</tabstop>
+  <tabstop>textNumberEdit</tabstop>
+  <tabstop>vehicleWeightEdit</tabstop>
+  <tabstop>riderWeightEdit</tabstop>
+  <tabstop>weightFactorSpinBox</tabstop>
+  <tabstop>textProviderComboBox</tabstop>
  </tabstops>
  <resources/>
  <connections/>

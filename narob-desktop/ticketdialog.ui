@@ -283,6 +283,18 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>dateTimeEdit</tabstop>
+  <tabstop>laneComboBox</tabstop>
+  <tabstop>reactionEdit</tabstop>
+  <tabstop>sixtyEdit</tabstop>
+  <tabstop>threeThirtyEdit</tabstop>
+  <tabstop>eighthEdit</tabstop>
+  <tabstop>eighthGoodCheckBox</tabstop>
+  <tabstop>eighthMPHEdit</tabstop>
+  <tabstop>thousandEdit</tabstop>
+  <tabstop>quarterEdit</tabstop>
+  <tabstop>quarterGoodCheckBox</tabstop>
+  <tabstop>quarterMPHEdit</tabstop>
   <tabstop>dialEdit</tabstop>
   <tabstop>delayEdit</tabstop>
   <tabstop>vehicleWeightEdit</tabstop>

@@ -46,10 +46,11 @@ private:
     TicketsModel* mTicketsModel;
     ObservationsModel* mObservationsModel;
     RefPTsModel* mRefPTsModel;
+    QVector<RefPT> mRefPTList;
 
 private slots:
     void resetTimer(int);
-    void makeAutoPrediction();
+    void makePrediction();
     void sendPage(const Prediction &prediction);
     void mailSent(QString);
 };

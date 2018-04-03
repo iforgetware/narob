@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "predictions.h"
 
 Fields setPredictionFields()

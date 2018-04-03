@@ -15,7 +15,7 @@ Fields setTicketFields()
 
     retFields.append(Field("lane", "Lane", 50, 0));
     retFields.append(Field("delay", "Delay", 50, 3));
-    retFields.append(Field("reaction", "R/T", 50, 3));
+    retFields.append(Field("reaction", "R/T", 60, 3));
     retFields.append(Field("sixty", "60'", 50, 3));
     retFields.append(Field("threeThirty", "330'", 50, 3));
     retFields.append(Field("eighth", "1/8", 50, 3));

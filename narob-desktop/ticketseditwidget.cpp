@@ -58,7 +58,8 @@ void TicketsEditWidget::addTicket()
 void TicketsEditWidget::editTicket()
 {
     if(selected()){
-        int tRow = getSelection();
+        QModelIndex tPIndex = getSelectionIndex();
+        int tRow = mTicketsRaceModel->mapToSource(tPIndex).row();
 
         TicketDialog *ticketDialog = new TicketDialog(mVehicle,
                                                       mRace,

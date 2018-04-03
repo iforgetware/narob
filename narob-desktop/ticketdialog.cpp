@@ -17,6 +17,8 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
 
     setupModel();
 
+    createUi();
+
     if(row == -1){
         mTicketsModel->insertRow(mTicketsModel->rowCount(QModelIndex()));
 
@@ -44,8 +46,6 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
     connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &TicketDialog::dateTimeChanged);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &TicketDialog::onButtonBoxAccepted);
-
-    createUi();
 }
 
 TicketDialog::~TicketDialog()

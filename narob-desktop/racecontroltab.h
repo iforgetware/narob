@@ -6,6 +6,7 @@
 #include "vehicles.h"
 #include "races.h"
 #include "tickets.h"
+#include "predictiontab.h"
 
 namespace Ui {
 class RaceControlTab;
@@ -25,6 +26,7 @@ private:
     Vehicle* mVehicle;
     Race* mRace;
     TicketsModel* mTicketsModel;
+    PredictionTab *mPredictionTab;
 
 signals:
 };

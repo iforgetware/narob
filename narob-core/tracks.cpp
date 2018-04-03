@@ -1,3 +1,5 @@
+#include <QSqlQuery>
+
 #include "tracks.h"
 
 Fields setTrackFields()
@@ -50,4 +52,26 @@ Track* TracksModel::getTrack(const int row)
         track->setValue(field.mColumn, rec.value(field.mColumn));
     }
     return track;
+}
+
+Track *TracksModel::trackForId(const int id)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM tracks "
+                  "WHERE id = :id");
+    query.bindValue(":id", id);
+
+    query.exec();
+
+    Track *track = new Track();
+
+    if(query.next()){
+
+        foreach (Field field, mFields) {
+            track->setValue(field.mColumn, query.value(field.mColumn));
+        }
+    }
+
+    return track;
+
 }

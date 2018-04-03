@@ -37,7 +37,7 @@ RefPTsModel::RefPTsModel(QObject *parent) :
     select();
 }
 
-void RefPTsModel::addRefPT(RefPT refPT)
+void RefPTsModel::addRefPT(RefPT &refPT)
 {
     insertRecord(-1, refPT);
     submitAll();

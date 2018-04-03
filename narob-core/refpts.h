@@ -28,7 +28,7 @@ class NAROBCORESHARED_EXPORT RefPTsModel : public ModelBase
 public:
     explicit RefPTsModel(QObject *parent = 0);
 
-    void addRefPT(RefPT refPT);
+    void addRefPT(RefPT &refPT);
 };
 
 #endif // REFPTS_H

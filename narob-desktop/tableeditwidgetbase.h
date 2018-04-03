@@ -17,6 +17,7 @@ public:
 
     bool selected();
     int getSelection();
+    QModelIndex getSelectionIndex();
 
     void deleteSelectedRow();
 

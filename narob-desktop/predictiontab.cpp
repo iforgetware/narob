@@ -1,4 +1,5 @@
 #include <QDataWidgetMapper>
+#include <QSqlQuery>
 
 #include "predictiontab.h"
 #include "ui_predictiontab.h"
@@ -66,11 +67,11 @@ PredictionTab::PredictionTab(TicketsModel* model,
     connect(mAutoTimer,
             &QTimer::timeout,
             this,
-            &PredictionTab::makeAutoPrediction);
+            &PredictionTab::makePrediction);
     connect(ui->makePredictionButton,
             &QPushButton::clicked,
             this,
-            &PredictionTab::makeAutoPrediction);
+            &PredictionTab::makePrediction);
     connect(ui->minutesSpinBox,
             static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
             this,
@@ -88,7 +89,7 @@ void PredictionTab::resetTimer(int i)
     mAutoTimer->start(i * 60000);
 }
 
-void PredictionTab::makeAutoPrediction()
+void PredictionTab::makePrediction()
 {
     Prediction prediction;
 
@@ -106,6 +107,15 @@ void PredictionTab::makeAutoPrediction()
 
     mPredictionsModel->addPrediction(prediction);
 
+    int predictionId = mPredictionsModel->query().lastInsertId().toInt();
+
+    foreach(RefPT refPT, mRefPTList){
+        refPT.setValue("predictionId", predictionId);
+        mRefPTsModel->addRefPT(refPT);
+    }
+
+    mRefPTList.clear();
+
     if(ui->eToPhoneCheckBox->isChecked() ||
        ui->qToPhoneCheckBox->isChecked()){
         sendPage(prediction);
@@ -116,7 +126,7 @@ void PredictionTab::makeAutoPrediction()
 void PredictionTab::getWeather(Prediction &prediction)
 {
     Observation* observation = new Observation();
-
+    mObservationsModel->select();
     if(prediction.value("dateTime").toDateTime().isValid()){
         observation = mObservationsModel->observationForTime(prediction.value("dateTime").toDateTime());
     }else{
@@ -158,20 +168,9 @@ QVector<Ticket*> PredictionTab::validTickets(const QString &distance)
             }
         }
 
-        qDebug("before distance checks");
-        qDebug() << distance;
-        qDebug() << valid;
         if(valid){
-            if(distance == "eighth"){
-                valid = ticket->value("eighthGood").toBool();
-            }
-
-            if(distance == "quarter"){
-                valid = ticket->value("quarterGood").toBool();
-            }
+            valid = ticket->value(distance + "Good").toBool();
         }
-        qDebug("after distance checks");
-        qDebug() << valid;
 
         if(valid){
             tickets.append(ticket);
@@ -243,11 +242,12 @@ void PredictionTab::predictEighth(Prediction &prediction)
 
         RefPT refPT;
 
-        refPT.setValue("predictionId", prediction.value("id").toInt());
+        //refPT->setValue("predictionId", prediction.value("id").toInt());
         refPT.setValue("ticketId", ticket->value("id").toInt());
         refPT.setValue("distance", "eighth");
 
-        mRefPTsModel->addRefPT(refPT);
+        mRefPTList.append(refPT);
+        //mRefPTsModel->addRefPT(refPT);
     }
 
     Line tLine(tPoints);
@@ -292,11 +292,12 @@ void PredictionTab::predictQuarter(Prediction &prediction)
 
         RefPT refPT;
 
-        refPT.setValue("predictionId", prediction.value("id").toInt());
+        //refPT->setValue("predictionId", prediction.value("id").toInt());
         refPT.setValue("ticketId", ticket->value("id").toInt());
         refPT.setValue("distance", "quarter");
 
-        mRefPTsModel->addRefPT(refPT);
+        mRefPTList.append(refPT);
+        //mRefPTsModel->addRefPT(refPT);
     }
 
     Line tLine(tPoints);

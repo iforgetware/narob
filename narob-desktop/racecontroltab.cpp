@@ -33,18 +33,19 @@ RaceControlTab::RaceControlTab(Vehicle* vehicle,
 
     LogbookTab* logbookTab = new LogbookTab(mTicketsModel, this);
 
-    PredictionTab* predictionTab = new PredictionTab(mTicketsModel,
-                                                     mVehicle,
-                                                     mRace,
-                                                     this);
+    mPredictionTab = new PredictionTab(mTicketsModel,
+                                       mVehicle,
+                                       mRace,
+                                       this);
 
     ui->tabWidget->addTab(ticketEntryTab, "Ticket Entry");
     ui->tabWidget->addTab(trackHistoryTab, "Track History");
     ui->tabWidget->addTab(logbookTab, "Logbook");
-    ui->tabWidget->addTab(predictionTab, "Predictions");
+    ui->tabWidget->addTab(mPredictionTab, "Predictions");
 }
 
 RaceControlTab::~RaceControlTab()
 {
+    delete mPredictionTab;
     delete ui;
 }
