@@ -8,8 +8,7 @@
 #include "tickets.h"
 #include "observations.h"
 #include "refpts.h"
-
-//#include "settingsmodel.h"
+#include "settings.h"
 
 #include <QWidget>
 #include <QTimer>
@@ -41,7 +40,8 @@ private:
     Vehicle* mVehicle;
     Race* mRace;
     QTimer* mAutoTimer;
-//    Settings* mSettings;
+    Settings *mSettingsTable;
+    DbRecordBase *mSettings;
     PredictionsModel* mPredictionsModel;
     TicketsModel* mTicketsModel;
     ObservationsModel* mObservationsModel;

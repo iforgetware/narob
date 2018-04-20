@@ -45,7 +45,7 @@ void Smtp::sendMail(const QString &from, const QString &to, const QString &subje
     state = Init;
     socket->connectToHostEncrypted(host, port); //"smtp.gmail.com" and 465 for gmail TLS
     if (!socket->waitForConnected(timeout)) {
-         //qDebug() << socket->errorString();
+         qDebug() << socket->errorString();
      }
 
     t = new QTextStream( socket );
@@ -59,18 +59,17 @@ Smtp::~Smtp()
 
 void Smtp::stateChanged(QAbstractSocket::SocketState socketState)
 {
-
+    Q_UNUSED(socketState);
     //qDebug() <<"stateChanged " << socketState;
 }
 
 void Smtp::errorReceived(QAbstractSocket::SocketError socketError)
 {
-    //qDebug() << "error " <<socketError;
+    qDebug() << "error " <<socketError;
 }
 
 void Smtp::disconnected()
 {
-
     //qDebug() <<"disconneted";
     //qDebug() << "error "  << socket->errorString();
 }
@@ -200,7 +199,7 @@ void Smtp::readyRead()
         t->flush();
         // here, we just close.
         state = Close;
-        //emit status( tr( "Message sent" ) );
+        emit status( tr( "Message sent" ) );
     }
     else if ( state == Close )
     {
@@ -213,7 +212,7 @@ void Smtp::readyRead()
         qDebug("SMTP - Page did not send - WRITE CODE");
         //QMessageBox::warning( 0, tr( "Qt Simple SMTP client" ), tr( "Unexpected reply from SMTP server:\n\n" ) + response );
         state = Close;
-        //emit status( tr( "Failed to send message" ) );
+        emit status( tr( "Failed to send message" ) );
     }
     response = "";
 }

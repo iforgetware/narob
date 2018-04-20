@@ -32,7 +32,7 @@ public:
                    const QString &subject, const QString &body );
 
 signals:
-    //void status( const QString &);
+    void status( const QString &);
 
 private slots:
     void stateChanged(QAbstractSocket::SocketState socketState);

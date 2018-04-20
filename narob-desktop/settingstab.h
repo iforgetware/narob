@@ -1,7 +1,7 @@
 #ifndef SETTINGSTAB_H
 #define SETTINGSTAB_H
 
-#include "settingsmodel.h"
+#include "settings.h"
 
 #include <QWidget>
 
@@ -20,9 +20,11 @@ public:
 private:
     Ui::SettingsTab *ui;
 
-    SettingsModel *mSettingsModel;
+    Settings *mSettingsTable;
+    DbRecordBase *mSettings;
+//    SettingsModel *mSettingsModel;
 
-    Settings *mSettings;
+//    Setting *mSetting;
 
 private slots:
     void onSaveButtonClicked();

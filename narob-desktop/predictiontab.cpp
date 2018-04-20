@@ -6,7 +6,7 @@
 #include "predictionswidget.h"
 #include "predictions.h"
 
-//#include "settingsmodel.h"
+#include "settings.h"
 #include "smtp.h"
 
 #include <QTimer>
@@ -21,6 +21,7 @@ PredictionTab::PredictionTab(TicketsModel* model,
     ui(new Ui::PredictionTab),
     mVehicle(vehicle),
     mRace(race),
+    mSettingsTable(new Settings),
     mPredictionsModel(new PredictionsModel(mVehicle, mRace, this)),
     mTicketsModel(model),
     mObservationsModel(new ObservationsModel(this)),
@@ -55,11 +56,10 @@ PredictionTab::PredictionTab(TicketsModel* model,
 
     ui->vehicleWeightEdit->setText(QString::number(mVehicle->value("weight").toInt()));
 
-//    SettingsModel* settingsModel = new SettingsModel();
-//    mSettings = settingsModel->getSettings();
+    mSettings = mSettingsTable->getSettings();
 
-    ui->textProviderComboBox->setCurrentText("Verizon"); //mSettings->textProvider());
-    ui->textNumberEdit->setText("5042895449"); //mSettings->textNumber());
+    ui->textProviderComboBox->setCurrentText(mSettings->value("textProvider").toString());
+    ui->textNumberEdit->setText(mSettings->value("textNumber").toString());
 
     mAutoTimer = new QTimer(this);
     resetTimer(ui->minutesSpinBox->value());
@@ -349,11 +349,11 @@ double PredictionTab::weightCorrection(double w1, double w2)
 
 void PredictionTab::sendPage(const Prediction &prediction)
 {
-//    if(mSettings->emailUser() == ""
-//       || mSettings->emailHost() == ""
-//       || mSettings->emailPW() == ""){
-//        qDebug("No email settings to page with - WRITE CODE");
-//    }else{
+    if(mSettings->value("emailUser").toString() == ""
+       || mSettings->value("emailHost").toString() == ""
+       || mSettings->value("emailPW").toString() == ""){
+        qDebug("No email settings to page with - WRITE CODE");
+    }else{
         QMap<QString, QString> *suffixes = new QMap<QString, QString>;
 
         suffixes->insert("Alltel", "message.alltel.com");
@@ -382,14 +382,12 @@ void PredictionTab::sendPage(const Prediction &prediction)
         body.append(QString("W Gust -> %1\n").arg(QString::number(prediction.value("windGust").toInt())));
         body.append(QString("W Dir -> %1\n").arg(QString::number(prediction.value("windDirection").toInt())));
 
-        qDebug("predTab 387, set pw");
-
-        Smtp *smtp = new Smtp("davesspeedshop@gmail.com", //mSettings->emailUser(),
-                              "", //mSettings->emailPW(),
-                              "smtp.gmail.com"); //mSettings->emailHost());
+        Smtp *smtp = new Smtp(mSettings->value("emailUser").toString(),
+                              mSettings->value("emailPW").toString(),
+                              mSettings->value("emailHost").toString());
         //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-        smtp->sendMail("davesspeedshop@gmail.com", //mSettings->emailUser(),
+        smtp->sendMail(mSettings->value("emailUser").toString(),
                        QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
                        "Weather",
                        body);
@@ -403,14 +401,12 @@ void PredictionTab::sendPage(const Prediction &prediction)
             body.append(QString("By d alt -> %1\n").arg(QString::number(prediction.value("eDp").toDouble())));
             body.append(QString("Wind correction -> %1\n").arg(QString::number(prediction.value("windCorrectionEighth").toDouble())));
 
-            qDebug("predTab 408, set pw");
-
-            Smtp *smtpE = new Smtp("davesspeedshop@gmail.com", //mSettings->emailUser(),
-                                  "", //mSettings->emailPW(),
-                                  "smtp.gmail.com"); //mSettings->emailHost());
+            Smtp *smtpE = new Smtp(mSettings->value("emailUser").toString(),
+                                  mSettings->value("emailPW").toString(),
+                                  mSettings->value("emailHost").toString());
             //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-            smtpE->sendMail("davesspeedshop@gmail.com", //mSettings->emailUser(),
+            smtpE->sendMail(mSettings->value("emailUser").toString(),
                            QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
                            "Eighth",
                            body);
@@ -425,21 +421,19 @@ void PredictionTab::sendPage(const Prediction &prediction)
             body.append(QString("By d alt -> %1\n").arg(QString::number(prediction.value("qDp").toDouble())));
             body.append(QString("Wind correction -> %1\n").arg(QString::number(prediction.value("windCorrectionEighth").toDouble())));
 
-            qDebug("predTab 430, set pw");
-
-            Smtp *smtpQ = new Smtp("davesspeedshop@gmail.com", //mSettings->emailUser(),
-                                  "", //mSettings->emailPW(),
-                                  "smtp.gmail.com"); //mSettings->emailHost());
+            Smtp *smtpQ = new Smtp(mSettings->value("emailUser").toString(),
+                                   mSettings->value("emailPW").toString(),
+                                   mSettings->value("emailHost").toString());
             //connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
 
-            smtpQ->sendMail("davesspeedshop.@gmail.com", //mSettings->emailUser(),
+            smtpQ->sendMail(mSettings->value("emailUser").toString(),
                            QString("%1%2").arg(ui->textNumberEdit->text()).arg(suffix),
                            "Quarter",
                            body);
             //delete smtpQ;
 
         }
-//    }
+    }
 }
 
 void PredictionTab::mailSent(QString status)

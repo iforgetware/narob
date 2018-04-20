@@ -21,6 +21,7 @@ DatabaseManager::DatabaseManager(QObject *parent) :
     observations.init();
     predictions.init();
     refPTs.init();
+    settings.init();
 
     //populateTables(); // DEV ONLY
     //populateTracks(); // DEV ONLY

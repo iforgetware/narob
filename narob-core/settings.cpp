@@ -1,7 +1,9 @@
 #include <QSqlQuery>
-#include <QSqlField>
+
+#include <QDebug>
 
 #include "settings.h"
+#include "databasemanager.h"
 
 Fields setSettingsFields()
 {
@@ -26,16 +28,50 @@ Settings::Settings() :
     mTable = "settings";
 }
 
-
-Settings::Settings() :
-    DbRecordBase()
+DbRecordBase *Settings::getSettings()
 {
-    mFields = settingsFields;
-    init("settings");
+    QSqlQuery query;
+    query.exec("SELECT * FROM settings "
+               "WHERE id = 1");
+
+    DbRecordBase *settings = new DbRecordBase();
+    settings->setFields(mFields);
+    settings->init("settings");
+
+    if(query.next()){
+        foreach (Field field, mFields) {
+            settings->setValue(field.mColumn, query.value(field.mColumn));
+        }
+    }
+
+    query.clear();
+
+    return settings;
 }
 
-SettingsModel::SettingsModel(QObject *parent) :
-    ModelBase(parent)
+void Settings::updateSettings(DbRecordBase *settings)
 {
-    mFields = settingsFields;
+    QSqlQuery query;
+    query.prepare("UPDATE settings set ("
+                  "emailUser,"
+                  "emailPW,"
+                  "emailHost,"
+                  "textNumber,"
+                  "textProvider"
+                  ") = ("
+                  ":emailUser,"
+                  ":emailPW,"
+                  ":emailHost,"
+                  ":textNumber,"
+                  ":textProvider"
+                  ") WHERE id=1");
+    query.bindValue(":emailUser", settings->value("emailUser"));
+    query.bindValue(":emailPW", settings->value("emailPW"));
+    query.bindValue(":emailHost", settings->value("emailHost"));
+    query.bindValue(":textNumber", settings->value("textNumber"));
+    query.bindValue(":textProvider", settings->value("textProvider"));
+
+    query.exec();
+    DatabaseManager::debugQuery(query);
+
 }

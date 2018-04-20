@@ -11,6 +11,7 @@ class DbRecordBase : public QSqlRecord
 public:
     DbRecordBase();
 
+    void setFields(const Fields &fields);
     void init(const QString &table);
 
 protected:

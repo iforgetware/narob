@@ -21,7 +21,7 @@
   </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="DashboardTab" name="dashboardTab">
     <attribute name="title">
@@ -33,7 +33,7 @@
      <string>Weather</string>
     </attribute>
    </widget>
-   <widget class="QWidget" name="settingsTab">
+   <widget class="SettingsTab" name="settingsTab">
     <attribute name="title">
      <string>Settings</string>
     </attribute>
@@ -52,6 +52,12 @@
    <class>WeatherTab</class>
    <extends>QWidget</extends>
    <header>weathertab.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SettingsTab</class>
+   <extends>QWidget</extends>
+   <header>settingstab.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

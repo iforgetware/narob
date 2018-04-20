@@ -1,7 +1,6 @@
 #include "settingstab.h"
 #include "ui_settingstab.h"
 #include "settings.h"
-#include "settingsdao.h"
 
 #include <QSqlQuery>
 
@@ -9,18 +8,19 @@
 
 SettingsTab::SettingsTab(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SettingsTab),
-    mSettingsModel(new SettingsModel(this))
+    ui(new Ui::SettingsTab)
+//    mSettingsModel(new SettingsModel(this))
 {
     ui->setupUi(this);
 
-    mSettings = mSettingsModel->getSettings();
+    mSettingsTable = new Settings();
+    mSettings = mSettingsTable->getSettings();
 
-//    ui->emailUserEdit->setText(mSettings->emailUser());
-//    ui->emailPWEdit->setText(mSettings->emailPW());
-//    ui->emailHostEdit->setText(mSettings->emailHost());
-//    ui->textNumberEdit->setText(mSettings->textNumber());
-    ui->textProviderComboBox->setCurrentText(mSettings->textProvider());
+    ui->emailUserEdit->setText(mSettings->value("emailUser").toString());
+    ui->emailPWEdit->setText(mSettings->value("emailPW").toString());
+    ui->emailHostEdit->setText(mSettings->value("emailHost").toString());
+    ui->textNumberEdit->setText(mSettings->value("textNumber").toString());
+    ui->textProviderComboBox->setCurrentText(mSettings->value("textProvider").toString());
 
     displayUpdate();
 
@@ -36,35 +36,40 @@ SettingsTab::~SettingsTab()
 void SettingsTab::onSaveButtonClicked()
 {
     if(ui->emailUserEdit->text().trimmed() != ""){
-        mSettings->setEmailUser(ui->emailUserEdit->text());
+        mSettings->setValue("emailUser", ui->emailUserEdit->text());
     }
 
     if(ui->emailPWEdit->text().trimmed() != ""){
-        mSettings->setEmailPW(ui->emailPWEdit->text());
+        mSettings->setValue("emailPW", ui->emailPWEdit->text());
     }
 
     if(ui->emailHostEdit->text().trimmed() != ""){
-        mSettings->setEmailHost(ui->emailHostEdit->text());
+        mSettings->setValue("emailHost", ui->emailHostEdit->text());
     }
 
     if(ui->textNumberEdit->text().trimmed() != ""){
-        mSettings->setTextNumber(ui->textNumberEdit->text());
+        mSettings->setValue("textNumber", ui->textNumberEdit->text());
     }
 
-    mSettings->setTextProvider(ui->textProviderComboBox->currentText());
+    mSettings->setValue("textProvider", ui->textProviderComboBox->currentText());
 
-    mSettingsModel->updateSettings(mSettings);
+    mSettingsTable->updateSettings(mSettings);
 
     displayUpdate();
 }
 
 void SettingsTab::displayUpdate()
 {
-    ui->emailUserLabel->setText(QString("Email username -> %1").arg(mSettings->emailUser()));
-    ui->emailPWLabel->setText(QString("Email password -> %1").arg(mSettings->emailPW()));
-    ui->emailHostLabel->setText(QString("Email host -> %1").arg(mSettings->emailHost()));
-    ui->textNumberLabel->setText(QString("Texting number -> %1").arg(mSettings->textNumber()));
-    ui->textProviderLabel->setText(QString("Text Provider -> %1").arg(mSettings->textProvider()));
+    ui->emailUserLabel->setText(QString("Email username -> %1")
+                                .arg(mSettings->value("emailUser").toString()));
+    ui->emailPWLabel->setText(QString("Email password -> %1")
+                              .arg(mSettings->value("emailPW").toString()));
+    ui->emailHostLabel->setText(QString("Email host -> %1")
+                                .arg(mSettings->value("emailHost").toString()));
+    ui->textNumberLabel->setText(QString("Texting number -> %1")
+                                 .arg(mSettings->value("textNumber").toString()));
+    ui->textProviderLabel->setText(QString("Text Provider -> %1")
+                                   .arg(mSettings->value("textProvider").toString()));
 }
 
 void SettingsTab::onClearButtonClicked()

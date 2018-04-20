@@ -7,6 +7,11 @@ DbRecordBase::DbRecordBase()
 
 }
 
+void DbRecordBase::setFields(const Fields &fields)
+{
+    mFields = fields;
+}
+
 void DbRecordBase::init(const QString &table)
 {
     foreach(Field field, mFields){

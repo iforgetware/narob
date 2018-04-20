@@ -29,7 +29,7 @@ public:
     explicit RacesModel(QObject *parent = 0);
 
     Race *getRace(const int row);
-    Race * raceForId(const int id);
+    Race *raceForId(const int id);
 };
 
 #endif // RACES_H

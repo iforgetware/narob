@@ -28,7 +28,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     databasemanager.cpp \
     modelbase.cpp \
-#    settings.cpp \
+    settings.cpp \
 #    settingsdao.cpp \
 #    settingsmodel.cpp \
     ticketsracemodel.cpp \
@@ -47,7 +47,7 @@ HEADERS += \
     databasemanager.h \
     narob-core_global.h \
     modelbase.h \
-#    settings.h \
+    settings.h \
 #    settingsdao.h \
 #    settingsmodel.h \
     ticketsracemodel.h \

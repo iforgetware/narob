@@ -8,6 +8,7 @@
 #include "observations.h"
 #include "predictions.h"
 #include "refpts.h"
+#include "settings.h"
 
 #include <QObject>
 #include <QSqlDatabase>
@@ -40,6 +41,7 @@ public:
     Observations observations;
     Predictions predictions;
     RefPTs refPTs;
+    Settings settings;
 };
 
 #endif // DATABASEMANAGER_H
