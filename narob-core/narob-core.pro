@@ -61,3 +61,5 @@ HEADERS += \
     predictions.h \
     refpts.h \
     tracks.h
+
+DISTFILES +=

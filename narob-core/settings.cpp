@@ -74,4 +74,6 @@ void Settings::updateSettings(DbRecordBase *settings)
     query.exec();
     DatabaseManager::debugQuery(query);
 
+    query.clear();
+
 }

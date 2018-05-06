@@ -94,5 +94,7 @@ Observation* ObservationsModel::observationForTime(QDateTime dateTime)
         }
     }
 
+    query.clear();
+
     return observation;
 }

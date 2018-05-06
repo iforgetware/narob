@@ -72,6 +72,7 @@ Track *TracksModel::trackForId(const int id)
         }
     }
 
-    return track;
+    query.clear();
 
+    return track;
 }

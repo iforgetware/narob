@@ -5,7 +5,7 @@
 #include <QSqlRelationalDelegate>
 
 RaceDialog::RaceDialog(int row, QWidget *parent) :
-    QDialog(parent),
+    DialogBase(parent),
     ui(new Ui::RaceDialog)
 {
     ui->setupUi(this);
@@ -14,14 +14,13 @@ RaceDialog::RaceDialog(int row, QWidget *parent) :
 
     createUi();
 
+    setModelRow(row);
+
     if(row == -1){
-        mRacesModel->insertRow(mRacesModel->rowCount(QModelIndex()));
-        mMapper->toLast();
-    }else{
-        mMapper->setCurrentModelIndex(mRacesModel->index(row, 0));
+        ui->dateEdit->setDate(QDate::currentDate());
     }
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &RaceDialog::onButtonBoxAccepted);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DialogBase::onButtonBoxAccepted);
 }
 
 RaceDialog::~RaceDialog()
@@ -31,13 +30,13 @@ RaceDialog::~RaceDialog()
 
 void RaceDialog::setupModel()
 {
-    mRacesModel = new RacesModel(this);
+    mModel = new RacesModel(this);
 
     mMapper = new QDataWidgetMapper(this);
 
     mMapper->setItemDelegate(new QSqlRelationalDelegate(ui->trackComboBox));
 
-    mMapper->setModel(mRacesModel);
+    mMapper->setModel(mModel);
     mMapper->addMapping(ui->dateEdit, 1);
     mMapper->addMapping(ui->nameEdit, 2);
     mMapper->addMapping(ui->trackComboBox, 3);
@@ -47,15 +46,8 @@ void RaceDialog::setupModel()
 
 void RaceDialog::createUi()
 {
-    mRacesModel->relationModel(3)->select();
+    mModel->relationModel(3)->select();
 
-    ui->trackComboBox->setModel(mRacesModel->relationModel(3));
-    ui->trackComboBox->setModelColumn(mRacesModel->relationModel(3)->fieldIndex("name"));
-}
-
-void RaceDialog::onButtonBoxAccepted()
-{
-    mMapper->submit();
-    mRacesModel->submitAll();
-    emit ready();
+    ui->trackComboBox->setModel(mModel->relationModel(3));
+    ui->trackComboBox->setModelColumn(mModel->relationModel(3)->fieldIndex("name"));
 }

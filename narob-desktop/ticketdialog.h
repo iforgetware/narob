@@ -1,19 +1,18 @@
 #ifndef TICKETDIALOG_H
 #define TICKETDIALOG_H
 
-#include <QDialog>
-#include <QDataWidgetMapper>
-
+#include "dialogbase.h"
 #include "tickets.h"
 #include "vehicles.h"
 #include "races.h"
 #include "tracks.h"
+#include "observations.h"
 
 namespace Ui {
 class TicketDialog;
 }
 
-class TicketDialog : public QDialog
+class TicketDialog : public DialogBase
 {
     Q_OBJECT
 
@@ -24,24 +23,16 @@ public:
                           QWidget *parent = 0);
     ~TicketDialog();
 
-signals:
-    void ready();
-
-private slots:
-    void onButtonBoxAccepted();
-
 private:
     Ui::TicketDialog *ui;
-    TicketsModel *mTicketsModel;
+
     Vehicle *mVehicle;
     Race *mRace;
-
-    QDataWidgetMapper *mMapper;
+    ObservationsModel *mObservationsModel;
 
     void setupModel();
     void createUi();
-    void dateTimeChanged(const QDateTime& dateTime);
-    void setWeather();
+    void setWeather(const QDateTime& dateTime);
 };
 
 #endif // TICKETDIALOG_H

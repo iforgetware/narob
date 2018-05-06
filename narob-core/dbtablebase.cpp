@@ -51,5 +51,7 @@ void DbTableBase::init() const
         QSqlQuery query;
         query.exec(queryText);
         DatabaseManager::debugQuery(query);
+
+        query.clear();
     }
 }

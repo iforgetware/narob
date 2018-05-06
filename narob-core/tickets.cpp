@@ -40,6 +40,8 @@ Fields setTicketFields()
     retFields.append(Field("windGust", "W Gust", 70, 0));
     retFields.append(Field("windDirection", "W Dir", 60, 0));
 
+    retFields.append(Field("notes", "Notes", 0, 0));
+
     return retFields;
 }
 

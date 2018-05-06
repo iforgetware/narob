@@ -393,6 +393,8 @@ void PredictionTab::sendPage(const Prediction &prediction)
                        body);
         //delete smtp;
 
+        body.clear();
+
         if(ui->eToPhoneCheckBox->isChecked()){
 //            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->eTp())));
 //            body.append(QString("By humidity -> %1\n").arg(QString::number(prediction->eHp())));
@@ -412,6 +414,8 @@ void PredictionTab::sendPage(const Prediction &prediction)
                            body);
             //delete smtpE;
         }
+
+        body.clear();
 
         if(ui->qToPhoneCheckBox->isChecked()){
 //            body.append(QString("By temp -> %1\n").arg(QString::number(prediction->qTp())));

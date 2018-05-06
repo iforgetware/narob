@@ -7,7 +7,7 @@
 
 #include "narob-core_global.h"
 
-class Settings : public DbTableBase
+class NAROBCORESHARED_EXPORT Settings : public DbTableBase
 {
 public:
     explicit Settings();

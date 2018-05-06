@@ -2,7 +2,7 @@
 #include "ui_vehicledialog.h"
 
 VehicleDialog::VehicleDialog(int row, QWidget *parent) :
-    QDialog(parent),
+    DialogBase(parent),
     ui(new Ui::VehicleDialog)
 {
     ui->setupUi(this);
@@ -11,14 +11,9 @@ VehicleDialog::VehicleDialog(int row, QWidget *parent) :
 
     createUi();
 
-    if(row == -1){
-        mVehiclesModel->insertRow(mVehiclesModel->rowCount(QModelIndex()));
-        mMapper->toLast();
-    }else{
-        mMapper->setCurrentModelIndex(mVehiclesModel->index(row, 0));
-    }
+    setModelRow(row);
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &VehicleDialog::onButtonBoxAccepted);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DialogBase::onButtonBoxAccepted);
 }
 
 VehicleDialog::~VehicleDialog()
@@ -28,10 +23,10 @@ VehicleDialog::~VehicleDialog()
 
 void VehicleDialog::setupModel()
 {
-    mVehiclesModel = new VehiclesModel(this);
+    mModel = new VehiclesModel(this);
 
     mMapper = new QDataWidgetMapper(this);
-    mMapper->setModel(mVehiclesModel);
+    mMapper->setModel(mModel);
     mMapper->addMapping(ui->numberEdit, 1);
     mMapper->addMapping(ui->compClassEdit, 2);
     mMapper->addMapping(ui->weightEdit, 3);
@@ -42,11 +37,4 @@ void VehicleDialog::setupModel()
 void VehicleDialog::createUi()
 {
     ui->weightEdit->setValidator(new QIntValidator(ui->weightEdit));
-}
-
-void VehicleDialog::onButtonBoxAccepted()
-{
-    mMapper->submit();
-    mVehiclesModel->submitAll();
-    emit ready();
 }

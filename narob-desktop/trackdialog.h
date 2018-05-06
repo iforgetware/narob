@@ -1,34 +1,24 @@
 #ifndef TRACKDIALOG_H
 #define TRACKDIALOG_H
 
-#include <QDialog>
-#include <QDataWidgetMapper>
-
+#include "dialogbase.h"
 #include "tracks.h"
 
 namespace Ui {
 class TrackDialog;
 }
 
-class TrackDialog : public QDialog
+class TrackDialog : public DialogBase
 {
     Q_OBJECT
 
 public:
-    explicit TrackDialog(int row = -1, QWidget *parent = 0);
+    explicit TrackDialog(int row = -1,
+                         QWidget *parent = 0);
     ~TrackDialog();
-
-signals:
-    void ready();
-
-private slots:
-    void onButtonBoxAccepted();
 
 private:
     Ui::TrackDialog *ui;
-    TracksModel *mTracksModel;
-
-    QDataWidgetMapper *mMapper;
 
     void setupModel();
     void createUi();

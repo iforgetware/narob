@@ -77,5 +77,7 @@ Race *RacesModel::raceForId(const int id)
         }
     }
 
+    query.clear();
+
     return race;
 }

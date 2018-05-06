@@ -1,16 +1,14 @@
 #ifndef RACEDIALOG_H
 #define RACEDIALOG_H
 
-#include <QDialog>
-#include <QDataWidgetMapper>
-
+#include "dialogbase.h"
 #include "races.h"
 
 namespace Ui {
 class RaceDialog;
 }
 
-class RaceDialog : public QDialog
+class RaceDialog : public DialogBase
 {
     Q_OBJECT
 
@@ -19,17 +17,8 @@ public:
                         QWidget *parent = 0);
     ~RaceDialog();
 
-signals:
-    void ready();
-
-private slots:
-    void onButtonBoxAccepted();
-
 private:
     Ui::RaceDialog *ui;
-    RacesModel *mRacesModel;
-
-    QDataWidgetMapper *mMapper;
 
     void setupModel();
     void createUi();

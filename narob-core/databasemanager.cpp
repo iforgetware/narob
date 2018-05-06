@@ -54,6 +54,8 @@ void DatabaseManager::clearDatabase() // DEV ONLY
         }
     }
 
+    query.clear();
+
     qDebug("Cleared all database tables - DEV ONLY");
 }
 

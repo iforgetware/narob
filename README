@@ -1,0 +1,32 @@
+v0.2.5 pending
+    - abstracted dialogs to DialogBase
+    - made dates and times default to current date/time
+    - added notes field to tickets
+
+v0.2.4
+    - replaced hard coded settings with settings tab
+
+v0.2.3
+    - fixed refPT write
+    - misc small bug fixes
+
+v0.2.2
+    - fixed predictions valid ticket bug
+
+v0.2.1
+    - abstracted into base classes
+
+v0.1.13
+    - changed dates and times to dateTimes
+
+v0.1.12
+    - slight change to predictions
+
+v0.1.11
+    - minor changes
+
+v0.1.1
+    - added correction factors in predictions
+
+v0.1
+    - first complete working version

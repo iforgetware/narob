@@ -8,10 +8,11 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
                            Race* race,
                            int row,
                            QWidget *parent) :
-    QDialog(parent),
+    DialogBase(parent),
     ui(new Ui::TicketDialog),
     mVehicle(vehicle),
-    mRace(race)
+    mRace(race),
+    mObservationsModel(new ObservationsModel(this))
 {
     ui->setupUi(this);
 
@@ -19,33 +20,35 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
 
     createUi();
 
+    setModelRow(row);
+
     if(row == -1){
-        mTicketsModel->insertRow(mTicketsModel->rowCount(QModelIndex()));
+        QModelIndex vIndex = mModel->index(mModel->rowCount(QModelIndex()) - 1,
+                                           mModel->fieldIndex("vehicleId"));
+        mModel->setData(vIndex, mVehicle->value("id").toInt());
 
-        QModelIndex vIndex = mTicketsModel->index(mTicketsModel->rowCount(QModelIndex()) - 1,
-                                                  mTicketsModel->fieldIndex("vehicleId"));
-        mTicketsModel->setData(vIndex, mVehicle->value("id").toInt());
+        QModelIndex tIndex = mModel->index(mModel->rowCount(QModelIndex()) - 1,
+                                           mModel->fieldIndex("trackId"));
+        mModel->setData(tIndex, mRace->value("trackId").toInt());
 
-        QModelIndex tIndex = mTicketsModel->index(mTicketsModel->rowCount(QModelIndex()) - 1,
-                                                  mTicketsModel->fieldIndex("trackId"));
-        mTicketsModel->setData(tIndex, mRace->value("trackId").toInt());
+        QModelIndex rIndex = mModel->index(mModel->rowCount(QModelIndex()) - 1,
+                                           mModel->fieldIndex("raceId"));
+        mModel->setData(rIndex, mRace->value("id").toInt());
 
-        QModelIndex rIndex = mTicketsModel->index(mTicketsModel->rowCount(QModelIndex()) - 1,
-                                                  mTicketsModel->fieldIndex("raceId"));
-        mTicketsModel->setData(rIndex, mRace->value("id").toInt());
+        QModelIndex wIndex = mModel->index(mModel->rowCount(QModelIndex()) - 1,
+                                           mModel->fieldIndex("vehicleWeight"));
+        mModel->setData(wIndex, mVehicle->value("weight").toInt());
 
-        QModelIndex wIndex = mTicketsModel->index(mTicketsModel->rowCount(QModelIndex()) - 1,
-                                                  mTicketsModel->fieldIndex("vehicleWeight"));
-        mTicketsModel->setData(wIndex, mVehicle->value("weight").toInt());
-
-        mMapper->toLast();
-    }else{
-        mMapper->setCurrentModelIndex(mTicketsModel->index(row, 0));
+        QDateTime cDT;
+        cDT.setDate(QDate::currentDate());
+        cDT.setTime(QTime(QTime::currentTime().hour(), QTime::currentTime().minute()));
+        ui->dateTimeEdit->setDateTime(cDT);
+        setWeather(cDT);
     }
 
-    connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &TicketDialog::dateTimeChanged);
+    connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &TicketDialog::setWeather);
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &TicketDialog::onButtonBoxAccepted);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DialogBase::onButtonBoxAccepted);
 }
 
 TicketDialog::~TicketDialog()
@@ -55,37 +58,38 @@ TicketDialog::~TicketDialog()
 
 void TicketDialog::setupModel()
 {
-    mTicketsModel = new TicketsModel(mVehicle, this);
+    mModel = new TicketsModel(mVehicle, this);
 
     mMapper = new QDataWidgetMapper(this);
 
-    mMapper->setModel(mTicketsModel);
+    mMapper->setModel(mModel);
 
-    mMapper->addMapping(ui->dateTimeEdit, mTicketsModel->fieldIndex("dateTime"));
-    mMapper->addMapping(ui->laneComboBox, mTicketsModel->fieldIndex("lane"));
-    mMapper->addMapping(ui->dialEdit, mTicketsModel->fieldIndex("dial"));
-    mMapper->addMapping(ui->reactionEdit, mTicketsModel->fieldIndex("reaction"));
-    mMapper->addMapping(ui->sixtyEdit, mTicketsModel->fieldIndex("sixty"));
-    mMapper->addMapping(ui->threeThirtyEdit, mTicketsModel->fieldIndex("threeThirty"));
-    mMapper->addMapping(ui->eighthEdit, mTicketsModel->fieldIndex("eighth"));
-    mMapper->addMapping(ui->eighthMPHEdit, mTicketsModel->fieldIndex("eighthMPH"));
-    mMapper->addMapping(ui->eighthGoodCheckBox, mTicketsModel->fieldIndex("eighthGood"));
-    mMapper->addMapping(ui->thousandEdit, mTicketsModel->fieldIndex("thousand"));
-    mMapper->addMapping(ui->quarterEdit, mTicketsModel->fieldIndex("quarter"));
-    mMapper->addMapping(ui->quarterMPHEdit, mTicketsModel->fieldIndex("quarterMPH"));
-    mMapper->addMapping(ui->quarterGoodCheckBox, mTicketsModel->fieldIndex("quarterGood"));
-    mMapper->addMapping(ui->delayEdit, mTicketsModel->fieldIndex("delay"));
-    mMapper->addMapping(ui->vehicleWeightEdit, mTicketsModel->fieldIndex("vehicleWeight"));
-    mMapper->addMapping(ui->riderWeightEdit, mTicketsModel->fieldIndex("riderWeight"));
-    mMapper->addMapping(ui->temperatureEdit, mTicketsModel->fieldIndex("temperature"));
-    mMapper->addMapping(ui->humidityEdit, mTicketsModel->fieldIndex("humidity"));
-    mMapper->addMapping(ui->pressureEdit, mTicketsModel->fieldIndex("pressure"));
-    mMapper->addMapping(ui->vaporPressureEdit, mTicketsModel->fieldIndex("vaporPressure"));
-    mMapper->addMapping(ui->dewPointEdit, mTicketsModel->fieldIndex("dewPoint"));
-    mMapper->addMapping(ui->densityAltitudeEdit, mTicketsModel->fieldIndex("densityAltitude"));
-    mMapper->addMapping(ui->windSpeedEdit, mTicketsModel->fieldIndex("windSpeed"));
-    mMapper->addMapping(ui->windGustEdit, mTicketsModel->fieldIndex("windGust"));
-    mMapper->addMapping(ui->windDirectionEdit, mTicketsModel->fieldIndex("windDirection"));
+    mMapper->addMapping(ui->dateTimeEdit, mModel->fieldIndex("dateTime"));
+    mMapper->addMapping(ui->laneComboBox, mModel->fieldIndex("lane"));
+    mMapper->addMapping(ui->dialEdit, mModel->fieldIndex("dial"));
+    mMapper->addMapping(ui->reactionEdit, mModel->fieldIndex("reaction"));
+    mMapper->addMapping(ui->sixtyEdit, mModel->fieldIndex("sixty"));
+    mMapper->addMapping(ui->threeThirtyEdit, mModel->fieldIndex("threeThirty"));
+    mMapper->addMapping(ui->eighthEdit, mModel->fieldIndex("eighth"));
+    mMapper->addMapping(ui->eighthMPHEdit, mModel->fieldIndex("eighthMPH"));
+    mMapper->addMapping(ui->eighthGoodCheckBox, mModel->fieldIndex("eighthGood"));
+    mMapper->addMapping(ui->thousandEdit, mModel->fieldIndex("thousand"));
+    mMapper->addMapping(ui->quarterEdit, mModel->fieldIndex("quarter"));
+    mMapper->addMapping(ui->quarterMPHEdit, mModel->fieldIndex("quarterMPH"));
+    mMapper->addMapping(ui->quarterGoodCheckBox, mModel->fieldIndex("quarterGood"));
+    mMapper->addMapping(ui->delayEdit, mModel->fieldIndex("delay"));
+    mMapper->addMapping(ui->vehicleWeightEdit, mModel->fieldIndex("vehicleWeight"));
+    mMapper->addMapping(ui->riderWeightEdit, mModel->fieldIndex("riderWeight"));
+    mMapper->addMapping(ui->temperatureEdit, mModel->fieldIndex("temperature"));
+    mMapper->addMapping(ui->humidityEdit, mModel->fieldIndex("humidity"));
+    mMapper->addMapping(ui->pressureEdit, mModel->fieldIndex("pressure"));
+    mMapper->addMapping(ui->vaporPressureEdit, mModel->fieldIndex("vaporPressure"));
+    mMapper->addMapping(ui->dewPointEdit, mModel->fieldIndex("dewPoint"));
+    mMapper->addMapping(ui->densityAltitudeEdit, mModel->fieldIndex("densityAltitude"));
+    mMapper->addMapping(ui->windSpeedEdit, mModel->fieldIndex("windSpeed"));
+    mMapper->addMapping(ui->windGustEdit, mModel->fieldIndex("windGust"));
+    mMapper->addMapping(ui->windDirectionEdit, mModel->fieldIndex("windDirection"));
+    mMapper->addMapping(ui->notesEdit, mModel->fieldIndex("notes"));
 
     mMapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 }
@@ -117,28 +121,11 @@ void TicketDialog::createUi()
     vDouble(ui->quarterMPHEdit, 2);
 }
 
-void TicketDialog::onButtonBoxAccepted()
+void TicketDialog::setWeather(const QDateTime &dateTime)
 {
-    mMapper->submit();
-    mTicketsModel->submitAll();
-    emit ready();
-}
-
-void TicketDialog::dateTimeChanged(const QDateTime &dateTime)
-{
-    Q_UNUSED(dateTime);
-
-    setWeather();
-
-    return;
-}
-
-void TicketDialog::setWeather()
-{
-    ObservationsModel* observationsModel = new ObservationsModel(this);
     Observation* observation = new Observation();
 
-    observation = observationsModel->observationForTime(ui->dateTimeEdit->dateTime());
+    observation = mObservationsModel->observationForTime(dateTime);
 
     if(observation){
         ui->temperatureEdit->setText(QString::number(observation->value("temperature").toDouble()));
@@ -157,5 +144,4 @@ void TicketDialog::setWeather()
     delete observation;
 
     return;
-
 }

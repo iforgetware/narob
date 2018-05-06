@@ -49,7 +49,8 @@ SOURCES += \
     ticketseditwidget.cpp \
     predictionswidget.cpp \
     smtp.cpp \
-    tabledisplaywidgetbase.cpp
+    tabledisplaywidgetbase.cpp \
+    dialogbase.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -78,7 +79,8 @@ HEADERS += \
     ticketseditwidget.h \
     predictionswidget.h \
     smtp.h \
-    tabledisplaywidgetbase.h
+    tabledisplaywidgetbase.h \
+    dialogbase.h
 
 FORMS += \
     mainwindow.ui \
