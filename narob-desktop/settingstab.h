@@ -22,14 +22,20 @@ private:
 
     Settings *mSettingsTable;
     DbRecordBase *mSettings;
-//    SettingsModel *mSettingsModel;
-
-//    Setting *mSetting;
 
 private slots:
     void onSaveButtonClicked();
     void onClearButtonClicked();
+    void onCleanDatabaseButtonClicked();
+    void onTestWeatherButtonClicked();
+    void onTestWindButtonClicked();
+    void onTestWeightButtonClicked();
     void displayUpdate();
+
+signals:
+    void testWeather();
+    void testWind();
+    void testWeight();
 };
 
 #endif // SETTINGSTAB_H

@@ -9,6 +9,7 @@
 #include "observations.h"
 #include "refpts.h"
 #include "settings.h"
+#include "predictionswidget.h"
 
 #include <QWidget>
 #include <QTimer>
@@ -27,6 +28,7 @@ public:
                            Race *race,
                            QWidget *parent = 0);
     ~PredictionTab();
+    void UpdateAllModels();
 
 private:
     void getWeather(Prediction &prediction);
@@ -34,7 +36,8 @@ private:
     void predictEighth(Prediction &prediction);
     void predictQuarter(Prediction &prediction);
     double windCorrection(int windSpeed, int windDirection);
-    double weightCorrection(double w1, double w2);
+    double windCorrection(Prediction &prediction, Ticket *ticket);
+    double weightCorrection(Prediction &prediction, Ticket *ticket);
 
     Ui::PredictionTab* ui;
     Vehicle* mVehicle;
@@ -47,6 +50,7 @@ private:
     ObservationsModel* mObservationsModel;
     RefPTsModel* mRefPTsModel;
     QVector<RefPT> mRefPTList;
+    PredictionsWidget *mPredictionsWidget;
 
 private slots:
     void resetTimer(int);

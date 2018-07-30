@@ -37,10 +37,10 @@ TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &TicketsEditWidget::editTicket);
 
-    hideColumn(mTicketsModel->fieldIndex("vehicleId"));
-    hideColumn(mTicketsModel->fieldIndex("trackId"));
-    hideColumn(mTicketsModel->fieldIndex("raceId"));
-    hideColumn(mTicketsModel->fieldIndex("predictionId"));
+    hide("vehicleId");
+    hide("trackId");
+    hide("raceId");
+    hide("predictionId");
 }
 
 void TicketsEditWidget::addTicket()
@@ -50,7 +50,7 @@ void TicketsEditWidget::addTicket()
                                                   -1,
                                                   this);
     connect(ticketDialog, &TicketDialog::ready,
-            this,&TicketsEditWidget::updateModels);
+            this,&TicketsEditWidget::updateModel);
 
     ticketDialog->exec();
 }
@@ -66,7 +66,7 @@ void TicketsEditWidget::editTicket()
                                                       tRow,
                                                       this);
         connect(ticketDialog, &TicketDialog::ready,
-                this,&TicketsEditWidget::updateModels);
+                this,&TicketsEditWidget::updateModel);
 
         ticketDialog->exec();
     }

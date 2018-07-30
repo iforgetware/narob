@@ -1,6 +1,5 @@
 #include "logbooktab.h"
 #include "ui_logbooktab.h"
-#include "ticketswidget.h"
 
 LogbookTab::LogbookTab(TicketsModel *model,
                        QWidget *parent) :
@@ -9,13 +8,18 @@ LogbookTab::LogbookTab(TicketsModel *model,
 {
     ui->setupUi(this);
 
-    TicketsWidget* ticketsWidget = new TicketsWidget(model,
-                                                     0,
-                                                     this);
-    ui->gridLayout->addWidget(ticketsWidget, 0, 0);
+    mTicketsWidget = new TicketsWidget(model,
+                                       0,
+                                       this);
+    ui->gridLayout->addWidget(mTicketsWidget, 0, 0);
 }
 
 LogbookTab::~LogbookTab()
 {
     delete ui;
+}
+
+void LogbookTab::updateAllModels()
+{
+    mTicketsWidget->updateModel();
 }

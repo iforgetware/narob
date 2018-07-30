@@ -21,8 +21,6 @@ public:
 
     void deleteSelectedRow();
 
-    void updateModels();
-
 protected:
     QPushButton *mAddButton;
     QPushButton *mEditButton;

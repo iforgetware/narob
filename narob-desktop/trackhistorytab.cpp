@@ -1,6 +1,5 @@
 #include "trackhistorytab.h"
 #include "ui_trackhistorytab.h"
-#include "ticketswidget.h"
 
 #include <QDebug>
 
@@ -12,13 +11,18 @@ TrackHistoryTab::TrackHistoryTab(TicketsModel* model,
 {
     ui->setupUi(this);
 
-    TicketsWidget *ticketsWidget = new TicketsWidget(model,
-                                                     trackId,
-                                                     this);
-    ui->gridLayout->addWidget(ticketsWidget, 0, 0);
+    mTicketsWidget = new TicketsWidget(model,
+                                       trackId,
+                                       this);
+    ui->gridLayout->addWidget(mTicketsWidget, 0, 0);
 }
 
 TrackHistoryTab::~TrackHistoryTab()
 {
     delete ui;
+}
+
+void TrackHistoryTab::updateAllModels()
+{
+    mTicketsWidget->updateModel();
 }

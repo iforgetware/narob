@@ -18,6 +18,7 @@ class DashboardTab : public QWidget
 public:
     explicit DashboardTab(QWidget *parent = 0);
     ~DashboardTab();
+    void updateAllModels();
 
 private:
     Ui::DashboardTab *ui;

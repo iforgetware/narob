@@ -25,6 +25,11 @@ WeatherTab::~WeatherTab()
     delete ui;
 }
 
+void WeatherTab::updateAllModels()
+{
+    mObservationsWidget->updateModel();
+}
+
 void WeatherTab::startWeatherStation()
 {
     mWeatherStation = new WeatherStation(mObservationsModel, this);
@@ -38,6 +43,6 @@ void WeatherTab::startWeatherStation()
         connect(mWeatherStation,
                 &WeatherStation::newWeatherWritten,
                 mObservationsWidget,
-                &ObservationsWidget::refresh);
+                &ObservationsWidget::updateModel);
     }
 }

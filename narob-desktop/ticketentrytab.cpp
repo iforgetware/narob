@@ -1,6 +1,5 @@
 #include "ticketentrytab.h"
 #include "ui_ticketentrytab.h"
-#include "ticketseditwidget.h"
 
 TicketEntryTab::TicketEntryTab(TicketsModel* model,
                                Vehicle* vehicle,
@@ -11,14 +10,19 @@ TicketEntryTab::TicketEntryTab(TicketsModel* model,
 {
     ui->setupUi(this);
 
-    TicketsEditWidget *ticketsEditWidget = new TicketsEditWidget(model,
-                                                                 vehicle,
-                                                                 race,
-                                                                 this);
-    ui->gridLayout->addWidget(ticketsEditWidget, 0, 0);
+    mTicketsEditWidget = new TicketsEditWidget(model,
+                                               vehicle,
+                                               race,
+                                               this);
+    ui->gridLayout->addWidget(mTicketsEditWidget, 0, 0);
 }
 
 TicketEntryTab::~TicketEntryTab()
 {
     delete ui;
+}
+
+void TicketEntryTab::updateAllModels()
+{
+    mTicketsEditWidget->updateModel();
 }

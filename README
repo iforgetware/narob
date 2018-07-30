@@ -4,6 +4,19 @@ In-lanes paging can be setup if the PC running it has an internet connection.
 I use my phone as a hotspot.
 It uses email-to-text addresses based on the service provider of the recieving phone.
 
+changes done to be logged next version
+
+v0.2.6
+    - made all ticket lists descending order ( newest on top )
+    - made races list descending order ( newest on top )
+    - moved ticket proxy models into tickets header and source
+    - adding development tests
+        - required rewriting and abstraction of tables, models, and views
+    - added defaults for wind and weight adjustments
+    - made wind and weight adjustments ET per unit ( MPH, lb )
+    - added vehicle weight to weight calcs
+    - added updateAllModels method to all tabs and widgets to keep UI current
+
 v0.2.5
     - abstracted dialogs to DialogBase
     - made dates and times default to current date/time

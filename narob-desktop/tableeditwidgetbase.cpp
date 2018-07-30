@@ -20,7 +20,7 @@ void TableEditWidgetBase::initTable()
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->tableView->verticalHeader()->setVisible(false);
-    hideColumn(mModel->fieldIndex("id"));
+    hide("id");
 
     mAddButton = new QPushButton("Add", this);
     mEditButton = new QPushButton("Edit", this);
@@ -79,11 +79,6 @@ void TableEditWidgetBase::deleteSelectedRow()
     if(selected()){
         mModel->removeRow(getSelection());
         mModel->submitAll();
-        updateModels();
+        updateModel();
     }
-}
-
-void TableEditWidgetBase::updateModels()
-{
-    mModel->select();
 }

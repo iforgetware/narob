@@ -13,16 +13,16 @@ PredictionsWidget::PredictionsWidget(PredictionsModel *model,
 
     setupColumns(mPredictionsModel->fields());
 
-    hideColumn(mPredictionsModel->fieldIndex("raceId"));
-    hideColumn(mPredictionsModel->fieldIndex("vehicleId"));
+    hide("raceId");
+    hide("vehicleId");
 
-    hideColumn(mPredictionsModel->fieldIndex("eTp"));
-    hideColumn(mPredictionsModel->fieldIndex("eHp"));
-    hideColumn(mPredictionsModel->fieldIndex("ePp"));
+    hide("eTp");
+    hide("eHp");
+    hide("ePp");
 
-    hideColumn(mPredictionsModel->fieldIndex("qTp"));
-    hideColumn(mPredictionsModel->fieldIndex("qHp"));
-    hideColumn(mPredictionsModel->fieldIndex("qPp"));
+    hide("qTp");
+    hide("qHp");
+    hide("qPp");
 
     initTable();
 }

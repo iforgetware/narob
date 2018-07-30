@@ -6,77 +6,91 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>664</width>
-    <height>397</height>
+    <width>790</width>
+    <height>745</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="7" column="0">
-    <widget class="QLineEdit" name="textNumberEdit"/>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="emailHostLabel">
-     <property name="text">
-      <string>Email Host</string>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
-    <widget class="QLineEdit" name="emailUserEdit"/>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLineEdit" name="emailHostEdit"/>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="textNumberLabel">
-     <property name="text">
-      <string>Text Number</string>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-    </widget>
-   </item>
-   <item row="9" column="0">
-    <widget class="ProviderBox" name="textProviderComboBox"/>
-   </item>
-   <item row="10" column="0">
-    <widget class="QGroupBox" name="buttons">
-     <property name="title">
-      <string/>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
      </property>
-     <property name="flat">
-      <bool>false</bool>
+    </spacer>
+   </item>
+   <item row="3" column="0">
+    <widget class="QFrame" name="testingFrame">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="3">
-       <widget class="QPushButton" name="clearButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>5</number>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="3" column="3">
+       <widget class="QPushButton" name="testWindButton">
         <property name="text">
-         <string>Clear All</string>
+         <string>Test Wind</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="saveButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+      <item row="3" column="4">
+       <widget class="QPushButton" name="testWeightButton">
         <property name="text">
-         <string>Save Changes</string>
+         <string>Test Weight</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer">
+      <item row="3" column="2">
+       <widget class="QPushButton" name="testWeatherButton">
+        <property name="text">
+         <string>Test Weather</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="6" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="warningLabel">
+        <property name="font">
+         <font>
+          <pointsize>16</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>WARNING!  These buttons will clear and repopulate the database.</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::AutoText</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="6" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <pointsize>30</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Testing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <spacer name="horizontalSpacer_5">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -88,10 +102,239 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label">
+      <item row="3" column="5">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="3" alignment="Qt::AlignHCenter">
+       <widget class="QCheckBox" name="enableTestingCheckBox">
         <property name="text">
-         <string>Enter any new values and click to</string>
+         <string>Enable Testing</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QFrame" name="setupFrame">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>5</number>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_8">
+      <item row="2" column="0" colspan="2">
+       <widget class="QGroupBox" name="buttons">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="1" column="3">
+          <widget class="QPushButton" name="clearButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Clear All</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="saveButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Save Changes</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="saveLabel">
+           <property name="text">
+            <string>Enter any new values and click to</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QGroupBox" name="paging">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Paging</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="2" column="0">
+          <widget class="QLabel" name="emailPWLabel">
+           <property name="text">
+            <string>Email PW</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="emailUserLabel">
+           <property name="text">
+            <string>Email User</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="emailHostLabel">
+           <property name="text">
+            <string>Email Host</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="emailUserEdit"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLineEdit" name="emailHostEdit"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLineEdit" name="emailPWEdit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QGroupBox" name="predictionDefaults">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Prediction defaults</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_7">
+         <item row="2" column="0">
+          <widget class="QLabel" name="weightAdjustmentLabel">
+           <property name="text">
+            <string>ET correction per 1lb of weight</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QDoubleSpinBox" name="weightAdjustmentSpinBox">
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>0.999000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QDoubleSpinBox" name="windAdjustmentSpinBox">
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="minimum">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>0.999000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="ProviderBox" name="textProviderComboBox"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="windAdjustmentLabel">
+           <property name="text">
+            <string>ET correction per 1MPH of wind</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="textProviderLabel">
+           <property name="text">
+            <string>Text Provider</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="textNumberLabel">
+           <property name="text">
+            <string>Text Number</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLineEdit" name="textNumberEdit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="setupLabel">
+        <property name="font">
+         <font>
+          <pointsize>30</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Setup</string>
         </property>
        </widget>
       </item>
@@ -99,27 +342,65 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="emailPWLabel">
-     <property name="text">
-      <string>Email PW</string>
+    <widget class="QFrame" name="maintenanceFrame">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLineEdit" name="emailPWEdit"/>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="emailUserLabel">
-     <property name="text">
-      <string>Email User</string>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
      </property>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="textProviderLabel">
-     <property name="text">
-      <string>Text Provider</string>
+     <property name="lineWidth">
+      <number>5</number>
      </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="cleanDatabaseButton">
+        <property name="text">
+         <string>Clean Database</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="3" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="maintenanceLabel">
+        <property name="font">
+         <font>
+          <pointsize>30</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Maintenance</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
@@ -132,11 +413,6 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>emailUserEdit</tabstop>
-  <tabstop>emailPWEdit</tabstop>
-  <tabstop>emailHostEdit</tabstop>
-  <tabstop>textNumberEdit</tabstop>
-  <tabstop>textProviderComboBox</tabstop>
   <tabstop>saveButton</tabstop>
   <tabstop>clearButton</tabstop>
  </tabstops>

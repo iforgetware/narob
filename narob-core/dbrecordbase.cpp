@@ -2,7 +2,8 @@
 
 #include "dbrecordbase.h"
 
-DbRecordBase::DbRecordBase()
+DbRecordBase::DbRecordBase() :
+    QSqlRecord()
 {
 
 }
@@ -32,5 +33,12 @@ void DbRecordBase::init(const QString &table)
         case 3:
             this->append(QSqlField(field.mColumn, QVariant::Double, table));
         }
+    }
+}
+
+void DbRecordBase::populate(QSqlRecord rec)
+{
+    foreach (Field field, mFields) {
+        this->setValue(field.mColumn, rec.value(field.mColumn));
     }
 }

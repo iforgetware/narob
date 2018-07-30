@@ -2,25 +2,23 @@
 
 #include "tracks.h"
 
-Fields setTrackFields()
+Fields trackFields()
 {
-    Fields retFields;
+    Fields f;
 
-    retFields.append(Field("id", "id", 0, 0));
-    retFields.append(Field("name", "Name", 150, -4));
-    retFields.append(Field("elevation", "Elev", 50, 0));
-    retFields.append(Field("bearing", "Bear", 50, 0));
-    retFields.append(Field("radio", "Radio", 50, 1));
+    f.append(Field("id", "id", 0, 0));
+    f.append(Field("name", "Name", 150, -4));
+    f.append(Field("elevation", "Elev", 50, 0));
+    f.append(Field("bearing", "Bear", 50, 0));
+    f.append(Field("radio", "Radio", 50, 1));
 
-    return retFields;
+    return f;
 }
-
-Fields trackFields = setTrackFields();
 
 Tracks::Tracks() :
     DbTableBase()
 {
-    mFields = trackFields;
+    mFields = trackFields();
     mTable = "tracks";
 }
 
@@ -28,29 +26,22 @@ Tracks::Tracks() :
 Track::Track() :
     DbRecordBase()
 {
-    mFields = trackFields;
+    mFields = trackFields();
     init("tracks");
 }
 
 TracksModel::TracksModel(QObject *parent) :
-    ModelBase(parent)
+    ModelBase("tracks",
+              trackFields(),
+              parent)
 {
-    setTable("tracks");
-
-    mFields = trackFields;
-
-    setHeaders();
-
-    select();
 }
 
 Track* TracksModel::getTrack(const int row)
 {
-    QSqlRecord rec = record(row);
     Track *track = new Track();
-    foreach (Field field, mFields) {
-        track->setValue(field.mColumn, rec.value(field.mColumn));
-    }
+    track->populate(record(row));
+
     return track;
 }
 
@@ -66,10 +57,7 @@ Track *TracksModel::trackForId(const int id)
     Track *track = new Track();
 
     if(query.next()){
-
-        foreach (Field field, mFields) {
-            track->setValue(field.mColumn, query.value(field.mColumn));
-        }
+        track->populate(query.record());
     }
 
     query.clear();

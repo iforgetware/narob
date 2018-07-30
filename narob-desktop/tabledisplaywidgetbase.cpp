@@ -16,6 +16,6 @@ void TableDisplayWidgetBase::initTable()
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->tableView->verticalHeader()->setVisible(false);
-    hideColumn(mModel->fieldIndex("id"));
+    hide("id");
     show();
 }

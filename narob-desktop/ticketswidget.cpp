@@ -1,5 +1,5 @@
 #include "ticketswidget.h"
-#include "ticketstrackmodel.h"
+//#include "ticketstrackmodel.h"
 
 #include "delegates.h"
 
@@ -28,11 +28,11 @@ TicketsWidget::TicketsWidget(TicketsModel *model,
 
     setupColumns(mTicketsModel->fields());
 
-    hideColumn(mTicketsModel->fieldIndex("vehicleId"));
-    hideColumn(mTicketsModel->fieldIndex("predictionId"));
+    hide("vehicleId");
+    hide("predictionId");
 
     if(trackId){
-        hideColumn(mTicketsModel->fieldIndex("trackId"));
+        hide("trackId");
     }
 
     initTable();

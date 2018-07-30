@@ -29,10 +29,6 @@ SOURCES += \
     databasemanager.cpp \
     modelbase.cpp \
     settings.cpp \
-#    settingsdao.cpp \
-#    settingsmodel.cpp \
-    ticketsracemodel.cpp \
-    ticketstrackmodel.cpp \
     dbtablebase.cpp \
     dbrecordbase.cpp \
     races.cpp \
@@ -48,10 +44,6 @@ HEADERS += \
     narob-core_global.h \
     modelbase.h \
     settings.h \
-#    settingsdao.h \
-#    settingsmodel.h \
-    ticketsracemodel.h \
-    ticketstrackmodel.h \
     dbtablebase.h \
     dbrecordbase.h \
     races.h \

@@ -6,6 +6,7 @@
 #include "vehicles.h"
 #include "races.h"
 #include "tickets.h"
+#include "ticketseditwidget.h"
 
 namespace Ui {
 class TicketEntryTab;
@@ -21,9 +22,10 @@ public:
                             Race* race,
                             QWidget *parent = 0);
     ~TicketEntryTab();
-
+    void updateAllModels();
 private:
     Ui::TicketEntryTab *ui;
+    TicketsEditWidget *mTicketsEditWidget;
 };
 
 #endif // TICKETENTRYTAB_H

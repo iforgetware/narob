@@ -1,23 +1,21 @@
 #include "vehicles.h"
 
-Fields setVehicleFields()
+Fields vehicleFields()
 {
-    Fields retFields;
+    Fields f;
 
-    retFields.append(Field("id", "id", 0, 0));
-    retFields.append(Field("number", "Number", 70, -4));
-    retFields.append(Field("compClass", "Class", 70, -4));
-    retFields.append(Field("weight", "Weight", 70, 0));
+    f.append(Field("id", "id", 0, 0));
+    f.append(Field("number", "Number", 70, -4));
+    f.append(Field("compClass", "Class", 70, -4));
+    f.append(Field("weight", "Weight", 70, 0));
 
-    return retFields;
+    return f;
 }
-
-Fields vehicleFields = setVehicleFields();
 
 Vehicles::Vehicles() :
     DbTableBase()
 {
-    mFields = vehicleFields;
+    mFields = vehicleFields();
     mTable = "vehicles";
 }
 
@@ -25,28 +23,21 @@ Vehicles::Vehicles() :
 Vehicle::Vehicle() :
     DbRecordBase()
 {
-    mFields = vehicleFields;
+    mFields = vehicleFields();
     init("vehicles");
 }
 
 VehiclesModel::VehiclesModel(QObject *parent) :
-    ModelBase(parent)
+    ModelBase("vehicles",
+              vehicleFields(),
+              parent)
 {
-    setTable("vehicles");
-
-    mFields = vehicleFields;
-
-    setHeaders();
-
-    select();
 }
 
 Vehicle* VehiclesModel::getVehicle(const int row)
 {
-    QSqlRecord rec = record(row);
     Vehicle *vehicle = new Vehicle();
-    foreach (Field field, mFields) {
-        vehicle->setValue(field.mColumn, rec.value(field.mColumn));
-    }
+    vehicle->populate(record(row));
+
     return vehicle;
 }

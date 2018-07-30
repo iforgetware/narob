@@ -28,7 +28,7 @@ void VehiclesWidget::addVehicle()
 {
     VehicleDialog *vehicleDialog = new VehicleDialog(-1, this);
     connect(vehicleDialog, &VehicleDialog::ready,
-            this, &VehiclesWidget::updateModels);
+            this, &VehiclesWidget::updateModel);
 
     vehicleDialog->exec();
 }
@@ -40,7 +40,7 @@ void VehiclesWidget::editVehicle()
 
         VehicleDialog *vehicleDialog = new VehicleDialog(tRow, this);
         connect(vehicleDialog, &VehicleDialog::ready,
-                this, &VehiclesWidget::updateModels);
+                this, &VehiclesWidget::updateModel);
 
         vehicleDialog->exec();
     }

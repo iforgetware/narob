@@ -23,11 +23,6 @@ void TableWidgetBase::setTitle(const QString &title)
     ui->title->setText(mTitle);
 }
 
-void TableWidgetBase::hideColumn(const int &column)
-{
-    ui->tableView->setColumnHidden(column, true);
-}
-
 void TableWidgetBase::setupColumns(const Fields &fields)
 {
     foreach(Field field, fields){
@@ -67,4 +62,14 @@ void TableWidgetBase::setupColumns(const Fields &fields)
             break;
         }
     }
+}
+
+void TableWidgetBase::updateModel()
+{
+    mModel->select();
+}
+
+void TableWidgetBase::hide(const QString &columnName)
+{
+    ui->tableView->setColumnHidden(mModel->fieldIndex(columnName), true);
 }

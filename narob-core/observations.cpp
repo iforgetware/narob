@@ -2,31 +2,29 @@
 
 #include "observations.h"
 
-Fields setObservationFields()
+Fields observationFields()
 {
-    Fields retFields;
+    Fields f;
 
-    retFields.append(Field("id", "id", 0, 0));
-    retFields.append(Field("dateTime", "Date       Time", 160, -3));
-    retFields.append(Field("temperature", "Temp", 50, 1));
-    retFields.append(Field("humidity", "Humid",50, 1));
-    retFields.append(Field("pressure", "Pres", 50, 2));
-    retFields.append(Field("vaporPressure", "V Pres", 50, 2));
-    retFields.append(Field("dewPoint", "D Point", 60, 1));
-    retFields.append(Field("densityAltitude", "D Alt", 60, 0));
-    retFields.append(Field("windSpeed", "W Speed", 70, 0));
-    retFields.append(Field("windGust", "W Gust", 70, 0));
-    retFields.append(Field("windDirection", "W Dir", 60, 0));
+    f.append(Field("id", "id", 0, 0));
+    f.append(Field("dateTime", "Date       Time", 160, -3));
+    f.append(Field("temperature", "Temp", 50, 1));
+    f.append(Field("humidity", "Humid",50, 1));
+    f.append(Field("pressure", "Pres", 50, 2));
+    f.append(Field("vaporPressure", "V Pres", 50, 2));
+    f.append(Field("dewPoint", "D Point", 60, 1));
+    f.append(Field("densityAltitude", "D Alt", 60, 0));
+    f.append(Field("windSpeed", "W Speed", 70, 0));
+    f.append(Field("windGust", "W Gust", 70, 0));
+    f.append(Field("windDirection", "W Dir", 60, 0));
 
-    return retFields;
+    return f;
 }
-
-Fields observationFields = setObservationFields();
 
 Observations::Observations() :
     DbTableBase()
 {
-    mFields = observationFields;
+    mFields = observationFields();
     mTable = "observations";
 }
 
@@ -34,19 +32,15 @@ Observations::Observations() :
 Observation::Observation() :
     DbRecordBase()
 {
-    mFields = observationFields;
+    mFields = observationFields();
     init("observations");
 }
 
 ObservationsModel::ObservationsModel(QObject *parent) :
-    ModelBase(parent)
+    ModelBase("observations",
+              observationFields(),
+              parent)
 {
-    setTable("observations");
-
-    mFields = observationFields;
-
-    setHeaders();
-
     setSort(fieldIndex("dateTime"), Qt::DescendingOrder);
 
     select();
@@ -61,12 +55,8 @@ void ObservationsModel::addObservation(Observation &observation)
 
 Observation* ObservationsModel::getObservation(const int row)
 {
-    QSqlRecord rec = record(row);
     Observation *observation = new Observation();
-
-    foreach (Field field, mFields) {
-        observation->setValue(field.mColumn, rec.value(field.mColumn));
-    }
+    observation->populate(record(row));
 
     return observation;
 }
@@ -88,10 +78,7 @@ Observation* ObservationsModel::observationForTime(QDateTime dateTime)
     Observation *observation = new Observation();
 
     if(query.next()){
-
-        foreach (Field field, mFields) {
-            observation->setValue(field.mColumn, query.value(field.mColumn));
-        }
+        observation->populate(query.record());
     }
 
     query.clear();

@@ -8,6 +8,7 @@ SUBDIRS += \
     narob-desktop
 
 DISTFILES += \
-    README
+    README \
+    notes.txt
 
 narob-desktop.depends = narob-core

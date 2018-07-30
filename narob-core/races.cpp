@@ -2,24 +2,22 @@
 
 #include "races.h"
 
-Fields setRaceFields()
+Fields raceFields()
 {
-    Fields retFields;
+    Fields f;
 
-    retFields.append(Field("id", "id", 0, 0));
-    retFields.append(Field("date", "Date", 100, -2));
-    retFields.append(Field("name", "Name", 150, -4));
-    retFields.append(Field("trackId", "Track", 150, 0));
+    f.append(Field("id", "id", 0, 0));
+    f.append(Field("date", "Date", 100, -2));
+    f.append(Field("name", "Name", 150, -4));
+    f.append(Field("trackId", "Track", 150, 0));
 
-    return retFields;
+    return f;
 }
-
-Fields raceFields = setRaceFields();
 
 Races::Races() :
     DbTableBase()
 {
-    mFields = raceFields;
+    mFields = raceFields();
     mTable = "races";
 }
 
@@ -27,35 +25,29 @@ Races::Races() :
 Race::Race() :
     DbRecordBase()
 {
-    mFields = raceFields;
+    mFields = raceFields();
     init("races");
 }
 
 RacesModel::RacesModel(QObject *parent) :
-    ModelBase(parent)
+    ModelBase("races",
+              raceFields(),
+              parent)
 {
-    setTable("races");
-
     setJoinMode(QSqlRelationalTableModel::LeftJoin);
 
     setRelation(3, QSqlRelation("tracks", "id", "name, trackId as trackId"));
 
-    mFields = raceFields;
-
-    setHeaders();
+    setSort(fieldIndex("date"), Qt::DescendingOrder);
 
     select();
 }
 
 Race* RacesModel::getRace(const int row)
 {
-    QSqlRecord rec = record(row);
     Race *race = new Race();
-    int i = 0;
-    foreach (Field field, mFields) {
-        race->setValue(field.mColumn, rec.value(field.mColumn));
-        i++;
-    }
+    race->populate(record(row));
+
     return race;
 }
 
@@ -71,10 +63,7 @@ Race *RacesModel::raceForId(const int id)
     Race *race = new Race();
 
     if(query.next()){
-
-        foreach (Field field, mFields) {
-            race->setValue(field.mColumn, query.value(field.mColumn));
-        }
+        race->populate(query.record());
     }
 
     query.clear();

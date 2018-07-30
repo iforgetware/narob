@@ -5,26 +5,26 @@
 #include "settings.h"
 #include "databasemanager.h"
 
-Fields setSettingsFields()
+Fields settingsFields()
 {
-    Fields retFields;
+    Fields f;
 
-    retFields.append(Field("id", "id", 0, 0));
-    retFields.append(Field("emailUser", "Email User", 250, -4));
-    retFields.append(Field("emailPW", "Email Password", 250, -4));
-    retFields.append(Field("emailHost", "Email Host", 250, -4));
-    retFields.append(Field("textNumber", "Text Number", 150, -4));
-    retFields.append(Field("textProvider", "Text Provider", 150, -4));
+    f.append(Field("id", "id", 0, 0));
+    f.append(Field("windAdjustment", "Wind Adjustment", 50, 3));
+    f.append(Field("weightAdjustment", "Weight Adjustment", 50, 3));
+    f.append(Field("textNumber", "Text Number", 150, -4));
+    f.append(Field("textProvider", "Text Provider", 150, -4));
+    f.append(Field("emailUser", "Email User", 250, -4));
+    f.append(Field("emailPW", "Email Password", 250, -4));
+    f.append(Field("emailHost", "Email Host", 250, -4));
 
-    return retFields;
+    return f;
 }
-
-Fields settingsFields = setSettingsFields();
 
 Settings::Settings() :
     DbTableBase()
 {
-    mFields = settingsFields;
+    mFields = settingsFields();
     mTable = "settings";
 }
 
@@ -39,9 +39,7 @@ DbRecordBase *Settings::getSettings()
     settings->init("settings");
 
     if(query.next()){
-        foreach (Field field, mFields) {
-            settings->setValue(field.mColumn, query.value(field.mColumn));
-        }
+        settings->populate(query.record());
     }
 
     query.clear();
@@ -53,23 +51,29 @@ void Settings::updateSettings(DbRecordBase *settings)
 {
     QSqlQuery query;
     query.prepare("UPDATE settings set ("
+                  "windAdjustment,"
+                  "weightAdjustment,"
+                  "textNumber,"
+                  "textProvider,"
                   "emailUser,"
                   "emailPW,"
-                  "emailHost,"
-                  "textNumber,"
-                  "textProvider"
+                  "emailHost"
                   ") = ("
+                  ":windAdjustment,"
+                  ":weightAdjustment,"
+                  ":textNumber,"
+                  ":textProvider,"
                   ":emailUser,"
                   ":emailPW,"
-                  ":emailHost,"
-                  ":textNumber,"
-                  ":textProvider"
+                  ":emailHost"
                   ") WHERE id=1");
+    query.bindValue(":weightAdjustment", settings->value("weightAdjustment"));
+    query.bindValue(":windAdjustment", settings->value("windAdjustment"));
+    query.bindValue(":textNumber", settings->value("textNumber"));
+    query.bindValue(":textProvider", settings->value("textProvider"));
     query.bindValue(":emailUser", settings->value("emailUser"));
     query.bindValue(":emailPW", settings->value("emailPW"));
     query.bindValue(":emailHost", settings->value("emailHost"));
-    query.bindValue(":textNumber", settings->value("textNumber"));
-    query.bindValue(":textProvider", settings->value("textProvider"));
 
     query.exec();
     DatabaseManager::debugQuery(query);

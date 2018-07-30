@@ -17,11 +17,13 @@ public:
     explicit TableWidgetBase(QWidget *parent = 0);
     ~TableWidgetBase();
 
-    void setTitle(const QString &title);
-    void hideColumn(const int &column);
-    void setupColumns(const Fields &fields);
+    void updateModel();
 
 protected:
+    void setTitle(const QString &title);
+    void setupColumns(const Fields &fields);
+    void hide(const QString &columnName);
+
     Ui::TableWidgetBase *ui;
     ModelBase *mModel;
     QString mTitle;

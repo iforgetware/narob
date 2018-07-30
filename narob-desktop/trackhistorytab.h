@@ -6,6 +6,7 @@
 #include "vehicles.h"
 #include "tracks.h"
 #include "tickets.h"
+#include "ticketswidget.h"
 
 namespace Ui {
 class TrackHistoryTab;
@@ -20,9 +21,11 @@ public:
                              int trackId,
                              QWidget* parent = 0);
     ~TrackHistoryTab();
+    void updateAllModels();
 
 private:
     Ui::TrackHistoryTab* ui;
+    TicketsWidget *mTicketsWidget;
 };
 
 #endif // TRACKHISTORYTAB_H

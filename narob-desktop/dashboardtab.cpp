@@ -15,13 +15,16 @@ DashboardTab::~DashboardTab()
     delete ui;
 }
 
+void DashboardTab::updateAllModels()
+{
+    ui->tracksWidget->updateModel();
+    ui->racesWidget->updateModel();
+    ui->vehiclesWidget->updateModel();
+}
+
 void DashboardTab::onOpenRaceControlButtonClicked()
 {
     if(ui->vehiclesWidget->selected() && ui->racesWidget->selected()) {
-
-
-
-
 
 
 
@@ -33,12 +36,8 @@ void DashboardTab::onOpenRaceControlButtonClicked()
 
 
 
-
-
-
-
         emit openRaceControl(ui->vehiclesWidget->getSelectedVehicle(),
-                                ui->racesWidget->getSelectedRace());
+                             ui->racesWidget->getSelectedRace());
     }else{
         qDebug("Vehicle and Race not selected - WRITE CODE");
     }

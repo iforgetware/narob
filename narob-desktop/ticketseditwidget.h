@@ -2,7 +2,7 @@
 #define TICKETSEDITWIDGET_H
 
 #include "tickets.h"
-#include "ticketsracemodel.h"
+//#include "ticketsracemodel.h"
 #include "tableeditwidgetbase.h"
 #include "ui_tablewidgetbase.h"
 

@@ -53,5 +53,42 @@ void DbTableBase::init() const
         DatabaseManager::debugQuery(query);
 
         query.clear();
+    }else{
+        QSqlRecord existingColumns = QSqlDatabase::database().record(mTable);
+
+        foreach(Field field, mFields){
+
+            if(!existingColumns.contains(field.mColumn)){
+                QString queryText = QString("ALTER TABLE %1 ADD COLUMN %2 ")
+                                    .arg(mTable)
+                                    .arg(field.mColumn);
+                switch(field.mDelegate){
+                case -4:
+                case -3:
+                case -2:
+                    queryText.append(" TEXT");
+                    break;
+
+                case -1:
+                case 0:
+                    queryText.append(" INTEGER");
+                    if(field.mColumn == "id"){
+                        queryText.append(" PRIMARY KEY");
+                    }
+                    break;
+
+                case 1:
+                case 2:
+                case 3:
+                    queryText.append(" REAL");
+                }
+
+                QSqlQuery query;
+                query.exec(queryText);
+                DatabaseManager::debugQuery(query);
+
+                query.clear();
+            }
+        }
     }
 }

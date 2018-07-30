@@ -26,12 +26,15 @@ public:
     ~DatabaseManager();
 
     static void debugQuery(const QSqlQuery& query);
+    void testWeather();
+    void testWind();
+    void testWeight();
 
 private:
     QSqlDatabase mDatabase;
+    void initTables();
     void clearDatabase();
-//    void populateTracks();
-//    void populateTables();
+    void setupTest();
 
 public:
     Tracks tracks;

@@ -1,10 +1,6 @@
 #include "racecontroltab.h"
 #include "ui_racecontroltab.h"
 #include "tickets.h"
-#include "ticketentrytab.h"
-#include "trackhistorytab.h"
-#include "logbooktab.h"
-#include "predictiontab.h"
 
 #include <QDebug>
 
@@ -21,26 +17,26 @@ RaceControlTab::RaceControlTab(Vehicle* vehicle,
 
     ui->tabWidget->setTabsClosable(false);
 
-    TicketEntryTab* ticketEntryTab = new TicketEntryTab(mTicketsModel,
+    mTicketEntryTab = new TicketEntryTab(mTicketsModel,
                                                         mVehicle,
                                                         mRace,
                                                         this);
 
-    TrackHistoryTab* trackHistoryTab = new TrackHistoryTab(mTicketsModel,
+    mTrackHistoryTab = new TrackHistoryTab(mTicketsModel,
                                                            mRace->value("trackId").toInt(),
                                                            this);
 
 
-    LogbookTab* logbookTab = new LogbookTab(mTicketsModel, this);
+    mLogbookTab = new LogbookTab(mTicketsModel, this);
 
     mPredictionTab = new PredictionTab(mTicketsModel,
                                        mVehicle,
                                        mRace,
                                        this);
 
-    ui->tabWidget->addTab(ticketEntryTab, "Ticket Entry");
-    ui->tabWidget->addTab(trackHistoryTab, "Track History");
-    ui->tabWidget->addTab(logbookTab, "Logbook");
+    ui->tabWidget->addTab(mTicketEntryTab, "Ticket Entry");
+    ui->tabWidget->addTab(mTrackHistoryTab, "Track History");
+    ui->tabWidget->addTab(mLogbookTab, "Logbook");
     ui->tabWidget->addTab(mPredictionTab, "Predictions");
 }
 
@@ -48,4 +44,12 @@ RaceControlTab::~RaceControlTab()
 {
     delete mPredictionTab;
     delete ui;
+}
+
+void RaceControlTab::updateAllModels()
+{
+    mTicketEntryTab->updateAllModels();
+    mTrackHistoryTab->updateAllModels();
+    mLogbookTab->updateAllModels();
+    mPredictionTab->UpdateAllModels();
 }

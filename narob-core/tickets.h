@@ -2,6 +2,7 @@
 #define TICKETS_H
 
 #include <QVector>
+#include <QSortFilterProxyModel>
 
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
@@ -32,9 +33,40 @@ public:
     explicit TicketsModel(Vehicle *vehicle,
                           QObject *parent = 0);
     QVector<Ticket*> tickets();
+    double lastWeight();
 
 private:
     Vehicle *mVehicle;
+};
+
+
+class NAROBCORESHARED_EXPORT TicketsRaceModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    TicketsRaceModel(int raceId, QObject* parent);
+
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+
+private:
+    int mRaceId;
+};
+
+
+class NAROBCORESHARED_EXPORT TicketsTrackModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    TicketsTrackModel(int trackId, QObject* parent);
+
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+
+private:
+    int mTrackId;
 };
 
 #endif // TICKETS_H

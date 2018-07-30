@@ -20,7 +20,8 @@ class WeatherTab : public QWidget
 public:
     explicit WeatherTab(QWidget *parent = 0);
     ~WeatherTab();
-    ObservationsModel* getModel() { return mObservationsModel; }
+    void updateAllModels();
+//    ObservationsModel* getModel() { return mObservationsModel; }
 
 signals:
     void sendStatus(QString status);

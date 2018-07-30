@@ -1,23 +1,21 @@
 #include "refpts.h"
 
-Fields setRefPTFields()
+Fields refPTFields()
 {
-    Fields retFields;
+    Fields f;
 
-    retFields.append(Field("id", "id", 0, 0));
-    retFields.append(Field("predictionId", "PredictionId", 0, 0));
-    retFields.append(Field("ticketId", "TicketId", 0, 0));
-    retFields.append(Field("distance", "Distance", 70, -4));
+    f.append(Field("id", "id", 0, 0));
+    f.append(Field("predictionId", "PredictionId", 0, 0));
+    f.append(Field("ticketId", "TicketId", 0, 0));
+    f.append(Field("distance", "Distance", 70, -4));
 
-    return retFields;
+    return f;
 }
-
-Fields refPTFields = setRefPTFields();
 
 RefPTs::RefPTs() :
     DbTableBase()
 {
-    mFields = refPTFields;
+    mFields = refPTFields();
     mTable = "refPTs";
 }
 
@@ -25,21 +23,13 @@ RefPTs::RefPTs() :
 RefPT::RefPT() :
     DbRecordBase()
 {
-    mFields = refPTFields;
+    mFields = refPTFields();
     init("refPTs");
 }
 
 RefPTsModel::RefPTsModel(QObject *parent) :
-    ModelBase(parent)
+    ModelBase("refPTs",
+              refPTFields(),
+              parent)
 {
-    setTable("refPTs");
-
-    select();
-}
-
-void RefPTsModel::addRefPT(RefPT &refPT)
-{
-    insertRecord(-1, refPT);
-    submitAll();
-    select();
 }

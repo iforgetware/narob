@@ -14,6 +14,8 @@ public:
     void setFields(const Fields &fields);
     void init(const QString &table);
 
+    void populate(QSqlRecord rec);
+
 protected:
     Fields mFields;
 };

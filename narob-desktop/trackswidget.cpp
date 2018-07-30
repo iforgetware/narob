@@ -31,7 +31,7 @@ void TracksWidget::addTrack()
 {
     TrackDialog *trackDialog = new TrackDialog(-1, this);
     connect(trackDialog, &TrackDialog::ready,
-            this, &TracksWidget::updateModels);
+            this, &TracksWidget::updateModel);
 
     trackDialog->exec();
 }
@@ -43,7 +43,7 @@ void TracksWidget::editTrack()
 
         TrackDialog *trackDialog = new TrackDialog(tRow, this);
         connect(trackDialog, &TrackDialog::ready,
-                this, &TracksWidget::updateModels);
+                this, &TracksWidget::updateModel);
 
         trackDialog->exec();
     }

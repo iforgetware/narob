@@ -26,14 +26,14 @@ RacesWidget::RacesWidget(QWidget *parent) :
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &RacesWidget::editRace);
 
-    hideColumn(mRacesModel->fieldIndex("trackId"));
+    hide("trackId");
 }
 
 void RacesWidget::addRace()
 {
     RaceDialog *raceDialog = new RaceDialog(-1, this);
     connect(raceDialog, &RaceDialog::ready,
-            this, &RacesWidget::updateModels);
+            this, &RacesWidget::updateModel);
 
     raceDialog->exec();
 }
@@ -45,7 +45,7 @@ void RacesWidget::editRace()
 
         RaceDialog *raceDialog = new RaceDialog(rRow, this);
         connect(raceDialog, &RaceDialog::ready,
-                this, &RacesWidget::updateModels);
+                this, &RacesWidget::updateModel);
 
         raceDialog->exec();
     }

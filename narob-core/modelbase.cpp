@@ -1,9 +1,15 @@
 #include "modelbase.h"
 
-ModelBase::ModelBase(QObject *parent) :
+ModelBase::ModelBase(QString table,
+                     Fields fields,
+                     QObject *parent) :
     QSqlRelationalTableModel(parent)
 {
+    setTable(table);
+    mFields = fields;
+    setHeaders();
     setEditStrategy(QSqlTableModel::OnManualSubmit);
+    select();
 }
 
 void ModelBase::setHeaders()
@@ -13,5 +19,11 @@ void ModelBase::setHeaders()
                       Qt::Horizontal,
                       field.mHeading);
     }
+}
+
+void ModelBase::addRow(QSqlRecord rec)
+{
+    insertRecord(-1, rec);
+    submitAll();
     select();
 }
