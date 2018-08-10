@@ -4,10 +4,10 @@ Fields vehicleFields()
 {
     Fields f;
 
-    f.append(Field("id", "id", 0, 0));
-    f.append(Field("number", "Number", 70, -4));
-    f.append(Field("compClass", "Class", 70, -4));
-    f.append(Field("weight", "Weight", 70, 0));
+    f << Field("id", "id", 0, 0)
+      << Field("number", "Number", 70, -4)
+      << Field("compClass", "Class", 70, -4)
+      << Field("weight", "Weight", 70, 0);
 
     return f;
 }

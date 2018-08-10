@@ -36,7 +36,7 @@ SOURCES += \
     tickets.cpp \
     observations.cpp \
     predictions.cpp \
-    refpts.cpp \
+#    refpts.cpp \
     tracks.cpp
 
 HEADERS += \
@@ -51,7 +51,7 @@ HEADERS += \
     tickets.h \
     observations.h \
     predictions.h \
-    refpts.h \
+#    refpts.h \
     tracks.h
 
 DISTFILES +=

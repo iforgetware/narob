@@ -5,8 +5,10 @@
 #include "dbrecordbase.h"
 #include "modelbase.h"
 
+#include "tickets.h"
 #include "vehicles.h"
 #include "races.h"
+//#include "refpts.h"
 
 #include "narob-core_global.h"
 
@@ -21,6 +23,21 @@ class NAROBCORESHARED_EXPORT Prediction : public DbRecordBase
 {
 public:
     explicit Prediction();
+    void predictClocks(bool allForVehicle,
+                       bool allForTrack,
+                       TicketsModel *ticketsModel);
+    double windCorrection(Ticket *ticket);
+    double weightCorrection(Ticket *ticket);
+
+private:
+    QVector<Ticket*> validTickets(const QString &clock);
+    void getWeather();
+    void predictClock(const QString &clock);
+
+    bool mAllForVehicle;
+    bool mAllForTrack;
+    TicketsModel *mTicketsModel;
+//    QVector<RefPT> mRefPTList;
 };
 
 
@@ -31,12 +48,14 @@ class NAROBCORESHARED_EXPORT PredictionsModel : public ModelBase
 public:
     explicit PredictionsModel(Vehicle *vehicle,
                               Race *race,
-                              QObject *parent = 0);
-    void addPrediction(Prediction &prediction);
+                              int ticketId,
+                              QObject *parent);
+    QVariant data(const QModelIndex &item, int role) const;
 
 private:
     Vehicle *mVehicle;
     Race *mRace;
+    int mTicketId;
 };
 
 #endif // PREDICTIONS_H

@@ -4,7 +4,19 @@ In-lanes paging can be setup if the PC running it has an internet connection.
 I use my phone as a hotspot.
 It uses email-to-text addresses based on the service provider of the recieving phone.
 
-changes done to be logged next version
+v0.3.0
+    - color coded columns for prediction type
+    - added more info on prediction tab
+        - added all clocks to predictions
+        - onscreeen prediction updates every minute
+        - previous predictions written to DB every 5 minutes
+        - 6 predictions ( 30 minutes worth ) shown on prediction tab
+    - changed validity of clock from bool column to check on value in data
+        - invalid clocks are negative
+        - displays invalid clocks grayed out
+    - added prediction info on ticket dialog
+        - shows what would be predicted at exact time of run
+        - sub-dialog shows predictions 5 minutes before and after run
 
 v0.2.6
     - made all ticket lists descending order ( newest on top )

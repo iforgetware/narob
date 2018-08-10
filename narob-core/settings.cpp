@@ -9,14 +9,14 @@ Fields settingsFields()
 {
     Fields f;
 
-    f.append(Field("id", "id", 0, 0));
-    f.append(Field("windAdjustment", "Wind Adjustment", 50, 3));
-    f.append(Field("weightAdjustment", "Weight Adjustment", 50, 3));
-    f.append(Field("textNumber", "Text Number", 150, -4));
-    f.append(Field("textProvider", "Text Provider", 150, -4));
-    f.append(Field("emailUser", "Email User", 250, -4));
-    f.append(Field("emailPW", "Email Password", 250, -4));
-    f.append(Field("emailHost", "Email Host", 250, -4));
+    f << Field("id", "id", 0, 0)
+      << Field("windAdjustment", "Wind Adjustment", 50, 3)
+      << Field("weightAdjustment", "Weight Adjustment", 50, 3)
+      << Field("textNumber", "Text Number", 150, -4)
+      << Field("textProvider", "Text Provider", 150, -4)
+      << Field("emailUser", "Email User", 250, -4)
+      << Field("emailPW", "Email Password", 250, -4)
+      << Field("emailHost", "Email Host", 250, -4);
 
     return f;
 }

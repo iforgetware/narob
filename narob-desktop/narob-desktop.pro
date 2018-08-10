@@ -47,10 +47,12 @@ SOURCES += \
     providerbox.cpp \
     weatherstation.cpp \
     ticketseditwidget.cpp \
-    predictionswidget.cpp \
     smtp.cpp \
     tabledisplaywidgetbase.cpp \
-    dialogbase.cpp
+    dialogbase.cpp \
+    previouspredictionswidget.cpp \
+    predictionswidget.cpp \
+    ticketpredictionsdialog.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -77,10 +79,12 @@ HEADERS += \
     providerbox.h \
     weatherstation.h \
     ticketseditwidget.h \
-    predictionswidget.h \
     smtp.h \
     tabledisplaywidgetbase.h \
-    dialogbase.h
+    dialogbase.h \
+    previouspredictionswidget.h \
+    predictionswidget.h \
+    ticketpredictionsdialog.h
 
 FORMS += \
     mainwindow.ui \
@@ -97,7 +101,8 @@ FORMS += \
     trackhistorytab.ui \
     ticketentrytab.ui \
     logbooktab.ui \
-    predictiontab.ui
+    predictiontab.ui \
+    ticketpredictionsdialog.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../narob-core/release/ -lnarob-core
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../narob-core/debug/ -lnarob-core

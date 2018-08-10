@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "tracks.h"
 
 #include <QDebug>
 
@@ -26,8 +27,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->weatherTab, &WeatherTab::sendStatus,
             this, &MainWindow::handleStatusUpdate);
 
+    connect(ui->settingsTab, &SettingsTab::updateLogbook,
+            this, &MainWindow::handleUpdateLogbook);
+
     connect(ui->settingsTab, &SettingsTab::testWeather,
             this, &MainWindow::handleTestWeather);
+    connect(ui->settingsTab, &SettingsTab::testTP,
+            this, &MainWindow::handleTestTP);
     connect(ui->settingsTab, &SettingsTab::testWind,
             this, &MainWindow::handleTestWind);
     connect(ui->settingsTab, &SettingsTab::testWeight,
@@ -66,13 +72,22 @@ void MainWindow::handleOpenRaceControl(Vehicle* vehicle, Race* race)
 {
     RaceControlTab *raceControlTab = new RaceControlTab(vehicle, race, this);
 
+    TracksModel tracksModel;
+    Track *track = new Track();
+
+    track = tracksModel.trackForId(race->value("trackId").toInt());
+
     ui->tabWidget->addTab(raceControlTab,
                           vehicle->value("number").toString()
                           + " @ "
-                          + race->value("name").toString());
+                          + race->value("name").toString()
+                          + " @ "
+                          + track->value("name").toString());
 
     ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(raceControlTab));
     mRaceControlTabList.append(raceControlTab);
+
+    delete track;
 }
 
 void MainWindow::handleStatusUpdate(QString status)
@@ -89,9 +104,21 @@ void MainWindow::handleCloseTab(int index)
     }
 }
 
+void MainWindow::handleUpdateLogbook()
+{
+    mDBM->updateLogbook();
+    updateAllModels();
+}
+
 void MainWindow::handleTestWeather()
 {
     mDBM->testWeather();
+    updateAllModels();
+}
+
+void MainWindow::handleTestTP()
+{
+    mDBM->testTP();
     updateAllModels();
 }
 

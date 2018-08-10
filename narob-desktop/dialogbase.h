@@ -24,7 +24,7 @@ protected:
 
     ModelBase *mModel;
     QDataWidgetMapper *mMapper;
-
+    int mRow;
 };
 
 #endif // DIALOGBASE_H

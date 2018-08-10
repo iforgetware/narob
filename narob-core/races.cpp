@@ -6,10 +6,10 @@ Fields raceFields()
 {
     Fields f;
 
-    f.append(Field("id", "id", 0, 0));
-    f.append(Field("date", "Date", 100, -2));
-    f.append(Field("name", "Name", 150, -4));
-    f.append(Field("trackId", "Track", 150, 0));
+    f << Field("id", "id", 0, 0)
+      << Field("date", "Date", 100, -2)
+      << Field("name", "Name", 150, -4)
+      << Field("trackId", "Track", 150, 0);
 
     return f;
 }

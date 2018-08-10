@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QSqlRecord>
 
+#include <math.h>
+
 #include "races.h"
 #include "tracks.h"
 
@@ -85,6 +87,19 @@ ThreeDecimalDelegate::ThreeDecimalDelegate(QObject *parent):
 QString ThreeDecimalDelegate::displayText(const QVariant &value, const QLocale &locale) const
 {
     QString formattedNumber = locale.toString(value.toDouble(), 'f', 3);
+
+    return formattedNumber;
+}
+
+
+ClockDelegate::ClockDelegate(QObject *parent):
+    QStyledItemDelegate(parent)
+{
+}
+
+QString ClockDelegate::displayText(const QVariant &value, const QLocale &locale) const
+{
+    QString formattedNumber = locale.toString(fabs(value.toDouble()), 'f', 3);
 
     return formattedNumber;
 }

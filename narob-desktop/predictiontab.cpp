@@ -21,37 +21,15 @@ PredictionTab::PredictionTab(TicketsModel* model,
     mVehicle(vehicle),
     mRace(race),
     mSettingsTable(new Settings),
-    mPredictionsModel(new PredictionsModel(mVehicle, mRace, this)),
-    mTicketsModel(model),
-    mObservationsModel(new ObservationsModel(this)),
-    mRefPTsModel(new RefPTsModel(this))
+    mPredictionsModel(new PredictionsModel(mVehicle, mRace, 0, this)),
+    mTicketsModel(model)
 {
-
-
-
-
-
-
-
-
-    // ???? add instantaneous prediction ????
-    // would reset on any value change
-
-
-
-
-
-
-
-
-
-
     ui->setupUi(this);
 
-    mPredictionsWidget = new PredictionsWidget(mPredictionsModel,
+    mPreviousPredictionsWidget = new PreviousPredictionsWidget(mPredictionsModel,
                                                this);
 
-    ui->gridLayout_2->addWidget(mPredictionsWidget, 0, 0);
+    ui->gridLayout_2->addWidget(mPreviousPredictionsWidget, 0, 0);
 
     mSettings = mSettingsTable->getSettings();
 
@@ -64,20 +42,12 @@ PredictionTab::PredictionTab(TicketsModel* model,
     ui->textNumberEdit->setText(mSettings->value("textNumber").toString());
 
     mAutoTimer = new QTimer(this);
-    resetTimer(ui->minutesSpinBox->value());
+    mAutoTimer->start(60000);
 
     connect(mAutoTimer,
             &QTimer::timeout,
             this,
             &PredictionTab::makePrediction);
-    connect(ui->makePredictionButton,
-            &QPushButton::clicked,
-            this,
-            &PredictionTab::makePrediction);
-    connect(ui->minutesSpinBox,
-            static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this,
-            &PredictionTab::resetTimer);
 }
 
 PredictionTab::~PredictionTab()
@@ -88,12 +58,7 @@ PredictionTab::~PredictionTab()
 
 void PredictionTab::UpdateAllModels()
 {
-    mPredictionsWidget->updateModel();
-}
-
-void PredictionTab::resetTimer(int i)
-{
-    mAutoTimer->start(i * 60000);
+    mPreviousPredictionsWidget->updateModel();
 }
 
 void PredictionTab::makePrediction()
@@ -102,259 +67,79 @@ void PredictionTab::makePrediction()
 
     prediction.setValue("vehicleId", mVehicle->value("id").toInt());
     prediction.setValue("raceId", mRace->value("id").toInt());
+    prediction.setValue("trackId", mRace->value("trackId").toInt());
+    prediction.setValue("ticketId", 0);
     prediction.setValue("riderWeight", ui->riderWeightSpinBox->value());
     prediction.setValue("vehicleWeight", ui->vehicleWeightSpinBox->value());
 
     prediction.setValue("windAdjustment", ui->windAdjustmentSpinBox->value());
     prediction.setValue("weightAdjustment", ui->weightAdjustmentSpinBox->value());
 
-    getWeather(prediction);
-    predictEighth(prediction);
-    predictQuarter(prediction);
+    prediction.predictClocks(ui->vehicleTicketsCheckBox->isChecked(),
+                             ui->trackTicketsCheckBox->isChecked(),
+                             mTicketsModel);
 
-    mPredictionsModel->addRow(prediction);
+    int minute = prediction.value("dateTime").toDateTime().time().minute();
 
-    int predictionId = mPredictionsModel->query().lastInsertId().toInt();
-
-    foreach(RefPT refPT, mRefPTList){
-        refPT.setValue("predictionId", predictionId);
-        mRefPTsModel->addRow(refPT);
+    if(minute % 5 == 0){
+        writePredictionToDb(prediction);
     }
 
-    mRefPTList.clear();
+    updateDisplay(prediction);
+}
+
+void PredictionTab::writePredictionToDb(Prediction &prediction)
+{
+    mPredictionsModel->addRow(prediction);
 
     if(ui->eToPhoneCheckBox->isChecked() ||
        ui->qToPhoneCheckBox->isChecked()){
         sendPage(prediction);
     }
 
+    if(mPredictionsModel->rowCount(QModelIndex()) > 5){
+        mPredictionsModel->removeRow(6);
+        mPredictionsModel->submitAll();
+        mPreviousPredictionsWidget->updateModel();
+    }
 }
 
-void PredictionTab::getWeather(Prediction &prediction)
+QString PredictionTab::formatClock(const QVariant &clock)
 {
-    Observation* observation = new Observation();
-    mObservationsModel->select();
-    if(prediction.value("dateTime").toDateTime().isValid()){
-        observation = mObservationsModel->observationForTime(prediction.value("dateTime").toDateTime());
-    }else{
-        observation = mObservationsModel->lastObservation();
-        prediction.setValue("DateTime", observation->value("dateTime").toDateTime());
-    }
-
-    if(observation){
-        prediction.setValue("temperature", observation->value("temperature"));
-        prediction.setValue("humidity", observation->value("humidity"));
-        prediction.setValue("pressure", observation->value("pressure"));
-        prediction.setValue("vaporPressure", observation->value("vaporPressure"));
-        prediction.setValue("dewPoint", observation->value("dewPoint"));
-        prediction.setValue("densityAltitude" ,observation->value("densityAltitude"));
-        prediction.setValue("windSpeed", observation->value("windSpeed"));
-        prediction.setValue("windGust", observation->value("windGust"));
-        prediction.setValue("windDirection", observation->value("windDirection"));
-    }else{
-        qDebug("Weather not found - WRITE CODE");
-    }
-
-    delete observation;
+    return QString::number(clock.toDouble(), 'f', 3);
 }
 
-QVector<Ticket*> PredictionTab::validTickets(const QString &distance)
+void PredictionTab::updateDisplay(const Prediction &prediction)
 {
-    QVector<Ticket*> tickets;
+    ui->sixtyD->setText(formatClock(prediction.value("sixtyD")));
+    ui->threeThirtyD->setText(formatClock(prediction.value("threeThirtyD")));
+    ui->eighthD->setText(formatClock(prediction.value("eighthD")));
+    ui->thousandD->setText(formatClock(prediction.value("thousandD")));
+    ui->quarterD->setText(formatClock(prediction.value("quarterD")));
 
-    bool valid;
+    ui->sixtyA->setText(formatClock(prediction.value("sixtyA")));
+    ui->threeThirtyA->setText(formatClock(prediction.value("threeThirtyA")));
+    ui->eighthA->setText(formatClock(prediction.value("eighthA")));
+    ui->thousandA->setText(formatClock(prediction.value("thousandA")));
+    ui->quarterA->setText(formatClock(prediction.value("quarterA")));
 
-    foreach(Ticket* ticket, mTicketsModel->tickets()){
-        valid = true;
+    ui->sixtyT->setText(formatClock(prediction.value("sixtyT")));
+    ui->threeThirtyT->setText(formatClock(prediction.value("threeThirtyT")));
+    ui->eighthT->setText(formatClock(prediction.value("eighthT")));
+    ui->thousandT->setText(formatClock(prediction.value("thousandT")));
+    ui->quarterT->setText(formatClock(prediction.value("quarterT")));
 
-        if(!ui->vehicleTicketsCheckBox->isChecked()){
-            valid = ticket->value("trackId") == mRace->value("trackId");
+    ui->sixtyH->setText(formatClock(prediction.value("sixtyH")));
+    ui->threeThirtyH->setText(formatClock(prediction.value("threeThirtyH")));
+    ui->eighthH->setText(formatClock(prediction.value("eighthH")));
+    ui->thousandH->setText(formatClock(prediction.value("thousandH")));
+    ui->quarterH->setText(formatClock(prediction.value("quarterH")));
 
-            if(!ui->trackTicketsCheckBox->isChecked()){
-                valid = ticket->value("raceId") == mRace->value("id");
-            }
-        }
-
-        if(valid){
-            valid = ticket->value(distance + "Good").toBool();
-        }
-
-        if(valid){
-            tickets.append(ticket);
-        }
-    }
-
-    return tickets;
-}
-
-typedef QList<QPointF> Points;
-
-struct Line
-{
-    double mSlope;
-    double mIntercept;
-
-    Line(Points &pts)
-    {
-        int nPoints = pts.size();
-
-        qreal sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
-
-        for(int i = 0;i < nPoints; i++) {
-            sumX += pts[i].rx();
-            sumY += pts[i].ry();
-            sumXY += pts[i].rx() * pts[i].ry();
-            sumX2 += pts[i].rx() * pts[i].rx();
-        }
-
-        double xMean = sumX / nPoints;
-        double yMean = sumY / nPoints;
-        double denominator = sumX2 - sumX * xMean;
-
-        if(!denominator){
-            denominator = 0.000001;
-            //qDebug("denominator ZERO - WRITE CODE");
-        }
-
-        mSlope = (sumXY - (sumX * yMean)) / denominator;
-        mIntercept = yMean - (mSlope * xMean);
-    }
-
-    double getYforX(double x)
-    {
-        return (mSlope * x) + mIntercept;
-    }
-};
-
-void PredictionTab::predictEighth(Prediction &prediction)
-{
-    Points tPoints;
-    Points hPoints;
-    Points pPoints;
-    Points dPoints;
-
-    QVector<Ticket*> tickets = validTickets("eighth");
-
-    foreach(Ticket* ticket, tickets){
-        double adjustedEighth = ticket->value("eighth").toDouble()
-                                + (windCorrection(prediction, ticket) / 2)
-                                + (weightCorrection(prediction, ticket) / 2);
-        tPoints.append(QPointF(ticket->value("temperature").toDouble(), adjustedEighth));
-        hPoints.append(QPointF(ticket->value("humidity").toDouble(), adjustedEighth));
-        pPoints.append(QPointF(ticket->value("pressure").toDouble(), adjustedEighth));
-        dPoints.append(QPointF(ticket->value("densityAltitude").toInt(), adjustedEighth));
-
-        RefPT refPT;
-
-        refPT.setValue("ticketId", ticket->value("id").toInt());
-        refPT.setValue("distance", "eighth");
-
-        mRefPTList.append(refPT);
-    }
-
-    Line tLine(tPoints);
-    Line hLine(hPoints);
-    Line pLine(pPoints);
-    Line dLine(dPoints);
-
-    prediction.setValue("eTp", tLine.getYforX(prediction.value("temperature").toDouble()));
-    prediction.setValue("eHp", hLine.getYforX(prediction.value("humidity").toDouble()));
-    prediction.setValue("ePp", pLine.getYforX(prediction.value("pressure").toDouble()));
-    prediction.setValue("eAp", ((prediction.value("eTp").toDouble()
-                                  + prediction.value("eHp").toDouble()
-                                  + prediction.value("ePp").toDouble()) / 3));
-    prediction.setValue("eDp", dLine.getYforX(prediction.value("densityAltitude").toInt()));
-}
-
-void PredictionTab::predictQuarter(Prediction &prediction)
-{
-    Points tPoints;
-    Points hPoints;
-    Points pPoints;
-    Points dPoints;
-
-    QVector<Ticket*> tickets = validTickets("quarter");
-
-    foreach(Ticket* ticket, tickets){
-        double adjustedQuarter = ticket->value("quarter").toDouble()
-                                 + windCorrection(prediction, ticket)
-                                 + weightCorrection(prediction, ticket);
-
-        tPoints.append(QPointF(ticket->value("temperature").toDouble(), adjustedQuarter));
-        hPoints.append(QPointF(ticket->value("humidity").toDouble(), adjustedQuarter));
-        pPoints.append(QPointF(ticket->value("pressure").toDouble(), adjustedQuarter));
-        dPoints.append(QPointF(ticket->value("densityAltitude").toInt(), adjustedQuarter));
-
-        RefPT refPT;
-
-        refPT.setValue("ticketId", ticket->value("id").toInt());
-        refPT.setValue("distance", "quarter");
-
-        mRefPTList.append(refPT);
-    }
-
-    Line tLine(tPoints);
-    Line hLine(hPoints);
-    Line pLine(pPoints);
-    Line dLine(dPoints);
-
-    prediction.setValue("qTp", tLine.getYforX(prediction.value("temperature").toDouble()));
-    prediction.setValue("qHp", hLine.getYforX(prediction.value("humidity").toDouble()));
-    prediction.setValue("qPp", pLine.getYforX(prediction.value("pressure").toDouble()));
-    prediction.setValue("qAp", (prediction.value("qTp").toDouble()
-                                 + prediction.value("qHp").toDouble()
-                                 + prediction.value("qPp").toDouble()) / 3);
-    prediction.setValue("qDp", dLine.getYforX(prediction.value("densityAltitude").toInt()));
-}
-
-double windFactor(int windSpeed, int windDirection)
-{
-    double wFactor = 0;
-    double dFactor = 0;
-
-    if(windDirection < 50){
-        dFactor = (50 - windDirection) * 0.02;
-    }
-
-    if(windDirection > 130){
-        dFactor = (windDirection - 130) * -0.02;
-    }
-
-    wFactor = windSpeed
-              * dFactor;
-
-    return wFactor;
-
-}
-
-double PredictionTab::windCorrection(Prediction &prediction, Ticket *ticket)
-{
-    // wind direction   0 = headwind ( higher ET )
-    //                180 = tailwind ( lower ET )
-    double correction = 0;
-    double windDifference = 0;
-
-    windDifference = windFactor(prediction.value("windSpeed").toInt(),
-                                prediction.value("windDirection").toInt()) -
-                     windFactor(ticket->value("windSpeed").toInt(),
-                                 ticket->value("windDirection").toInt());
-    correction = windDifference * ui->windAdjustmentSpinBox->value();
-
-    return correction;
-}
-
-double PredictionTab::weightCorrection(Prediction &prediction, Ticket *ticket)
-{
-    double correction = 0;
-    double weightDifference = 0;
-
-    weightDifference = (prediction.value("riderWeight").toDouble() +
-                        prediction.value("vehicleWeight").toDouble()) -
-                       (ticket->value("riderWeight").toDouble() +
-                        ticket->value("vehicleWeight").toDouble());
-    correction = weightDifference * ui->weightAdjustmentSpinBox->value();
-
-    return correction;
+    ui->sixtyP->setText(formatClock(prediction.value("sixtyP")));
+    ui->threeThirtyP->setText(formatClock(prediction.value("threeThirtyP")));
+    ui->eighthP->setText(formatClock(prediction.value("eighthP")));
+    ui->thousandP->setText(formatClock(prediction.value("thousandP")));
+    ui->quarterP->setText(formatClock(prediction.value("quarterP")));
 }
 
 void PredictionTab::sendPage(const Prediction &prediction)

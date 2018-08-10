@@ -7,9 +7,8 @@
 #include "races.h"
 #include "tickets.h"
 #include "observations.h"
-#include "refpts.h"
 #include "settings.h"
-#include "predictionswidget.h"
+#include "previouspredictionswidget.h"
 
 #include <QWidget>
 #include <QTimer>
@@ -31,14 +30,6 @@ public:
     void UpdateAllModels();
 
 private:
-    void getWeather(Prediction &prediction);
-    QVector<Ticket*> validTickets(const QString &distance);
-    void predictEighth(Prediction &prediction);
-    void predictQuarter(Prediction &prediction);
-    double windCorrection(int windSpeed, int windDirection);
-    double windCorrection(Prediction &prediction, Ticket *ticket);
-    double weightCorrection(Prediction &prediction, Ticket *ticket);
-
     Ui::PredictionTab* ui;
     Vehicle* mVehicle;
     Race* mRace;
@@ -47,14 +38,14 @@ private:
     DbRecordBase *mSettings;
     PredictionsModel* mPredictionsModel;
     TicketsModel* mTicketsModel;
-    ObservationsModel* mObservationsModel;
-    RefPTsModel* mRefPTsModel;
-    QVector<RefPT> mRefPTList;
-    PredictionsWidget *mPredictionsWidget;
+    PreviousPredictionsWidget *mPreviousPredictionsWidget;
+
+    QString formatClock(const QVariant &clock);
 
 private slots:
-    void resetTimer(int);
     void makePrediction();
+    void writePredictionToDb(Prediction &prediction);
+    void updateDisplay(const Prediction &prediction);
     void sendPage(const Prediction &prediction);
     void mailSent(QString);
 };

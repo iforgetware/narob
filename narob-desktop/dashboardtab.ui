@@ -43,7 +43,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Select a Vehicle and a Race -&gt;</string>
+         <string>Select a Race and a Vehicle -&gt;</string>
         </property>
        </widget>
       </item>

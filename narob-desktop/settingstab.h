@@ -26,14 +26,18 @@ private:
 private slots:
     void onSaveButtonClicked();
     void onClearButtonClicked();
+    void onUpdateLogbookButtonClicked();
     void onCleanDatabaseButtonClicked();
     void onTestWeatherButtonClicked();
+    void onTestTPButtonClicked();
     void onTestWindButtonClicked();
     void onTestWeightButtonClicked();
     void displayUpdate();
 
 signals:
+    void updateLogbook();
     void testWeather();
+    void testTP();
     void testWind();
     void testWeight();
 };

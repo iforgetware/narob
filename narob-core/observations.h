@@ -16,6 +16,28 @@ public:
 };
 
 
+
+
+
+
+// add purge weather button?
+// or just autodelete if older than {setting}
+
+// create observations history table
+// save the 11 around a ticket to this
+// never purge this table
+// only delete when ticket is deleted
+
+// move prediction math into predictions.cpp, make public methods
+// display 11 predictions in dialog of ticket detail
+// may need seperate tab
+
+
+
+
+
+
+
 class NAROBCORESHARED_EXPORT Observation : public DbRecordBase
 {
 public:

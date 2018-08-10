@@ -35,7 +35,9 @@ public slots:
     void handleStatusUpdate(QString status);
     void handleCloseTab(int index);
 
+    void handleUpdateLogbook();
     void handleTestWeather();
+    void handleTestTP();
     void handleTestWind();
     void handleTestWeight();
 };

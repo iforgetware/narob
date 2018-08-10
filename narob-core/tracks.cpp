@@ -6,11 +6,11 @@ Fields trackFields()
 {
     Fields f;
 
-    f.append(Field("id", "id", 0, 0));
-    f.append(Field("name", "Name", 150, -4));
-    f.append(Field("elevation", "Elev", 50, 0));
-    f.append(Field("bearing", "Bear", 50, 0));
-    f.append(Field("radio", "Radio", 50, 1));
+    f << Field("id", "id", 0, 0)
+      << Field("name", "Name", 150, -4)
+      << Field("elevation", "Elev", 50, 0)
+      << Field("bearing", "Bear", 50, 0)
+      << Field("radio", "Radio", 50, 1);
 
     return f;
 }

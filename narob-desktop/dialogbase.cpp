@@ -15,9 +15,11 @@ void DialogBase::onButtonBoxAccepted()
 void DialogBase::setModelRow(int row)
 {
     if(row == -1){
-        mModel->insertRow(mModel->rowCount(QModelIndex()));
+        mRow = mModel->rowCount(QModelIndex());
+        mModel->insertRow(mRow);
         mMapper->toLast();
     }else{
+        mRow = row;
         mMapper->setCurrentModelIndex(mModel->index(row, 0));
     }
 }

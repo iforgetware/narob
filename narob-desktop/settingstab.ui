@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>790</width>
-    <height>745</height>
+    <height>777</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,28 +39,34 @@
       <number>5</number>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="3" column="3">
-       <widget class="QPushButton" name="testWindButton">
+      <item row="3" column="0">
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="7" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <pointsize>30</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
-         <string>Test Wind</string>
+         <string>Testing</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="4">
-       <widget class="QPushButton" name="testWeightButton">
-        <property name="text">
-         <string>Test Weight</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QPushButton" name="testWeatherButton">
-        <property name="text">
-         <string>Test Weather</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="6" alignment="Qt::AlignHCenter">
+      <item row="1" column="0" colspan="7" alignment="Qt::AlignHCenter">
        <widget class="QLabel" name="warningLabel">
         <property name="font">
          <font>
@@ -75,34 +81,21 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="6" alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="label">
-        <property name="font">
-         <font>
-          <pointsize>30</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
+      <item row="3" column="5">
+       <widget class="QPushButton" name="testWeightButton">
         <property name="text">
-         <string>Testing</string>
+         <string>Test Weight</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <spacer name="horizontalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item row="3" column="2">
+       <widget class="QPushButton" name="testWeatherButton">
+        <property name="text">
+         <string>Test Weather</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
+       </widget>
       </item>
-      <item row="3" column="5">
+      <item row="3" column="6">
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -115,7 +108,21 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="3" alignment="Qt::AlignHCenter">
+      <item row="3" column="4">
+       <widget class="QPushButton" name="testWindButton">
+        <property name="text">
+         <string>Test Wind</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QPushButton" name="testTPButton">
+        <property name="text">
+         <string>Test Ticket With Predictions</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2" colspan="4" alignment="Qt::AlignHCenter">
        <widget class="QCheckBox" name="enableTestingCheckBox">
         <property name="text">
          <string>Enable Testing</string>
@@ -353,27 +360,21 @@
       <number>5</number>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item row="0" column="0" colspan="4" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="maintenanceLabel">
+        <property name="font">
+         <font>
+          <pointsize>30</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="cleanDatabaseButton">
         <property name="text">
-         <string>Clean Database</string>
+         <string>Maintenance</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -386,17 +387,37 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="0" colspan="3" alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="maintenanceLabel">
-        <property name="font">
-         <font>
-          <pointsize>30</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
+      <item row="2" column="3">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="cleanDatabaseButton">
         <property name="text">
-         <string>Maintenance</string>
+         <string>Clean Database</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="updateLogbookButton">
+        <property name="text">
+         <string>Update Logbook</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4" alignment="Qt::AlignHCenter">
+       <widget class="QCheckBox" name="enableMaintenanceCheckBox">
+        <property name="text">
+         <string>Enable Maintenance</string>
         </property>
        </widget>
       </item>

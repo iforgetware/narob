@@ -7,7 +7,7 @@
 #include "tickets.h"
 #include "observations.h"
 #include "predictions.h"
-#include "refpts.h"
+//#include "refpts.h"
 #include "settings.h"
 
 #include <QObject>
@@ -26,7 +26,9 @@ public:
     ~DatabaseManager();
 
     static void debugQuery(const QSqlQuery& query);
+    void updateLogbook();
     void testWeather();
+    void testTP();
     void testWind();
     void testWeight();
 
@@ -43,7 +45,7 @@ public:
     Tickets tickets;
     Observations observations;
     Predictions predictions;
-    RefPTs refPTs;
+//    RefPTs refPTs;
     Settings settings;
 };
 

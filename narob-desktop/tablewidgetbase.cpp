@@ -58,6 +58,11 @@ void TableWidgetBase::setupColumns(const Fields &fields)
                                                     new ThreeDecimalDelegate(this));
             break;
 
+        case 13:
+            ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
+                                                    new ClockDelegate(this));
+            break;
+
         default:
             break;
         }

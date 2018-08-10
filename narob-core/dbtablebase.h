@@ -1,8 +1,6 @@
 #ifndef DBTABLEBASE_H
 #define DBTABLEBASE_H
 
-//#include <QVector>
-
 #include "narob-core_global.h"
 
 class DbTableBase

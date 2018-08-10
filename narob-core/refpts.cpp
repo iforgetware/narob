@@ -4,10 +4,10 @@ Fields refPTFields()
 {
     Fields f;
 
-    f.append(Field("id", "id", 0, 0));
-    f.append(Field("predictionId", "PredictionId", 0, 0));
-    f.append(Field("ticketId", "TicketId", 0, 0));
-    f.append(Field("distance", "Distance", 70, -4));
+    f << Field("id", "id", 0, 0)
+      << Field("predictionId", "PredictionId", 0, 0)
+      << Field("ticketId", "TicketId", 0, 0)
+      << Field("clock", "Clock", 70, -4);
 
     return f;
 }

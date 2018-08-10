@@ -1,58 +1,45 @@
 #include "tickets.h"
 
+#include <QtGui/QColor>
+
 Fields ticketFields()
 {
     Fields f;
 
-    f.append(Field("id", "id", 0, 0));
+    f << Field("id", "id", 0, 0)
 
-    f.append(Field("vehicleId", "Vehicle", 150, 0));
-    f.append(Field("trackId", "Track", 150, 0));
-    f.append(Field("raceId", "Race", 150, 0));
-    f.append(Field("predictionId", "Prediction", 0, 0));
+      << Field("vehicleId", "Vehicle", 150, 0)
+      << Field("trackId", "Track", 150, 0)
+      << Field("raceId", "Race", 150, 0)
 
-    f.append(Field("dateTime", "Date       Time", 160, -3));
+      << Field("dateTime", "Date       Time", 160, -3)
 
-    f.append(Field("lane", "Lane", 50, 0));
-    f.append(Field("delay", "Delay", 50, 3));
-    f.append(Field("reaction", "R/T", 60, 3));
-    f.append(Field("sixty", "60'", 50, 3));
-    f.append(Field("threeThirty", "330'", 50, 3));
-    f.append(Field("eighth", "1/8", 50, 3));
-    f.append(Field("eighthMPH", "1/8 MPH", 75, 2));
-    f.append(Field("eighthGood", "Use 1/8", 70, -1));
-    f.append(Field("thousand", "1000'", 50, 3));
-    f.append(Field("quarter", "1/4", 60, 3));
-    f.append(Field("quarterMPH", "1/4 MPH", 75, 2));
-    f.append(Field("quarterGood", "Use 1/4", 70, -1));
+      << Field("lane", "Lane", 50, 0)
+      << Field("delay", "Delay", 50, 3)
+      << Field("reaction", "R/T", 60, 3)
+      << Field("sixty", "60'", 50, 13)
+      << Field("threeThirty", "330'", 50, 13)
+      << Field("eighth", "1/8", 50, 13)
+      << Field("eighthMPH", "1/8 MPH", 75, 2)
+      << Field("thousand", "1000'", 50, 13)
+      << Field("quarter", "1/4", 60, 13)
+      << Field("quarterMPH", "1/4 MPH", 75, 2)
 
-    f.append(Field("dial", "Dial", 50, 2));
-    f.append(Field("vehicleWeight", "V Weight", 70, 0));
-    f.append(Field("riderWeight", "R Weight", 70, 1));
+      << Field("dial", "Dial", 50, 2)
+      << Field("vehicleWeight", "V Weight", 70, 0)
+      << Field("riderWeight", "R Weight", 70, 1)
 
-    f.append(Field("temperature", "Temp", 50, 1));
-    f.append(Field("humidity", "Humid",50, 1));
-    f.append(Field("pressure", "Pres", 50, 2));
-    f.append(Field("vaporPressure", "V Pres", 50, 2));
-    f.append(Field("dewPoint", "D Point", 60, 1));
-    f.append(Field("densityAltitude", "D Alt", 50, 0));
-    f.append(Field("windSpeed", "W Speed", 70, 0));
-    f.append(Field("windGust", "W Gust", 70, 0));
-    f.append(Field("windDirection", "W Dir", 60, 0));
+      << Field("temperature", "Temp", 50, 1)
+      << Field("humidity", "Humid",50, 1)
+      << Field("pressure", "Pres", 50, 2)
+      << Field("vaporPressure", "V Pres", 50, 2)
+      << Field("dewPoint", "D Point", 60, 1)
+      << Field("densityAltitude", "D Alt", 50, 0)
+      << Field("windSpeed", "W Speed", 70, 0)
+      << Field("windGust", "W Gust", 70, 0)
+      << Field("windDirection", "W Dir", 60, 0)
 
-    f.append(Field("notes", "Notes", 0, 0));
-
-    f.append(Field("pm5Id", "pm5Id", 0, 0));
-    f.append(Field("pm4Id", "pm4Id", 0, 0));
-    f.append(Field("pm3Id", "pm3Id", 0, 0));
-    f.append(Field("pm2Id", "pm2Id", 0, 0));
-    f.append(Field("pm1Id", "pm1Id", 0, 0));
-    f.append(Field("p0Id" , "p0Id" , 0, 0));
-    f.append(Field("pp1Id", "pp1Id", 0, 0));
-    f.append(Field("pp2Id", "pp2Id", 0, 0));
-    f.append(Field("pp3Id", "pp3Id", 0, 0));
-    f.append(Field("pp4Id", "pp4Id", 0, 0));
-    f.append(Field("pp5Id", "pp5Id", 0, 0));
+      << Field("notes", "Notes", 0, 0);
 
     return f;
 }
@@ -87,6 +74,25 @@ TicketsModel::TicketsModel(Vehicle *vehicle,
     setSort(fieldIndex("dateTime"), Qt::DescendingOrder);
 
     select();
+}
+
+QVariant TicketsModel::data(const QModelIndex &item, int role) const
+{
+    if(role == Qt::ForegroundRole){
+
+        if(item.column() == fieldIndex("sixty") ||
+           item.column() == fieldIndex("threeThirty") ||
+           item.column() == fieldIndex("eighth") ||
+           item.column() == fieldIndex("thousand") ||
+           item.column() == fieldIndex("quarter")){
+
+            if(item.data().toDouble() < 0){
+                return QVariant(QColor(Qt::gray));
+            }
+        }
+    }
+
+    return QSqlRelationalTableModel::data(item, role);
 }
 
 QVector<Ticket*> TicketsModel::tickets()

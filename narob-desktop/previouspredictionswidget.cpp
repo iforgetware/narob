@@ -1,11 +1,11 @@
-#include "predictionswidget.h"
+#include "previouspredictionswidget.h"
 
-PredictionsWidget::PredictionsWidget(PredictionsModel *model,
+PreviousPredictionsWidget::PreviousPredictionsWidget(PredictionsModel *model,
                                      QWidget *parent) :
     TableDisplayWidgetBase(parent),
     mPredictionsModel(model)
 {
-    setTitle("Predictions");
+    setTitle("Previous Predictions");
 
     mModel = mPredictionsModel;
 

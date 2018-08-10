@@ -32,6 +32,8 @@ class NAROBCORESHARED_EXPORT TicketsModel : public ModelBase
 public:
     explicit TicketsModel(Vehicle *vehicle,
                           QObject *parent = 0);
+    QVariant data(const QModelIndex &item, int role) const;
+
     QVector<Ticket*> tickets();
     double lastWeight();
 

@@ -31,11 +31,15 @@ SettingsTab::SettingsTab(QWidget *parent) :
     connect(ui->clearButton, &QPushButton::clicked,
             this, &SettingsTab::onClearButtonClicked);
 
+    connect(ui->updateLogbookButton, &QPushButton::clicked,
+            this, &SettingsTab::onUpdateLogbookButtonClicked);
     connect(ui->cleanDatabaseButton, &QPushButton::clicked,
             this, &SettingsTab::onCleanDatabaseButtonClicked);
 
     connect(ui->testWeatherButton, &QPushButton::clicked,
             this, &SettingsTab::onTestWeatherButtonClicked);
+    connect(ui->testTPButton, &QPushButton::clicked,
+            this, &SettingsTab::onTestTPButtonClicked);
     connect(ui->testWindButton, &QPushButton::clicked,
             this, &SettingsTab::onTestWindButtonClicked);
     connect(ui->testWeightButton, &QPushButton::clicked,
@@ -84,6 +88,13 @@ void SettingsTab::onClearButtonClicked()
     ui->textNumberEdit->clear();
 }
 
+void SettingsTab::onUpdateLogbookButtonClicked()
+{
+    if(ui->enableMaintenanceCheckBox->isChecked()){
+        emit updateLogbook();
+    }
+}
+
 void SettingsTab::onCleanDatabaseButtonClicked()
 {
     // delete all weather observations that are more than a week old
@@ -96,6 +107,13 @@ void SettingsTab::onTestWeatherButtonClicked()
 {
     if(ui->enableTestingCheckBox->isChecked()){
         emit testWeather();
+    }
+}
+
+void SettingsTab::onTestTPButtonClicked()
+{
+    if(ui->enableTestingCheckBox->isChecked()){
+        emit testTP();
     }
 }
 

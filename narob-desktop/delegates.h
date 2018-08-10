@@ -65,6 +65,16 @@ public:
 };
 
 
+class ClockDelegate : public QStyledItemDelegate
+{
+    Q_OBJECT
+
+public:
+    explicit ClockDelegate(QObject *parent = 0);
+    QString displayText(const QVariant &value, const QLocale &locale) const;
+};
+
+
 class RaceColumnDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
@@ -73,7 +83,6 @@ public:
     explicit RaceColumnDelegate(QObject* parent = 0);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
-
 
 
 class TrackColumnDelegate : public QStyledItemDelegate

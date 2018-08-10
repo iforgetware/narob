@@ -42,6 +42,7 @@ void DbTableBase::init() const
             case 1:
             case 2:
             case 3:
+            case 13:
                 queryText.append(" REAL");
             }
         }
@@ -80,6 +81,7 @@ void DbTableBase::init() const
                 case 1:
                 case 2:
                 case 3:
+                case 13:
                     queryText.append(" REAL");
                 }
 

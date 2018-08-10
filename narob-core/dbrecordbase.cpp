@@ -31,6 +31,7 @@ void DbRecordBase::init(const QString &table)
         case 1:
         case 2:
         case 3:
+        case 13:
             this->append(QSqlField(field.mColumn, QVariant::Double, table));
         }
     }
