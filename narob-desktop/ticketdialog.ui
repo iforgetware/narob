@@ -30,44 +30,126 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="2">
-       <widget class="QLineEdit" name="temperatureEdit"/>
+       <widget class="QLineEdit" name="temperatureEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLineEdit" name="humidityEdit"/>
+      <item row="6" column="2">
+       <widget class="QLineEdit" name="windSpeedEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLineEdit" name="densityAltitudeEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="densityAltitudeLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Density Altitude</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="pressureLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Pressure</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="windSpeedLabel">
-        <property name="text">
-         <string>Wind Speed</string>
-        </property>
-       </widget>
-      </item>
       <item row="8" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="windGustLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Wind Gust</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="vaporPressureLabel">
+      <item row="6" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="windSpeedLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Vapor Pressure</string>
+         <string>Wind Speed</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
-       <widget class="QLineEdit" name="pressureEdit"/>
+      <item row="1" column="2">
+       <widget class="QLineEdit" name="humidityEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLineEdit" name="vaporPressureEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="humidityLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Humidity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QLineEdit" name="windDirectionEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="temperatureLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Temperature</string>
         </property>
@@ -75,49 +157,66 @@
       </item>
       <item row="7" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="windDirectionLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Wind Direction</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="densityAltitudeLabel">
-        <property name="text">
-         <string>Density Altitude</string>
+      <item row="8" column="2">
+       <widget class="QLineEdit" name="windGustEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
         </property>
        </widget>
       </item>
-      <item row="1" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="humidityLabel">
+      <item row="4" column="2">
+       <widget class="QLineEdit" name="dewPointEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLineEdit" name="pressureEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="vaporPressureLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Humidity</string>
+         <string>Vapor Pressure</string>
         </property>
        </widget>
       </item>
       <item row="4" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="dewPointLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Dew Point</string>
         </property>
        </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLineEdit" name="vaporPressureEdit"/>
-      </item>
-      <item row="4" column="2">
-       <widget class="QLineEdit" name="dewPointEdit"/>
-      </item>
-      <item row="5" column="2">
-       <widget class="QLineEdit" name="densityAltitudeEdit"/>
-      </item>
-      <item row="6" column="2">
-       <widget class="QLineEdit" name="windSpeedEdit"/>
-      </item>
-      <item row="7" column="2">
-       <widget class="QLineEdit" name="windDirectionEdit"/>
-      </item>
-      <item row="8" column="2">
-       <widget class="QLineEdit" name="windGustEdit"/>
       </item>
      </layout>
     </widget>
@@ -139,6 +238,11 @@
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="3" column="2">
        <widget class="QCheckBox" name="vehicleTicketsCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Use all tickets for this vehicle</string>
         </property>
@@ -146,6 +250,11 @@
       </item>
       <item row="3" column="1">
        <widget class="QDoubleSpinBox" name="weightAdjustmentSpinBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="decimals">
          <number>3</number>
         </property>
@@ -159,6 +268,11 @@
       </item>
       <item row="0" column="2">
        <widget class="QPushButton" name="showPredictionsButton">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Show Before/After Predictions</string>
         </property>
@@ -166,6 +280,11 @@
       </item>
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="windAdjustmentSpinBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="decimals">
          <number>3</number>
         </property>
@@ -179,6 +298,11 @@
       </item>
       <item row="1" column="2">
        <widget class="QCheckBox" name="trackTicketsCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Use all tickets for this track</string>
         </property>
@@ -186,6 +310,11 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="windAdjustmentLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/4mi ET adjustment per 1MPH of wind</string>
         </property>
@@ -193,6 +322,11 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="weightAdjustmentLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/4mi ET adjustment per 1lb of weight</string>
         </property>
@@ -212,6 +346,11 @@
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="1" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="laneLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Lane</string>
         </property>
@@ -224,6 +363,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
         </property>
        </widget>
       </item>
@@ -266,6 +410,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>60'</string>
         </property>
@@ -273,6 +422,11 @@
       </item>
       <item row="12" column="3">
        <widget class="QLabel" name="thousandD">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1000'</string>
         </property>
@@ -316,6 +470,11 @@
            </colorrole>
           </disabled>
          </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>1/4</string>
@@ -361,6 +520,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>60'</string>
         </property>
@@ -405,6 +569,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1000'</string>
         </property>
@@ -412,6 +581,11 @@
       </item>
       <item row="9" column="3">
        <widget class="QLabel" name="threeThirtyD">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>330'</string>
         </property>
@@ -455,6 +629,11 @@
            </colorrole>
           </disabled>
          </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>60'</string>
@@ -500,6 +679,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/4</string>
         </property>
@@ -543,6 +727,11 @@
            </colorrole>
           </disabled>
          </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>60'</string>
@@ -588,6 +777,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>330'</string>
         </property>
@@ -632,6 +826,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>330'</string>
         </property>
@@ -639,6 +838,11 @@
       </item>
       <item row="12" column="0">
        <widget class="QLabel" name="thousandLable">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1000'</string>
         </property>
@@ -686,6 +890,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/8</string>
         </property>
@@ -693,6 +902,11 @@
       </item>
       <item row="13" column="0">
        <widget class="QLabel" name="quarterLable">
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/4</string>
         </property>
@@ -703,6 +917,11 @@
       </item>
       <item row="9" column="2">
        <widget class="QCheckBox" name="threeThirtyGoodCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Good</string>
         </property>
@@ -713,6 +932,11 @@
       </item>
       <item row="10" column="2">
        <widget class="QCheckBox" name="eighthGoodCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Good</string>
         </property>
@@ -729,6 +953,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="maxVisibleItems">
          <number>2</number>
         </property>
@@ -736,6 +965,11 @@
       </item>
       <item row="10" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="eighthLabel">
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/8</string>
         </property>
@@ -780,6 +1014,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/8</string>
         </property>
@@ -787,6 +1026,11 @@
       </item>
       <item row="6" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="reactionLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Reaction</string>
         </property>
@@ -799,6 +1043,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
         </property>
         <property name="inputMask">
          <string/>
@@ -844,6 +1093,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1000'</string>
         </property>
@@ -857,6 +1111,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="11" column="1">
@@ -867,10 +1126,20 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="8" column="3">
        <widget class="QLabel" name="sixtyD">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>60'</string>
         </property>
@@ -915,6 +1184,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1000'</string>
         </property>
@@ -922,6 +1196,11 @@
       </item>
       <item row="12" column="2">
        <widget class="QCheckBox" name="thousandGoodCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Good</string>
         </property>
@@ -969,6 +1248,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/8</string>
         </property>
@@ -1013,6 +1297,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1000'</string>
         </property>
@@ -1020,6 +1309,11 @@
       </item>
       <item row="11" column="0">
        <widget class="QLabel" name="eighthMPHLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/8 MPH</string>
         </property>
@@ -1030,6 +1324,11 @@
       </item>
       <item row="8" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="sixtyLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>60'</string>
         </property>
@@ -1042,6 +1341,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
         </property>
        </widget>
       </item>
@@ -1084,6 +1388,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/8</string>
         </property>
@@ -1091,6 +1400,11 @@
       </item>
       <item row="8" column="2">
        <widget class="QCheckBox" name="sixtyGoodCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Good</string>
         </property>
@@ -1138,6 +1452,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Avg.</string>
         </property>
@@ -1145,6 +1464,11 @@
       </item>
       <item row="14" column="0">
        <widget class="QLabel" name="quarterMPHLable">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/4 MPH</string>
         </property>
@@ -1155,6 +1479,11 @@
       </item>
       <item row="13" column="2">
        <widget class="QCheckBox" name="quarterGoodCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Good</string>
         </property>
@@ -1165,6 +1494,11 @@
       </item>
       <item row="10" column="3">
        <widget class="QLabel" name="eighthD">
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/8</string>
         </property>
@@ -1208,6 +1542,11 @@
            </colorrole>
           </disabled>
          </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>1/4</string>
@@ -1253,6 +1592,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Hum.</string>
         </property>
@@ -1297,6 +1641,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Pres</string>
         </property>
@@ -1309,6 +1658,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
         </property>
        </widget>
       </item>
@@ -1351,6 +1705,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>330'</string>
         </property>
@@ -1364,10 +1723,20 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="9" column="0">
        <widget class="QLabel" name="threeThirtyLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>330'</string>
         </property>
@@ -1383,6 +1752,11 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
         </property>
        </widget>
       </item>
@@ -1424,6 +1798,11 @@
            </colorrole>
           </disabled>
          </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>330'</string>
@@ -1469,6 +1848,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/4</string>
         </property>
@@ -1476,6 +1860,11 @@
       </item>
       <item row="13" column="3">
        <widget class="QLabel" name="quarterD">
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1/4</string>
         </property>
@@ -1520,6 +1909,11 @@
           </disabled>
          </palette>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Temp.</string>
         </property>
@@ -1527,6 +1921,11 @@
       </item>
       <item row="6" column="3">
        <widget class="QLabel" name="DALabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>DA</string>
         </property>
@@ -1540,12 +1939,22 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="14" column="3" colspan="5" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="comparePredictionsButton">
+       <widget class="QPushButton" name="comparePredictionButton">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Compare Predictions</string>
+         <string>Compare Prediction</string>
         </property>
        </widget>
       </item>
@@ -1553,7 +1962,7 @@
        <widget class="QLabel" name="label">
         <property name="font">
          <font>
-          <pointsize>20</pointsize>
+          <pointsize>25</pointsize>
          </font>
         </property>
         <property name="text">
@@ -1566,6 +1975,11 @@
    </item>
    <item row="16" column="13">
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -1584,10 +1998,21 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="1" column="1">
-       <widget class="QLineEdit" name="delayEdit"/>
+       <widget class="QLineEdit" name="delayEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="dialLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Dial</string>
         </property>
@@ -1595,6 +2020,11 @@
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="delayLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Delay</string>
         </property>
@@ -1602,6 +2032,11 @@
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="dialEdit">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="inputMask">
          <string/>
         </property>
@@ -1609,6 +2044,11 @@
       </item>
       <item row="4" column="1">
        <widget class="QDoubleSpinBox" name="riderWeightSpinBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="decimals">
          <number>1</number>
         </property>
@@ -1622,6 +2062,11 @@
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="riderWeightLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Rider W.</string>
         </property>
@@ -1629,6 +2074,11 @@
       </item>
       <item row="3" column="1">
        <widget class="QSpinBox" name="vehicleWeightSpinBox">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="maximum">
          <number>10000</number>
         </property>
@@ -1636,6 +2086,11 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="vehicleWeightLabel">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Vehicle W.</string>
         </property>
@@ -1645,10 +2100,21 @@
     </widget>
    </item>
    <item row="9" column="11" rowspan="8" colspan="2">
-    <widget class="QPlainTextEdit" name="notesEdit"/>
+    <widget class="QPlainTextEdit" name="notesEdit">
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
    <item row="8" column="11" alignment="Qt::AlignHCenter">
     <widget class="QLabel" name="notesLabel">
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>Notes</string>
      </property>
@@ -1681,7 +2147,7 @@
   <tabstop>vehicleTicketsCheckBox</tabstop>
   <tabstop>windAdjustmentSpinBox</tabstop>
   <tabstop>weightAdjustmentSpinBox</tabstop>
-  <tabstop>comparePredictionsButton</tabstop>
+  <tabstop>comparePredictionButton</tabstop>
   <tabstop>showPredictionsButton</tabstop>
   <tabstop>temperatureEdit</tabstop>
   <tabstop>humidityEdit</tabstop>

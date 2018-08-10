@@ -6,7 +6,7 @@
 
 #include "narob-core_global.h"
 
-class ModelBase : public QSqlRelationalTableModel
+class NAROBCORESHARED_EXPORT ModelBase : public QSqlRelationalTableModel
 {
     Q_OBJECT
 

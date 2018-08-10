@@ -4,6 +4,14 @@ In-lanes paging can be setup if the PC running it has an internet connection.
 I use my phone as a hotspot.
 It uses email-to-text addresses based on the service provider of the recieving phone.
 
+v0.3.1
+    - adjusted font sizes for ticket dialog
+        - generally 15pt
+        - was very small on Windows
+        - if this works, move everything to 15
+    - added gui to QT in narob-core so colors would work under windows
+        - should try to find better solution, long compile time
+
 v0.3.0
     - color coded columns for prediction type
     - added more info on prediction tab

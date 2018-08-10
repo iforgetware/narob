@@ -86,8 +86,8 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
 
     connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &TicketDialog::setWeather);
 
-    connect(ui->comparePredictionsButton, &QPushButton::clicked,
-            this, &TicketDialog::onComparePredictionsClicked);
+    connect(ui->comparePredictionButton, &QPushButton::clicked,
+            this, &TicketDialog::onComparePredictionClicked);
 
     connect(ui->showPredictionsButton, &QPushButton::clicked,
             this, &TicketDialog::onShowPredictionsClicked);
@@ -247,7 +247,7 @@ void TicketDialog::onButtonBoxAccepted()
     emit ready();
 }
 
-void TicketDialog::onComparePredictionsClicked()
+void TicketDialog::onComparePredictionClicked()
 {
     TicketsModel *ticketsModel = new TicketsModel(mVehicle, this);
 

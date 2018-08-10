@@ -1,6 +1,6 @@
 #include "tickets.h"
 
-#include <QtGui/QColor>
+#include <QColor>
 
 Fields ticketFields()
 {

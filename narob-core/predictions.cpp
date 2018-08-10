@@ -1,6 +1,6 @@
 #include <QDebug>
 
-#include <QtGui/QColor>
+#include <QColor>
 #include <QPointF>
 
 #include "predictions.h"

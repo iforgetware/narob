@@ -57,7 +57,7 @@ private:
     void updatePredictionDisplay(Prediction &prediction);
 
 private slots:
-    void onComparePredictionsClicked();
+    void onComparePredictionClicked();
     void onShowPredictionsClicked();
 };
 

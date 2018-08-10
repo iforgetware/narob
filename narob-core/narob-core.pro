@@ -6,7 +6,7 @@
 
 QT       += sql
 
-QT       -= gui
+#QT       -= gui
 
 TARGET = narob-core
 TEMPLATE = lib
