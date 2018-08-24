@@ -14,6 +14,7 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
                            QWidget *parent) :
     DialogBase(parent),
     ui(new Ui::TicketDialog),
+    mSettingsTable(new Settings),
     mVehicle(vehicle),
     mRace(race),
     mObservationsModel(new ObservationsModel(this))
@@ -26,6 +27,11 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
     createUi();
 
     setModelRow(row);
+
+    mSettings = mSettingsTable->getSettings();
+
+    ui->weightAdjustmentSpinBox->setValue(mSettings->value("weightAdjustment").toDouble());
+    ui->windAdjustmentSpinBox->setValue(mSettings->value("windAdjustment").toDouble());
 
     QModelIndex iIndex = mModel->index(mRow,
                                        mModel->fieldIndex("id"));
@@ -49,9 +55,15 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
                                            mModel->fieldIndex("raceId"));
         mModel->setData(rIndex, mRace->value("id").toInt());
 
-        QModelIndex wIndex = mModel->index(mRow,
-                                           mModel->fieldIndex("vehicleWeight"));
-        mModel->setData(wIndex, mVehicle->value("weight").toInt());
+//        QModelIndex wIndex = mModel->index(mRow,
+//                                           mModel->fieldIndex("vehicleWeight"));
+//        mModel->setData(wIndex, mVehicle->value("weight").toInt());
+
+        ui->vehicleWeightSpinBox->setValue(mVehicle->value("weight").toInt());
+
+        TicketsModel *ticketsModel = new TicketsModel(mVehicle, this);
+        ui->riderWeightSpinBox->setValue(ticketsModel->lastWeight());
+        delete ticketsModel;
 
         QDateTime cDT;
         cDT.setDate(QDate::currentDate());
@@ -83,6 +95,9 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
         formatClockEdit("thousand", ui->thousandEdit, ui->thousandGoodCheckBox);
         formatClockEdit("quarter", ui->quarterEdit, ui->quarterGoodCheckBox);
     }
+
+    Prediction prediction;
+    updatePredictionDisplay(prediction);
 
     connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &TicketDialog::setWeather);
 

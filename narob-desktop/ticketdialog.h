@@ -12,6 +12,7 @@
 #include "tracks.h"
 #include "observations.h"
 #include "predictions.h"
+#include "settings.h"
 //#include "refpts.h"
 
 namespace Ui {
@@ -32,6 +33,8 @@ public:
 private:
     Ui::TicketDialog *ui;
 
+    Settings *mSettingsTable;
+    DbRecordBase *mSettings;
     int mId;
     Vehicle *mVehicle;
     Race *mRace;

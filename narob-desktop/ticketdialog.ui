@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1142</width>
-    <height>722</height>
+    <width>1156</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,12 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>700</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -33,7 +39,7 @@
        <widget class="QLineEdit" name="temperatureEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -42,7 +48,7 @@
        <widget class="QLineEdit" name="windSpeedEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -51,7 +57,7 @@
        <widget class="QLineEdit" name="densityAltitudeEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -60,7 +66,7 @@
        <widget class="QLabel" name="densityAltitudeLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -72,7 +78,7 @@
        <widget class="QLabel" name="pressureLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -84,7 +90,7 @@
        <widget class="QLabel" name="windGustLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -96,7 +102,7 @@
        <widget class="QLabel" name="windSpeedLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -108,7 +114,7 @@
        <widget class="QLineEdit" name="humidityEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -117,7 +123,7 @@
        <widget class="QLineEdit" name="vaporPressureEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -126,7 +132,7 @@
        <widget class="QLabel" name="humidityLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -138,7 +144,7 @@
        <widget class="QLineEdit" name="windDirectionEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -147,7 +153,7 @@
        <widget class="QLabel" name="temperatureLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -159,7 +165,7 @@
        <widget class="QLabel" name="windDirectionLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -171,7 +177,7 @@
        <widget class="QLineEdit" name="windGustEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -180,7 +186,7 @@
        <widget class="QLineEdit" name="dewPointEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -189,7 +195,7 @@
        <widget class="QLineEdit" name="pressureEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -198,7 +204,7 @@
        <widget class="QLabel" name="vaporPressureLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -210,7 +216,7 @@
        <widget class="QLabel" name="dewPointLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -240,7 +246,7 @@
        <widget class="QCheckBox" name="vehicleTicketsCheckBox">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -252,7 +258,7 @@
        <widget class="QDoubleSpinBox" name="weightAdjustmentSpinBox">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="decimals">
@@ -266,23 +272,11 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="showPredictionsButton">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Show Before/After Predictions</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="windAdjustmentSpinBox">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="decimals">
@@ -300,7 +294,7 @@
        <widget class="QCheckBox" name="trackTicketsCheckBox">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -312,7 +306,7 @@
        <widget class="QLabel" name="windAdjustmentLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -324,7 +318,7 @@
        <widget class="QLabel" name="weightAdjustmentLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -344,30 +338,116 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="laneLabel">
+      <item row="9" column="0">
+       <widget class="QLabel" name="threeThirtyLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>Lane</string>
+         <string>330'</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
-      <item row="13" column="1">
-       <widget class="QLineEdit" name="quarterEdit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="6" column="7">
+       <widget class="QLabel" name="presLabel">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
         </property>
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>13</pointsize>
          </font>
+        </property>
+        <property name="text">
+         <string>Pres</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="4">
+       <widget class="QLabel" name="quarterA">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/4</string>
         </property>
        </widget>
       </item>
@@ -412,7 +492,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -420,11 +500,654 @@
         </property>
        </widget>
       </item>
+      <item row="8" column="1">
+       <widget class="QLineEdit" name="sixtyEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QLabel" name="quarterLable">
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/4</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QLineEdit" name="eighthEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="7">
+       <widget class="QLabel" name="eighthP">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/8</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="eighthMPHLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/8 MPH</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="6">
+       <widget class="QLabel" name="quarterH">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/4</string>
+        </property>
+       </widget>
+      </item>
       <item row="12" column="3">
        <widget class="QLabel" name="thousandD">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1000'</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="7">
+       <widget class="QLabel" name="threeThirtyP">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>330'</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="5">
+       <widget class="QLabel" name="tempLabel">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>239</red>
+              <green>41</green>
+              <blue>41</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>239</red>
+              <green>41</green>
+              <blue>41</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Temp.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="5">
+       <widget class="QLabel" name="sixtyT">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>239</red>
+              <green>41</green>
+              <blue>41</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>239</red>
+              <green>41</green>
+              <blue>41</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>60'</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="6">
+       <widget class="QLabel" name="humLabel">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Hum.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="3">
+       <widget class="QLabel" name="DALabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>DA</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="QLineEdit" name="quarterEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="reactionEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="inputMask">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="reactionLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Reaction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="6">
+       <widget class="QLabel" name="threeThirtyH">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>330'</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="6">
+       <widget class="QLabel" name="eighthH">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/8</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="eighthLabel">
+        <property name="font">
+         <font>
+          <pointsize>25</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/8</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3" colspan="5" alignment="Qt::AlignHCenter">
+       <widget class="QPushButton" name="comparePredictionButton">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Compare Prediction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="7">
+       <widget class="QLabel" name="sixtyP">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>60'</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="3">
+       <widget class="QLabel" name="sixtyD">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>60'</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="7">
+       <widget class="QLabel" name="thousandP">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -473,648 +1196,11 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
          <string>1/4</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="5">
-       <widget class="QLabel" name="sixtyT">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>239</red>
-              <green>41</green>
-              <blue>41</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>239</red>
-              <green>41</green>
-              <blue>41</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>60'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="5">
-       <widget class="QLabel" name="thousandT">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>239</red>
-              <green>41</green>
-              <blue>41</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>239</red>
-              <green>41</green>
-              <blue>41</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1000'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="3">
-       <widget class="QLabel" name="threeThirtyD">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>330'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="7">
-       <widget class="QLabel" name="sixtyP">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>60'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="6">
-       <widget class="QLabel" name="quarterH">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1/4</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="6">
-       <widget class="QLabel" name="sixtyH">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>60'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="6">
-       <widget class="QLabel" name="threeThirtyH">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>330'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="7">
-       <widget class="QLabel" name="threeThirtyP">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>330'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="0">
-       <widget class="QLabel" name="thousandLable">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1000'</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="4">
-       <widget class="QLabel" name="eighthA">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1/8</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="0">
-       <widget class="QLabel" name="quarterLable">
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1/4</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="2">
-       <widget class="QCheckBox" name="threeThirtyGoodCheckBox">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Good</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="2">
-       <widget class="QCheckBox" name="eighthGoodCheckBox">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Good</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="laneComboBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="maxVisibleItems">
-         <number>2</number>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="eighthLabel">
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1/8</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="6">
-       <widget class="QLabel" name="eighthH">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1/8</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="reactionLabel">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Reaction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QLineEdit" name="reactionEdit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="inputMask">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="6">
-       <widget class="QLabel" name="thousandH">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1000'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="1">
-       <widget class="QLineEdit" name="quarterMPHEdit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
         </property>
        </widget>
       </item>
@@ -1128,84 +1214,32 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
       </item>
-      <item row="8" column="3">
-       <widget class="QLabel" name="sixtyD">
+      <item row="1" column="3" colspan="5" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="label">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>25</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>60'</string>
+         <string>Predicted Times</string>
         </property>
        </widget>
       </item>
-      <item row="12" column="4">
-       <widget class="QLabel" name="thousandA">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
+      <item row="1" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="laneLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>1000'</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="2">
-       <widget class="QCheckBox" name="thousandGoodCheckBox">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Good</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
+         <string>Lane</string>
         </property>
        </widget>
       </item>
@@ -1250,7 +1284,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
@@ -1258,17 +1292,17 @@
         </property>
        </widget>
       </item>
-      <item row="12" column="7">
-       <widget class="QLabel" name="thousandP">
+      <item row="9" column="4">
+       <widget class="QLabel" name="threeThirtyA">
         <property name="palette">
          <palette>
           <active>
            <colorrole role="WindowText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
              </color>
             </brush>
            </colorrole>
@@ -1277,9 +1311,9 @@
            <colorrole role="WindowText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
              </color>
             </brush>
            </colorrole>
@@ -1299,38 +1333,117 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>1000'</string>
+         <string>330'</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
-       <widget class="QLabel" name="eighthMPHLabel">
+      <item row="13" column="3">
+       <widget class="QLabel" name="quarterD">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>1/8 MPH</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <string>1/4</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="sixtyLabel">
+      <item row="10" column="3">
+       <widget class="QLabel" name="eighthD">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>60'</string>
+         <string>1/8</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="2">
+       <widget class="QCheckBox" name="threeThirtyGoodCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Good</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="4">
+       <widget class="QLabel" name="eighthA">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/8</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="laneComboBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="maxVisibleItems">
+         <number>2</number>
         </property>
        </widget>
       </item>
@@ -1344,22 +1457,22 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
       </item>
-      <item row="10" column="7">
-       <widget class="QLabel" name="eighthP">
+      <item row="12" column="4">
+       <widget class="QLabel" name="thousandA">
         <property name="palette">
          <palette>
           <active>
            <colorrole role="WindowText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
              </color>
             </brush>
            </colorrole>
@@ -1368,9 +1481,9 @@
            <colorrole role="WindowText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
              </color>
             </brush>
            </colorrole>
@@ -1390,11 +1503,11 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>1/8</string>
+         <string>1000'</string>
         </property>
        </widget>
       </item>
@@ -1402,7 +1515,7 @@
        <widget class="QCheckBox" name="sixtyGoodCheckBox">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -1413,17 +1526,32 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="4">
-       <widget class="QLabel" name="avgLabel">
+      <item row="10" column="2">
+       <widget class="QCheckBox" name="eighthGoodCheckBox">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Good</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="5">
+       <widget class="QLabel" name="thousandT">
         <property name="palette">
          <palette>
           <active>
            <colorrole role="WindowText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
+              <red>239</red>
+              <green>41</green>
+              <blue>41</blue>
              </color>
             </brush>
            </colorrole>
@@ -1432,9 +1560,9 @@
            <colorrole role="WindowText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
+              <red>239</red>
+              <green>41</green>
+              <blue>41</blue>
              </color>
             </brush>
            </colorrole>
@@ -1454,26 +1582,11 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>Avg.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="0">
-       <widget class="QLabel" name="quarterMPHLable">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1/4 MPH</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <string>1000'</string>
         </property>
        </widget>
       </item>
@@ -1481,7 +1594,7 @@
        <widget class="QCheckBox" name="quarterGoodCheckBox">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -1492,167 +1605,23 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="3">
-       <widget class="QLabel" name="eighthD">
+      <item row="12" column="2">
+       <widget class="QCheckBox" name="thousandGoodCheckBox">
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>1/8</string>
+         <string>Good</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
-      <item row="13" column="7">
-       <widget class="QLabel" name="quarterP">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1/4</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="6">
-       <widget class="QLabel" name="humLabel">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>32</red>
-              <green>74</green>
-              <blue>135</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Hum.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="7">
-       <widget class="QLabel" name="presLabel">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>196</red>
-              <green>160</green>
-              <blue>0</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pres</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="1">
-       <widget class="QLineEdit" name="sixtyEdit">
+      <item row="0" column="0" colspan="2">
+       <widget class="QDateTimeEdit" name="dateTimeEdit">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -1661,7 +1630,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -1707,7 +1676,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -1715,33 +1684,162 @@
         </property>
        </widget>
       </item>
-      <item row="10" column="1">
-       <widget class="QLineEdit" name="eighthEdit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="12" column="6">
+       <widget class="QLabel" name="thousandH">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
         </property>
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="threeThirtyLabel">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>330'</string>
+         <string>1000'</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </widget>
+      </item>
+      <item row="6" column="4">
+       <widget class="QLabel" name="avgLabel">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>136</red>
+              <green>138</green>
+              <blue>133</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Avg.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="7">
+       <widget class="QLabel" name="quarterP">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>196</red>
+              <green>160</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>190</red>
+              <green>190</green>
+              <blue>190</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1/4</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="sixtyLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>60'</string>
         </property>
        </widget>
       </item>
@@ -1755,22 +1853,22 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
       </item>
-      <item row="9" column="4">
-       <widget class="QLabel" name="threeThirtyA">
+      <item row="8" column="6">
+       <widget class="QLabel" name="sixtyH">
         <property name="palette">
          <palette>
           <active>
            <colorrole role="WindowText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
              </color>
             </brush>
            </colorrole>
@@ -1779,9 +1877,9 @@
            <colorrole role="WindowText">
             <brush brushstyle="SolidPattern">
              <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
+              <red>32</red>
+              <green>74</green>
+              <blue>135</blue>
              </color>
             </brush>
            </colorrole>
@@ -1801,7 +1899,34 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>60'</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="thousandLable">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1000'</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="3">
+       <widget class="QLabel" name="threeThirtyD">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -1809,130 +1934,20 @@
         </property>
        </widget>
       </item>
-      <item row="13" column="4">
-       <widget class="QLabel" name="quarterA">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>136</red>
-              <green>138</green>
-              <blue>133</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
+      <item row="14" column="3" colspan="5">
+       <widget class="QPushButton" name="showPredictionsButton">
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>1/4</string>
+         <string>Show Before/After Predictions</string>
         </property>
        </widget>
       </item>
-      <item row="13" column="3">
-       <widget class="QLabel" name="quarterD">
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>1/4</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="5">
-       <widget class="QLabel" name="tempLabel">
-        <property name="palette">
-         <palette>
-          <active>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>239</red>
-              <green>41</green>
-              <blue>41</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </active>
-          <inactive>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>239</red>
-              <green>41</green>
-              <blue>41</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </inactive>
-          <disabled>
-           <colorrole role="WindowText">
-            <brush brushstyle="SolidPattern">
-             <color alpha="255">
-              <red>190</red>
-              <green>190</green>
-              <blue>190</blue>
-             </color>
-            </brush>
-           </colorrole>
-          </disabled>
-         </palette>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Temp.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="3">
-       <widget class="QLabel" name="DALabel">
-        <property name="font">
-         <font>
-          <pointsize>15</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DA</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QDateTimeEdit" name="dateTimeEdit">
+      <item row="14" column="1">
+       <widget class="QLineEdit" name="quarterMPHEdit">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -1941,32 +1956,23 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
       </item>
-      <item row="14" column="3" colspan="5" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="comparePredictionButton">
+      <item row="14" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="quarterMPHLable">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>Compare Prediction</string>
+         <string>1/4 MPH</string>
         </property>
-       </widget>
-      </item>
-      <item row="1" column="3" colspan="5" alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="label">
-        <property name="font">
-         <font>
-          <pointsize>25</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Predicted Times</string>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -1977,7 +1983,7 @@
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="font">
       <font>
-       <pointsize>15</pointsize>
+       <pointsize>13</pointsize>
       </font>
      </property>
      <property name="orientation">
@@ -2001,7 +2007,7 @@
        <widget class="QLineEdit" name="delayEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
        </widget>
@@ -2010,7 +2016,7 @@
        <widget class="QLabel" name="dialLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -2022,7 +2028,7 @@
        <widget class="QLabel" name="delayLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -2034,7 +2040,7 @@
        <widget class="QLineEdit" name="dialEdit">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="inputMask">
@@ -2046,7 +2052,7 @@
        <widget class="QDoubleSpinBox" name="riderWeightSpinBox">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="decimals">
@@ -2064,7 +2070,7 @@
        <widget class="QLabel" name="riderWeightLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -2076,7 +2082,7 @@
        <widget class="QSpinBox" name="vehicleWeightSpinBox">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="maximum">
@@ -2088,7 +2094,7 @@
        <widget class="QLabel" name="vehicleWeightLabel">
         <property name="font">
          <font>
-          <pointsize>15</pointsize>
+          <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
@@ -2103,7 +2109,7 @@
     <widget class="QPlainTextEdit" name="notesEdit">
      <property name="font">
       <font>
-       <pointsize>15</pointsize>
+       <pointsize>13</pointsize>
       </font>
      </property>
     </widget>
@@ -2112,7 +2118,7 @@
     <widget class="QLabel" name="notesLabel">
      <property name="font">
       <font>
-       <pointsize>15</pointsize>
+       <pointsize>13</pointsize>
       </font>
      </property>
      <property name="text">
@@ -2133,7 +2139,6 @@
   <tabstop>eighthMPHEdit</tabstop>
   <tabstop>thousandEdit</tabstop>
   <tabstop>quarterEdit</tabstop>
-  <tabstop>quarterMPHEdit</tabstop>
   <tabstop>delayEdit</tabstop>
   <tabstop>vehicleWeightSpinBox</tabstop>
   <tabstop>riderWeightSpinBox</tabstop>
@@ -2147,8 +2152,6 @@
   <tabstop>vehicleTicketsCheckBox</tabstop>
   <tabstop>windAdjustmentSpinBox</tabstop>
   <tabstop>weightAdjustmentSpinBox</tabstop>
-  <tabstop>comparePredictionButton</tabstop>
-  <tabstop>showPredictionsButton</tabstop>
   <tabstop>temperatureEdit</tabstop>
   <tabstop>humidityEdit</tabstop>
   <tabstop>pressureEdit</tabstop>
