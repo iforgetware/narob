@@ -4,6 +4,7 @@
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QLabel>
+#include <QTimer>
 
 #include "dialogbase.h"
 #include "tickets.h"
@@ -40,28 +41,29 @@ private:
     Race *mRace;
     ObservationsModel *mObservationsModel;
     PredictionsModel *mPredictionsModel;
-//    RefPTsModel *mRefPTsModel;
+    QTimer *mDateTimer;
+    QTimer *mFactorTimer;
 
     void formatDoubleEdit(const QString &field,
                           QLineEdit *edit,
                           const int decimals);
-    void formatDoubleLabel(const QString &field,
+    void formatNumberLabel(const QVariant &value,
                            QLabel *label,
                            const int decimals);
     void formatClockEdit(const QString &field,
                          QLineEdit *edit,
                          QCheckBox *checkBox);
-    QString formatClock(const QVariant &clock);
     void setupModel();
     void createUi();
-    void setWeather(const QDateTime& dateTime);
     void handleClockGood(QLineEdit *edit, QCheckBox *checkBox);
-    void onButtonBoxAccepted();
-    void updatePredictionDisplay(Prediction &prediction);
+    void updateWeather();
+    void updateDisplay();
 
 private slots:
-    void onComparePredictionClicked();
     void onShowPredictionsClicked();
+    void onDateChange();
+    void onFactorChange();
+    void onButtonBoxAccepted();
 };
 
 #endif // TICKETDIALOG_H

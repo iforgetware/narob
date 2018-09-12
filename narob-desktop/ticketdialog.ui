@@ -35,33 +35,6 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="2">
-       <widget class="QLineEdit" name="temperatureEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="2">
-       <widget class="QLineEdit" name="windSpeedEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <widget class="QLineEdit" name="densityAltitudeEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
       <item row="5" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="densityAltitudeLabel">
         <property name="font">
@@ -110,24 +83,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLineEdit" name="humidityEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLineEdit" name="vaporPressureEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="humidityLabel">
         <property name="font">
@@ -137,15 +92,6 @@
         </property>
         <property name="text">
          <string>Humidity</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="2">
-       <widget class="QLineEdit" name="windDirectionEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
         </property>
        </widget>
       </item>
@@ -173,33 +119,6 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="2">
-       <widget class="QLineEdit" name="windGustEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <widget class="QLineEdit" name="dewPointEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QLineEdit" name="pressureEdit">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="vaporPressureLabel">
         <property name="font">
@@ -221,6 +140,69 @@
         </property>
         <property name="text">
          <string>Dew Point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="temperature">
+        <property name="text">
+         <string>temp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="humidity">
+        <property name="text">
+         <string>hum</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="pressure">
+        <property name="text">
+         <string>pres</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="vaporPressure">
+        <property name="text">
+         <string>vPres</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="dewPoint">
+        <property name="text">
+         <string>dPoint</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="densityAltitude">
+        <property name="text">
+         <string>dAlt</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QLabel" name="windSpeed">
+        <property name="text">
+         <string>wSpeed</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QLabel" name="windDirection">
+        <property name="text">
+         <string>wDir</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
+       <widget class="QLabel" name="windGust">
+        <property name="text">
+         <string>wGust</string>
         </property>
        </widget>
       </item>
@@ -327,6 +309,42 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="16" column="13">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="11" rowspan="8" colspan="2">
+    <widget class="QPlainTextEdit" name="notesEdit">
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="11" alignment="Qt::AlignHCenter">
+    <widget class="QLabel" name="notesLabel">
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Notes</string>
+     </property>
     </widget>
    </item>
    <item row="6" column="0" rowspan="10" colspan="9">
@@ -519,7 +537,7 @@
        <widget class="QLabel" name="quarterLable">
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
@@ -540,7 +558,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
        </widget>
@@ -888,7 +906,7 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
        </widget>
@@ -1025,23 +1043,11 @@
        <widget class="QLabel" name="eighthLabel">
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
          <string>1/8</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3" colspan="5" alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="comparePredictionButton">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Compare Prediction</string>
         </property>
        </widget>
       </item>
@@ -1220,10 +1226,10 @@
        </widget>
       </item>
       <item row="1" column="3" colspan="5" alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="predictedTimesLabel">
         <property name="font">
          <font>
-          <pointsize>25</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
@@ -1979,22 +1985,7 @@
      </layout>
     </widget>
    </item>
-   <item row="16" column="13">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="font">
-      <font>
-       <pointsize>13</pointsize>
-      </font>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="11">
+   <item row="7" column="11">
     <widget class="QFrame" name="extraInfoFrame">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
@@ -2105,27 +2096,6 @@
      </layout>
     </widget>
    </item>
-   <item row="9" column="11" rowspan="8" colspan="2">
-    <widget class="QPlainTextEdit" name="notesEdit">
-     <property name="font">
-      <font>
-       <pointsize>13</pointsize>
-      </font>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="11" alignment="Qt::AlignHCenter">
-    <widget class="QLabel" name="notesLabel">
-     <property name="font">
-      <font>
-       <pointsize>13</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Notes</string>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <tabstops>
@@ -2152,15 +2122,6 @@
   <tabstop>vehicleTicketsCheckBox</tabstop>
   <tabstop>windAdjustmentSpinBox</tabstop>
   <tabstop>weightAdjustmentSpinBox</tabstop>
-  <tabstop>temperatureEdit</tabstop>
-  <tabstop>humidityEdit</tabstop>
-  <tabstop>pressureEdit</tabstop>
-  <tabstop>vaporPressureEdit</tabstop>
-  <tabstop>dewPointEdit</tabstop>
-  <tabstop>densityAltitudeEdit</tabstop>
-  <tabstop>windSpeedEdit</tabstop>
-  <tabstop>windDirectionEdit</tabstop>
-  <tabstop>windGustEdit</tabstop>
  </tabstops>
  <resources/>
  <connections>

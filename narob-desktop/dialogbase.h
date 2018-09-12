@@ -13,6 +13,8 @@ class DialogBase : public QDialog
 public:
     DialogBase(QWidget *parent = 0);
 
+    QModelIndex indexForField(const QString &field);
+
 public slots:
     void onButtonBoxAccepted();
 

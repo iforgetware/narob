@@ -37,7 +37,6 @@ private:
     bool mAllForVehicle;
     bool mAllForTrack;
     TicketsModel *mTicketsModel;
-//    QVector<RefPT> mRefPTList;
 };
 
 

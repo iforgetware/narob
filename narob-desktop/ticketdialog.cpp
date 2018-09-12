@@ -17,8 +17,9 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
     mSettingsTable(new Settings),
     mVehicle(vehicle),
     mRace(race),
-    mObservationsModel(new ObservationsModel(this))
-//    mRefPTsModel(new RefPTsModel(this))
+    mObservationsModel(new ObservationsModel(this)),
+    mDateTimer(new QTimer(this)),
+    mFactorTimer(new QTimer(this))
 {
     ui->setupUi(this);
 
@@ -33,9 +34,10 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
     ui->weightAdjustmentSpinBox->setValue(mSettings->value("weightAdjustment").toDouble());
     ui->windAdjustmentSpinBox->setValue(mSettings->value("windAdjustment").toDouble());
 
-    QModelIndex iIndex = mModel->index(mRow,
-                                       mModel->fieldIndex("id"));
-    mId = mModel->data(iIndex).toInt();
+//    QModelIndex iIndex = mModel->index(mRow,
+//                                       mModel->fieldIndex("id"));
+//    mId = mModel->data(iIndex).toInt();
+    mId = mModel->data(indexForField("id")).toInt();
 
     mPredictionsModel = new PredictionsModel(mVehicle,
                                              mRace,
@@ -43,21 +45,14 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
                                              this);
 
     if(row == -1){
-        QModelIndex vIndex = mModel->index(mRow,
-                                           mModel->fieldIndex("vehicleId"));
-        mModel->setData(vIndex, mVehicle->value("id").toInt());
+        mModel->setData(indexForField("vehicleId"),
+                        mVehicle->value("id").toInt());
 
-        QModelIndex tIndex = mModel->index(mRow,
-                                           mModel->fieldIndex("trackId"));
-        mModel->setData(tIndex, mRace->value("trackId").toInt());
+        mModel->setData(indexForField("trackId"),
+                        mRace->value("trackId").toInt());
 
-        QModelIndex rIndex = mModel->index(mRow,
-                                           mModel->fieldIndex("raceId"));
-        mModel->setData(rIndex, mRace->value("id").toInt());
-
-//        QModelIndex wIndex = mModel->index(mRow,
-//                                           mModel->fieldIndex("vehicleWeight"));
-//        mModel->setData(wIndex, mVehicle->value("weight").toInt());
+        mModel->setData(indexForField("raceId"),
+                        mRace->value("id").toInt());
 
         ui->vehicleWeightSpinBox->setValue(mVehicle->value("weight").toInt());
 
@@ -70,24 +65,29 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
         cDT.setTime(QTime(QTime::currentTime().hour(), QTime::currentTime().minute()));
         ui->dateTimeEdit->setDateTime(cDT);
 
-        setWeather(cDT);
+        updateWeather();
 
         ui->sixtyGoodCheckBox->setChecked(true);
         ui->threeThirtyGoodCheckBox->setChecked(true);
         ui->eighthGoodCheckBox->setChecked(true);
         ui->thousandGoodCheckBox->setChecked(true);
         ui->quarterGoodCheckBox->setChecked(true);
+
+//        ui->temperature->setText("");
+//        ui->humidity->setText("");
+//        ui->pressure->setText("");
+//        ui->vaporPressure->setText("");
+//        ui->dewPoint->setText("");
+//        ui->densityAltitude->setText("");
+//        ui->windSpeed->setText("");
+//        ui->windGust->setText("");
+//        ui->windDirection->setText("");
     }else{
         formatDoubleEdit("delay", ui->delayEdit, 3);
         formatDoubleEdit("reaction", ui->reactionEdit, 3);
         formatDoubleEdit("eighthMPH", ui->eighthMPHEdit, 2);
         formatDoubleEdit("quarterMPH", ui->quarterMPHEdit, 2);
         formatDoubleEdit("dial", ui->dialEdit, 2);
-        formatDoubleEdit("temperature", ui->temperatureEdit, 1);
-        formatDoubleEdit("humidity", ui->humidityEdit, 1);
-        formatDoubleEdit("pressure", ui->pressureEdit, 2);
-        formatDoubleEdit("vaporPressure", ui->vaporPressureEdit, 2);
-        formatDoubleEdit("dewpoint", ui->dewPointEdit, 1);
 
         formatClockEdit("sixty", ui->sixtyEdit, ui->sixtyGoodCheckBox);
         formatClockEdit("threeThirty", ui->threeThirtyEdit, ui->threeThirtyGoodCheckBox);
@@ -96,18 +96,34 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
         formatClockEdit("quarter", ui->quarterEdit, ui->quarterGoodCheckBox);
     }
 
-    Prediction prediction;
-    updatePredictionDisplay(prediction);
+    updateDisplay();
 
-    connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged, this, &TicketDialog::setWeather);
+    connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged,
+            this, &TicketDialog::onDateChange);
 
-    connect(ui->comparePredictionButton, &QPushButton::clicked,
-            this, &TicketDialog::onComparePredictionClicked);
+    connect(ui->vehicleWeightSpinBox, QOverload<int>::of(&QSpinBox::valueChanged),
+            this, &TicketDialog::onFactorChange);
+
+    connect(ui->riderWeightSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            this, &TicketDialog::onFactorChange);
+
+    connect(ui->windAdjustmentSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            this, &TicketDialog::onFactorChange);
+
+    connect(ui->weightAdjustmentSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            this, &TicketDialog::onFactorChange);
 
     connect(ui->showPredictionsButton, &QPushButton::clicked,
             this, &TicketDialog::onShowPredictionsClicked);
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &TicketDialog::onButtonBoxAccepted);
+    connect(mDateTimer, &QTimer::timeout,
+            this, &TicketDialog::updateWeather);
+
+    connect(mFactorTimer, &QTimer::timeout,
+            this, &TicketDialog::updateDisplay);
+
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,
+            this, &TicketDialog::onButtonBoxAccepted);
 }
 
 TicketDialog::~TicketDialog()
@@ -119,29 +135,26 @@ void TicketDialog::formatDoubleEdit(const QString &field,
                                     QLineEdit *edit,
                                     const int decimals)
 {
-    QModelIndex index = mModel->index(mRow,
-                                      mModel->fieldIndex(field));
-    double number = mModel->data(index).toDouble();
+    double number = mModel->data(indexForField(field)).toDouble();
     edit->setText(QString::number(number, 'f', decimals));
 }
 
-void TicketDialog::formatDoubleLabel(const QString &field,
+void TicketDialog::formatNumberLabel(const QVariant &value,
                                      QLabel *label,
                                      const int decimals)
 {
-    QModelIndex index = mModel->index(mRow,
-                                      mModel->fieldIndex(field));
-    double number = mModel->data(index).toDouble();
-    label->setText(QString::number(number, 'f', decimals));
+    if(decimals){
+        label->setText(QString::number(value.toDouble(), 'f', decimals));
+    }else{
+        label->setText(QString::number(value.toInt()));
+    }
 }
 
 void TicketDialog::formatClockEdit(const QString &field,
                                    QLineEdit *edit,
                                    QCheckBox *checkBox)
 {
-    QModelIndex index = mModel->index(mRow,
-                                      mModel->fieldIndex(field));
-    double clock = mModel->data(index).toDouble();
+    double clock = mModel->data(indexForField(field)).toDouble();
     if(clock < 0){
         checkBox->setChecked(false);
     }else{
@@ -172,15 +185,6 @@ void TicketDialog::setupModel()
     mMapper->addMapping(ui->delayEdit, mModel->fieldIndex("delay"));
     mMapper->addMapping(ui->vehicleWeightSpinBox, mModel->fieldIndex("vehicleWeight"));
     mMapper->addMapping(ui->riderWeightSpinBox, mModel->fieldIndex("riderWeight"));
-    mMapper->addMapping(ui->temperatureEdit, mModel->fieldIndex("temperature"));
-    mMapper->addMapping(ui->humidityEdit, mModel->fieldIndex("humidity"));
-    mMapper->addMapping(ui->pressureEdit, mModel->fieldIndex("pressure"));
-    mMapper->addMapping(ui->vaporPressureEdit, mModel->fieldIndex("vaporPressure"));
-    mMapper->addMapping(ui->dewPointEdit, mModel->fieldIndex("dewPoint"));
-    mMapper->addMapping(ui->densityAltitudeEdit, mModel->fieldIndex("densityAltitude"));
-    mMapper->addMapping(ui->windSpeedEdit, mModel->fieldIndex("windSpeed"));
-    mMapper->addMapping(ui->windGustEdit, mModel->fieldIndex("windGust"));
-    mMapper->addMapping(ui->windDirectionEdit, mModel->fieldIndex("windDirection"));
     mMapper->addMapping(ui->notesEdit, mModel->fieldIndex("notes"));
 
     mMapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -211,29 +215,40 @@ void TicketDialog::createUi()
     vDouble(ui->quarterMPHEdit, 2);
 }
 
-void TicketDialog::setWeather(const QDateTime &dateTime)
+void TicketDialog::updateWeather()
 {
     Observation* observation = new Observation();
 
-    observation = mObservationsModel->observationForTime(dateTime);
+    observation = mObservationsModel->observationForTime(ui->dateTimeEdit->dateTime());
 
     if(observation){
-        ui->temperatureEdit->setText(QString::number(observation->value("temperature").toDouble()));
-        ui->humidityEdit->setText(QString::number(observation->value("humidity").toDouble()));
-        ui->pressureEdit->setText(QString::number(observation->value("pressure").toDouble()));
-        ui->vaporPressureEdit->setText(QString::number(observation->value("vaporPressure").toDouble()));
-        ui->dewPointEdit->setText(QString::number(observation->value("dewPoint").toDouble()));
-        ui->densityAltitudeEdit->setText(QString::number(observation->value("densityAltitude").toInt()));
-        ui->windSpeedEdit->setText(QString::number(observation->value("windSpeed").toInt()));
-        ui->windGustEdit->setText(QString::number(observation->value("windGust").toInt()));
-        ui->windDirectionEdit->setText(QString::number(observation->value("windDirection").toInt()));
+        mModel->setData(indexForField("temperature"),
+                        observation->value("temperature"));
+        mModel->setData(indexForField("humidity"),
+                        observation->value("humidity"));
+        mModel->setData(indexForField("pressure"),
+                        observation->value("pressure"));
+        mModel->setData(indexForField("vaporPressure"),
+                        observation->value("vaporPressure"));
+        mModel->setData(indexForField("dewPoint"),
+                        observation->value("dewPoint"));
+        mModel->setData(indexForField("densityAltitude"),
+                        observation->value("densityAltitude"));
+        mModel->setData(indexForField("windSpeed"),
+                        observation->value("windSpeed"));
+        mModel->setData(indexForField("windGust"),
+                        observation->value("windGust"));
+        mModel->setData(indexForField("windDirection"),
+                        observation->value("windDirection"));
     }else{
         qDebug("Weather not found - WRITE CODE");
     }
 
     delete observation;
 
-    return;
+    updateDisplay();
+
+    mDateTimer->stop();
 }
 
 void TicketDialog::handleClockGood(QLineEdit *edit, QCheckBox *checkBox)
@@ -262,8 +277,37 @@ void TicketDialog::onButtonBoxAccepted()
     emit ready();
 }
 
-void TicketDialog::onComparePredictionClicked()
+void TicketDialog::updateDisplay()
 {
+//    ui->temperature->setText(mModel->data(indexForField("temperature")).toString());
+    formatNumberLabel(mModel->data(indexForField("temperature")),
+                      ui->temperature,
+                      1);
+    formatNumberLabel(mModel->data(indexForField("humidity")),
+                      ui->humidity,
+                      1);
+    formatNumberLabel(mModel->data(indexForField("pressure")),
+                      ui->pressure,
+                      2);
+    formatNumberLabel(mModel->data(indexForField("vaporPressure")),
+                      ui->vaporPressure,
+                      2);
+    formatNumberLabel(mModel->data(indexForField("dewPoint")),
+                      ui->dewPoint,
+                      1);
+    formatNumberLabel(mModel->data(indexForField("densityAltitude")),
+                      ui->densityAltitude,
+                      0);
+    formatNumberLabel(mModel->data(indexForField("windSpeed")),
+                      ui->windSpeed,
+                      0);
+    formatNumberLabel(mModel->data(indexForField("windGust")),
+                      ui->windGust,
+                      0);
+    formatNumberLabel(mModel->data(indexForField("windDirection")),
+                      ui->windDirection,
+                      0);
+
     TicketsModel *ticketsModel = new TicketsModel(mVehicle, this);
 
     Prediction prediction;
@@ -278,60 +322,41 @@ void TicketDialog::onComparePredictionClicked()
     prediction.setValue("windAdjustment", ui->windAdjustmentSpinBox->value());
     prediction.setValue("weightAdjustment", ui->weightAdjustmentSpinBox->value());
 
-//        QVector<RefPT> refPTList;
     prediction.predictClocks(ui->vehicleTicketsCheckBox->isChecked(),
                              ui->trackTicketsCheckBox->isChecked(),
                              ticketsModel);
 
-//    mPredictionsModel->addRow(prediction);
-//        int predictionId = mPredictionsModel->query().lastInsertId().toInt();
+    formatNumberLabel(prediction.value("sixtyD"), ui->sixtyD, 3);
+    formatNumberLabel(prediction.value("threeThirtyD"), ui->threeThirtyD, 3);
+    formatNumberLabel(prediction.value("eighthD"), ui->eighthD, 3);
+    formatNumberLabel(prediction.value("thousandD"), ui->thousandD, 3);
+    formatNumberLabel(prediction.value("quarterD"), ui->quarterD, 3);
 
-//        if(refPTList.count()){
-//            foreach(RefPT refPT, refPTList){
-//                refPT.setValue("predictionId", predictionId);
-//                mRefPTsModel->addRow(refPT);
-//            }
-//        }
+    formatNumberLabel(prediction.value("sixtyA"), ui->sixtyA, 3);
+    formatNumberLabel(prediction.value("threeThirtyA"), ui->threeThirtyA, 3);
+    formatNumberLabel(prediction.value("eighthA"), ui->eighthA, 3);
+    formatNumberLabel(prediction.value("thousandA"), ui->thousandA, 3);
+    formatNumberLabel(prediction.value("quarterA"), ui->quarterA, 3);
 
-    updatePredictionDisplay(prediction);
-}
+    formatNumberLabel(prediction.value("sixtyT"), ui->sixtyT, 3);
+    formatNumberLabel(prediction.value("threeThirtyT"), ui->threeThirtyT, 3);
+    formatNumberLabel(prediction.value("eighthT"), ui->eighthT, 3);
+    formatNumberLabel(prediction.value("thousandT"), ui->thousandT, 3);
+    formatNumberLabel(prediction.value("quarterT"), ui->quarterT, 3);
 
-QString TicketDialog::formatClock(const QVariant &clock)
-{
-    return QString::number(clock.toDouble(), 'f', 3);
-}
+    formatNumberLabel(prediction.value("sixtyH"), ui->sixtyH, 3);
+    formatNumberLabel(prediction.value("threeThirtyH"), ui->threeThirtyH, 3);
+    formatNumberLabel(prediction.value("eighthH"), ui->eighthH, 3);
+    formatNumberLabel(prediction.value("thousandH"), ui->thousandH, 3);
+    formatNumberLabel(prediction.value("quarterH"), ui->quarterH, 3);
 
-void TicketDialog::updatePredictionDisplay(Prediction &prediction)
-{
-    ui->sixtyD->setText(formatClock(prediction.value("sixtyD")));
-    ui->threeThirtyD->setText(formatClock(prediction.value("threeThirtyD")));
-    ui->eighthD->setText(formatClock(prediction.value("eighthD")));
-    ui->thousandD->setText(formatClock(prediction.value("thousandD")));
-    ui->quarterD->setText(formatClock(prediction.value("quarterD")));
+    formatNumberLabel(prediction.value("sixtyP"), ui->sixtyP, 3);
+    formatNumberLabel(prediction.value("threeThirtyP"), ui->threeThirtyP, 3);
+    formatNumberLabel(prediction.value("eighthP"), ui->eighthP, 3);
+    formatNumberLabel(prediction.value("thousandP"), ui->thousandP, 3);
+    formatNumberLabel(prediction.value("quarterP"), ui->quarterP, 3);
 
-    ui->sixtyA->setText(formatClock(prediction.value("sixtyA")));
-    ui->threeThirtyA->setText(formatClock(prediction.value("threeThirtyA")));
-    ui->eighthA->setText(formatClock(prediction.value("eighthA")));
-    ui->thousandA->setText(formatClock(prediction.value("thousandA")));
-    ui->quarterA->setText(formatClock(prediction.value("quarterA")));
-
-    ui->sixtyT->setText(formatClock(prediction.value("sixtyT")));
-    ui->threeThirtyT->setText(formatClock(prediction.value("threeThirtyT")));
-    ui->eighthT->setText(formatClock(prediction.value("eighthT")));
-    ui->thousandT->setText(formatClock(prediction.value("thousandT")));
-    ui->quarterT->setText(formatClock(prediction.value("quarterT")));
-
-    ui->sixtyH->setText(formatClock(prediction.value("sixtyH")));
-    ui->threeThirtyH->setText(formatClock(prediction.value("threeThirtyH")));
-    ui->eighthH->setText(formatClock(prediction.value("eighthH")));
-    ui->thousandH->setText(formatClock(prediction.value("thousandH")));
-    ui->quarterH->setText(formatClock(prediction.value("quarterH")));
-
-    ui->sixtyP->setText(formatClock(prediction.value("sixtyP")));
-    ui->threeThirtyP->setText(formatClock(prediction.value("threeThirtyP")));
-    ui->eighthP->setText(formatClock(prediction.value("eighthP")));
-    ui->thousandP->setText(formatClock(prediction.value("thousandP")));
-    ui->quarterP->setText(formatClock(prediction.value("quarterP")));
+    mFactorTimer->stop();
 }
 
 void TicketDialog::onShowPredictionsClicked()
@@ -355,7 +380,6 @@ void TicketDialog::onShowPredictionsClicked()
     QTime startTime = ticketTime.addSecs(-300);
 
     for(int i = 0; i < 11; i++){
-//        QTime predictionTime = startTime.addSecs(i * 60);
         prediction.setValue("dateTime", QDateTime(ticketDateTime.date(),
                                                   startTime.addSecs(i * 60)));
 
@@ -374,4 +398,14 @@ void TicketDialog::onShowPredictionsClicked()
         mPredictionsModel->removeRow(r);
     }
     mPredictionsModel->submitAll();
+}
+
+void TicketDialog::onDateChange()
+{
+    mDateTimer->start(1000);
+}
+
+void TicketDialog::onFactorChange()
+{
+    mFactorTimer->start(1000);
 }

@@ -158,7 +158,11 @@ QVector<Ticket*> Prediction::validTickets(const QString &clock)
         }
 
         if(valid){
-            valid = (ticket->value("id") != this->value("ticketId"));
+            QVariant ticketId = this->value("ticketId");
+
+            if(ticketId.toInt()){
+                valid = (ticket->value("id") != ticketId);
+            }
         }
 
         if(valid){
@@ -284,51 +288,44 @@ void Prediction::predictClock(const QString &clock)
 
     QVector<Ticket*> tickets = validTickets(clock);
 
-    foreach(Ticket* ticket, tickets){
-        double adjustedClock = ticket->value(clock).toDouble()
-                               + (this->windCorrection(ticket) / factor)
-                                + (this->weightCorrection(ticket) / factor);
-        tPoints.append(QPointF(ticket->value("temperature").toDouble(),
-                               adjustedClock));
-        hPoints.append(QPointF(ticket->value("humidity").toDouble(),
-                               adjustedClock));
-        pPoints.append(QPointF(ticket->value("pressure").toDouble(),
-                               adjustedClock));
-        dPoints.append(QPointF(ticket->value("densityAltitude").toInt(),
-                               adjustedClock));
+    if(tickets.count() > 1){
+        foreach(Ticket* ticket, tickets){
+            double adjustedClock = ticket->value(clock).toDouble()
+                                   + (this->windCorrection(ticket) / factor)
+                                   + (this->weightCorrection(ticket) / factor);
+            tPoints.append(QPointF(ticket->value("temperature").toDouble(),
+                                   adjustedClock));
+            hPoints.append(QPointF(ticket->value("humidity").toDouble(),
+                                   adjustedClock));
+            pPoints.append(QPointF(ticket->value("pressure").toDouble(),
+                                   adjustedClock));
+            dPoints.append(QPointF(ticket->value("densityAltitude").toInt(),
+                                   adjustedClock));
+        }
 
-//        RefPT refPT;
+        Line tLine(tPoints);
+        Line hLine(hPoints);
+        Line pLine(pPoints);
+        Line dLine(dPoints);
 
-//        refPT.setValue("ticketId", ticket->value("id").toInt());
-//        refPT.setValue("clock", clock);
-
-//        if(this->value("ticketId").toInt()){
-//            mRefPTList.append(refPT);
-//        }
+        this->setValue(clock + "T",
+                       formatClock(tLine.getYforX(this->value("temperature")
+                                                  .toDouble())));
+        this->setValue(clock + "H",
+                       formatClock(hLine.getYforX(this->value("humidity")
+                                                  .toDouble())));
+        this->setValue(clock + "P",
+                       formatClock(pLine.getYforX(this->value("pressure")
+                                                  .toDouble())));
+        this->setValue(clock + "A",
+                       formatClock((this->value(clock + "T").toDouble()
+                                    + this->value(clock + "H").toDouble()
+                                    + this->value(clock + "P").toDouble())
+                                   / 3));
+        this->setValue(clock + "D",
+                       formatClock(dLine.getYforX(this->value("densityAltitude")
+                                                  .toInt())));
     }
-
-    Line tLine(tPoints);
-    Line hLine(hPoints);
-    Line pLine(pPoints);
-    Line dLine(dPoints);
-
-    this->setValue(clock + "T",
-                   formatClock(tLine.getYforX(this->value("temperature")
-                                              .toDouble())));
-    this->setValue(clock + "H",
-                   formatClock(hLine.getYforX(this->value("humidity")
-                                              .toDouble())));
-    this->setValue(clock + "P",
-                   formatClock(pLine.getYforX(this->value("pressure")
-                                  .toDouble())));
-    this->setValue(clock + "A",
-                   formatClock((this->value(clock + "T").toDouble()
-                                + this->value(clock + "H").toDouble()
-                                + this->value(clock + "P").toDouble())
-                               / 3));
-    this->setValue(clock + "D",
-                   formatClock(dLine.getYforX(this->value("densityAltitude")
-                                              .toInt())));
 }
 
 

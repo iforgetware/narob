@@ -59,7 +59,6 @@ Ticket::Ticket() :
     init("tickets");
 }
 
-
 TicketsModel::TicketsModel(Vehicle *vehicle,
                            QObject *parent) :
     ModelBase("tickets",

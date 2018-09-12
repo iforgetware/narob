@@ -9,6 +9,11 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.3.3
+    - further ticket entry refinement
+        - weather is now labels instead of edits
+        - delay timer on display changes after changing dateTime or factors
+
 v0.3.2
     - tickets dialog to 13pt and subtle positioning changes
 

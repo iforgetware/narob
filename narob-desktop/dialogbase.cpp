@@ -23,3 +23,10 @@ void DialogBase::setModelRow(int row)
         mMapper->setCurrentModelIndex(mModel->index(row, 0));
     }
 }
+
+QModelIndex DialogBase::indexForField(const QString &field)
+{
+    return mModel->index(mRow,
+                         mModel->fieldIndex(field));
+
+}
