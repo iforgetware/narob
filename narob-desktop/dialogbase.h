@@ -11,7 +11,7 @@ class DialogBase : public QDialog
     Q_OBJECT
 
 public:
-    DialogBase(QWidget *parent = 0);
+    DialogBase(QWidget *parent = nullptr);
 
     QModelIndex indexForField(const QString &field);
 

@@ -46,13 +46,6 @@ ObservationsModel::ObservationsModel(QObject *parent) :
     select();
 }
 
-void ObservationsModel::addObservation(Observation &observation)
-{
-    insertRecord(-1, observation);
-    submitAll();
-    select();
-}
-
 Observation* ObservationsModel::getObservation(const int row)
 {
     Observation *observation = new Observation();

@@ -3,15 +3,18 @@
 #include <QDate>
 #include <QDebug>
 
-WeatherStation::WeatherStation(ObservationsModel *model, WeatherTab *parent) :
+WeatherStation::WeatherStation(ObservationsModel *model, QObject *parent) :
     QObject(parent),
     mObservationsModel(model)
 {
     setComPort();
     if(mRunning){
-        connect(mComPort, &QSerialPort::readyRead, this, &WeatherStation::getStationData);
-        connect(&mTimer, &QTimer::timeout, this, &WeatherStation::handleTimeout);
-        connect(mComPort, &QSerialPort::errorOccurred, this, &WeatherStation::handleError);
+        connect(mComPort, &QSerialPort::readyRead,
+                this, &WeatherStation::getStationData);
+        connect(&mTimer, &QTimer::timeout,
+                this, &WeatherStation::handleTimeout);
+        connect(mComPort, &QSerialPort::errorOccurred,
+                this, &WeatherStation::handleError);
 
         mTimer.start(1000);
     }
@@ -27,8 +30,8 @@ void WeatherStation::setComPort()
     const QList<QSerialPortInfo> allPorts = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &portInfo : allPorts) {
         if(portInfo.vendorIdentifier() == 0x403 &&
-                portInfo.productIdentifier() == 0x6001 &&
-                portInfo.manufacturer() == "FTDI"){
+           portInfo.productIdentifier() == 0x6001 &&
+           portInfo.manufacturer() == "FTDI"){
             mComPort = new QSerialPort(portInfo);
             mComPort->setBaudRate(9600);
         }
@@ -43,7 +46,6 @@ void WeatherStation::setComPort()
         }
     }
 }
-
 
 void WeatherStation::getStationData()
 {
@@ -161,7 +163,7 @@ void WeatherStation::writeToDB()
     o.setValue("windGust", mWGusts / mSampleCount);
     o.setValue("windDirection", mWDirs / mSampleCount);
 
-    mObservationsModel->addObservation(o);
+    mObservationsModel->addRow(o);
 
     emit newWeatherWritten();
     emit sendStatus(QString("Current Weather ->   "

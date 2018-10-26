@@ -1,6 +1,5 @@
 #include "weathertab.h"
 #include "ui_weathertab.h"
-#include "weatherstation.h"
 #include "observationswidget.h"
 
 #include <QTimer>

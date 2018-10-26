@@ -294,12 +294,8 @@ void DatabaseManager::testWeather() // DEV ONLY
 
     qDebug("Weather test - observations written - DEV ONLY");
 
-    Prediction p;
+    Prediction p(1, 1, 1, 0);
 
-    p.setValue("vehicleId", 1);
-    p.setValue("raceId", 1);
-    p.setValue("trackId", 1);
-    p.setValue("ticketId", 0);
     p.setValue("riderWeight", 150);
     p.setValue("vehicleWeight", 350);
 
@@ -500,12 +496,8 @@ void DatabaseManager::testWind() // DEV ONLY
 
     qDebug("Wind test - observations written - DEV ONLY");
 
-    Prediction p;
+    Prediction p(vehicle->value("id").toInt(), 2, 2, 0);
 
-    p.setValue("vehicleId", vehicle->value("id").toInt());
-    p.setValue("raceId", 2);
-    p.setValue("trackId", 2);
-    p.setValue("ticketId", 0);
     p.setValue("riderWeight", 150);
     p.setValue("vehicleWeight", 350);
 
@@ -636,12 +628,8 @@ void DatabaseManager::testWeight() // DEV ONLY
 
     qDebug("Weight test - observation written - DEV ONLY");
 
-    Prediction p;
+    Prediction p(vehicle->value("id").toInt(), 3, 1, 0);
 
-    p.setValue("vehicleId", vehicle->value("id").toInt());
-    p.setValue("raceId", 3);
-    p.setValue("trackId", 1);
-    p.setValue("ticketId", 0);
     p.setValue("riderWeight", 150.0 + i);
     p.setValue("vehicleWeight", 350);
 

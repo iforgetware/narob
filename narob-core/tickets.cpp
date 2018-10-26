@@ -1,6 +1,8 @@
 #include "tickets.h"
+#include "observations.h"
 
 #include <QColor>
+#include <QDebug>
 
 Fields ticketFields()
 {
@@ -59,6 +61,45 @@ Ticket::Ticket() :
     init("tickets");
 }
 
+void Ticket::setWeather()
+// this is currently not used because of the lack of access to the ticket
+// object in the ticket dialog
+//
+// probably should find a way to use this to preserve data encapsulation
+
+{
+    ObservationsModel *observationsModel = new ObservationsModel();
+
+    Observation* observation = new Observation();
+
+    observation = observationsModel->observationForTime(this->value("dateTime").toDateTime());
+
+    if(observation){
+        this->setValue("temperature",
+                       observation->value("temperature"));
+        this->setValue("humidity",
+                       observation->value("humidity"));
+        this->setValue("pressure",
+                       observation->value("pressure"));
+        this->setValue("vaporPressure",
+                       observation->value("vaporPressure"));
+        this->setValue("dewPoint",
+                       observation->value("dewPoint"));
+        this->setValue("densityAltitude",
+                       observation->value("densityAltitude"));
+        this->setValue("windSpeed",
+                       observation->value("windSpeed"));
+        this->setValue("windGust",
+                       observation->value("windGust"));
+        this->setValue("windDirection",
+                       observation->value("windDirection"));
+    }else{
+        qDebug("Weather not found - WRITE CODE");
+    }
+
+    delete observation;
+}
+
 TicketsModel::TicketsModel(Vehicle *vehicle,
                            QObject *parent) :
     ModelBase("tickets",
@@ -113,7 +154,7 @@ double TicketsModel::lastWeight()
     Ticket *ticket = new Ticket();
 
     if(rowCount()){
-        ticket->populate(record(rowCount() - 1));
+        ticket->populate(record(0));
         riderWeight = ticket->value("riderWeight").toDouble();
     }
 

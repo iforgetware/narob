@@ -30,6 +30,8 @@ struct Field
 
 typedef QVector<Field> Fields;
 
+const int CHANGE_DELAY = 1000;
+
 
 #if defined(NAROBCORE_LIBRARY)
 #  define NAROBCORESHARED_EXPORT Q_DECL_EXPORT

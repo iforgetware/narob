@@ -1,8 +1,10 @@
 #include "dialogbase.h"
 
 DialogBase::DialogBase(QWidget *parent) :
-    QDialog(parent)
+    QDialog(parent),
+    mMapper(new QDataWidgetMapper(this))
 {
+    mMapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 }
 
 void DialogBase::onButtonBoxAccepted()

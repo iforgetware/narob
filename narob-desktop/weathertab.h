@@ -1,13 +1,13 @@
 #ifndef WEATHERTAB_H
 #define WEATHERTAB_H
 
+#include <QWidget>
+
 #include "observations.h"
 #include "observationswidget.h"
 #include "weatherstation.h"
 
-#include <QWidget>
-
-class WeatherStation;
+//class WeatherStation;
 
 namespace Ui {
 class WeatherTab;
@@ -18,7 +18,7 @@ class WeatherTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit WeatherTab(QWidget *parent = 0);
+    explicit WeatherTab(QWidget *parent = nullptr);
     ~WeatherTab();
     void updateAllModels();
 //    ObservationsModel* getModel() { return mObservationsModel; }

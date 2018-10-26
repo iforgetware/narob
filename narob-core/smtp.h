@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2013 Raivis Strogonovs
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -6,7 +6,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #ifndef SMTP_H
 #define SMTP_H
-
 
 #include <QtNetwork/QAbstractSocket>
 #include <QtNetwork/QSslSocket>
@@ -16,20 +15,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <QtWidgets/QMessageBox>
 #include <QByteArray>
 
+#include "settings.h"
+#include "narob-core_global.h"
 
-
-class Smtp : public QObject
+class NAROBCORESHARED_EXPORT Smtp : public QObject
 {
     Q_OBJECT
 
-
 public:
-    Smtp( const QString &user, const QString &pass,
-          const QString &host, int port = 465, int timeout = 30000 );
+    Smtp(QObject *parent);
     ~Smtp();
 
-    void sendMail( const QString &from, const QString &to,
-                   const QString &subject, const QString &body );
+    void sendMail(const QString &to,
+                  const QString &subject,
+                  const QString &body );
 
 signals:
     void status( const QString &);
@@ -40,23 +39,25 @@ private slots:
     void disconnected();
     void connected();
     void readyRead();
+    void sendLine(QString line);
 
 private:
-    int timeout;
-    QString message;
-    QTextStream *t;
-    QSslSocket *socket;
-    QString from;
-    QString rcpt;
-    QString response;
-    QString user;
-    QString pass;
-    QString host;
-    int port;
+    Settings *mSettingsTable;
+    DbRecordBase *mSettings;
+    QSslSocket *mSocket;
+    quint16 mPort;
+    int mTimeout;
+    QString mUser;
+    QString mPass;
+    QString mHost;
+    QString mFrom;
+    QTextStream *mTextStream;
+    QString mRcpt;
+    QString mMessage;
 
-    enum states{Tls, HandShake ,Auth,User,Pass,Rcpt,Mail,Data,Init,Body,Quit,Close};
+    enum states{INIT,AUTH,USER,PASS,RCPT,MAIL,DATA,BODY,QUIT,CLOSE};
 
-    int state;
+    int mState;
 
 };
 

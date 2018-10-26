@@ -21,7 +21,7 @@ void ModelBase::setHeaders()
     }
 }
 
-void ModelBase::addRow(QSqlRecord rec)
+void ModelBase::addRow(QSqlRecord &rec)
 {
     insertRecord(-1, rec);
     submitAll();

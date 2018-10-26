@@ -22,6 +22,9 @@ VehiclesWidget::VehiclesWidget(QWidget *parent) :
 
     connect(mEditButton, &QPushButton::clicked,
             this, &VehiclesWidget::editVehicle);
+
+    connect(ui->tableView, &QTableView::doubleClicked,
+            this, &VehiclesWidget::editVehicle);
 }
 
 void VehiclesWidget::addVehicle()

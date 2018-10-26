@@ -1,24 +1,24 @@
 #ifndef WEATHERSTATION_H
 #define WEATHERSTATION_H
 
+#include "observations.h"
+#include "narob-core_global.h"
+
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QTime>
 #include <QTimer>
+#include <QtWidgets/QWidget>
 
 #include <QObject>
 
-#include "observations.h"
-#include "weathertab.h"
-
-class WeatherTab;
-
-class WeatherStation : public QObject
+class NAROBCORESHARED_EXPORT WeatherStation : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit WeatherStation(ObservationsModel *model, WeatherTab *parent = nullptr);
+    explicit WeatherStation(ObservationsModel *model,
+                            QObject *parent = nullptr);
     ~WeatherStation();
 
     bool isRunning(){ return mRunning; }

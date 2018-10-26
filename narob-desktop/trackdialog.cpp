@@ -27,14 +27,11 @@ void TrackDialog::setupModel()
 {
     mModel = new TracksModel(this);
 
-    mMapper = new QDataWidgetMapper(this);
     mMapper->setModel(mModel);
     mMapper->addMapping(ui->nameEdit, 1);
     mMapper->addMapping(ui->elevationEdit, 2);
     mMapper->addMapping(ui->bearingEdit, 3);
     mMapper->addMapping(ui->radioSpinBox, 4);
-
-    mMapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 }
 
 void TrackDialog::createUi()

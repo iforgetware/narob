@@ -3,6 +3,7 @@
 
 #include "dialogbase.h"
 #include "vehicles.h"
+#include "settings.h"
 
 namespace Ui {
 class VehicleDialog;
@@ -22,6 +23,9 @@ private:
 
     void setupModel();
     void createUi();
+
+    Settings *mSettingsTable;
+    DbRecordBase *mSettings;
 };
 
 #endif // VEHICLEDIALOG_H

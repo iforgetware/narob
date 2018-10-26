@@ -59,7 +59,8 @@ bool TableEditWidgetBase::selected()
 int TableEditWidgetBase::getSelection()
 {
     if(selected()){
-        return ui->tableView->selectionModel()->currentIndex().row();
+//        return ui->tableView->selectionModel()->currentIndex().row();
+        return getSelectionIndex().row();
     }else{
         return 0;
     }

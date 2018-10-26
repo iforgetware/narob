@@ -50,9 +50,8 @@ class NAROBCORESHARED_EXPORT ObservationsModel : public ModelBase
     Q_OBJECT
 
 public:
-    explicit ObservationsModel(QObject *parent = 0);
+    explicit ObservationsModel(QObject *parent = nullptr);
 
-    void addObservation(Observation &observation);
     Observation *getObservation(const int row);
     Observation *lastObservation();
     Observation *observationForTime(QDateTime dateTime);

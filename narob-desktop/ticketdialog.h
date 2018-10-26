@@ -13,8 +13,6 @@
 #include "tracks.h"
 #include "observations.h"
 #include "predictions.h"
-#include "settings.h"
-//#include "refpts.h"
 
 namespace Ui {
 class TicketDialog;
@@ -28,22 +26,15 @@ public:
     explicit TicketDialog(Vehicle* vehicle,
                           Race* race,
                           int row = -1,
-                          QWidget *parent = 0);
+                          QWidget *parent = nullptr);
     ~TicketDialog();
 
 private:
-    Ui::TicketDialog *ui;
-
-    Settings *mSettingsTable;
-    DbRecordBase *mSettings;
-    int mId;
-    Vehicle *mVehicle;
-    Race *mRace;
-    ObservationsModel *mObservationsModel;
-    PredictionsModel *mPredictionsModel;
-    QTimer *mDateTimer;
-    QTimer *mFactorTimer;
-
+    void setupModel();
+    void createUi();
+    void updateWeather();
+    void updatePrediction();
+    void handleClockGood(QLineEdit *edit, QCheckBox *checkBox);
     void formatDoubleEdit(const QString &field,
                           QLineEdit *edit,
                           const int decimals);
@@ -53,11 +44,24 @@ private:
     void formatClockEdit(const QString &field,
                          QLineEdit *edit,
                          QCheckBox *checkBox);
-    void setupModel();
-    void createUi();
-    void handleClockGood(QLineEdit *edit, QCheckBox *checkBox);
-    void updateWeather();
-    void updateDisplay();
+    void updateWValue(const QString &field);
+    void updatePLabel(const QString &field,
+                      QLabel *label);
+    void updateWLabel(const QString &field,
+                      QLabel *label,
+                      const int decimals);
+
+    Ui::TicketDialog *ui;
+
+    int mId;
+    Vehicle *mVehicle;
+    Race *mRace;
+    Observation *mObservation;
+    Prediction *mPredictedRun;
+    ObservationsModel *mObservationsModel;
+    TicketsModel *mTicketsModel;
+    QTimer *mDateTimer;
+    QTimer *mFactorTimer;
 
 private slots:
     void onShowPredictionsClicked();

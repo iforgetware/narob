@@ -17,7 +17,7 @@ public:
 
     void setHeaders();
     Fields fields() { return mFields; }
-    void addRow(QSqlRecord rec);
+    void addRow(QSqlRecord &rec);
 
 protected:
     Fields mFields;

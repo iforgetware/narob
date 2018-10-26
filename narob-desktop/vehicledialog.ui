@@ -6,20 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>271</width>
+    <height>457</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QLabel" name="numberLabel">
      <property name="text">
       <string>Number</string>
      </property>
     </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="numberEdit"/>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="compClassLabel">
@@ -28,6 +31,9 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="compClassEdit"/>
+   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="weightLabel">
      <property name="text">
@@ -35,7 +41,10 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="weightEdit"/>
+   </item>
+   <item row="4" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -45,17 +54,105 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="numberEdit"/>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="compClassEdit"/>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="weightEdit"/>
+   <item row="3" column="0" colspan="2">
+    <widget class="QFrame" name="settingsFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="predictionDefaults">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="title">
+         <string>Prediction defaults</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_7">
+         <item row="2" column="0">
+          <widget class="QLabel" name="weightAdjustmentLabel">
+           <property name="text">
+            <string>ET correction per 1lb of weight</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QDoubleSpinBox" name="weightAdjustmentSpinBox">
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>0.999000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QDoubleSpinBox" name="windAdjustmentSpinBox">
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="minimum">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>0.999000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="ProviderBox" name="textProviderComboBox"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="windAdjustmentLabel">
+           <property name="text">
+            <string>ET correction per 1MPH of wind</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="textProviderLabel">
+           <property name="text">
+            <string>Text Provider</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="textNumberLabel">
+           <property name="text">
+            <string>Text Number</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLineEdit" name="textNumberEdit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ProviderBox</class>
+   <extends>QComboBox</extends>
+   <header>providerbox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>numberEdit</tabstop>
   <tabstop>compClassEdit</tabstop>

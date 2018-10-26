@@ -32,16 +32,12 @@ void RaceDialog::setupModel()
 {
     mModel = new RacesModel(this);
 
-    mMapper = new QDataWidgetMapper(this);
-
     mMapper->setItemDelegate(new QSqlRelationalDelegate(ui->trackComboBox));
 
     mMapper->setModel(mModel);
     mMapper->addMapping(ui->dateEdit, 1);
     mMapper->addMapping(ui->nameEdit, 2);
     mMapper->addMapping(ui->trackComboBox, 3);
-
-    mMapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 }
 
 void RaceDialog::createUi()

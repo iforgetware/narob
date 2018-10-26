@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += sql
+QT       += sql serialport network
 
 #QT       -= gui
 
@@ -36,7 +36,8 @@ SOURCES += \
     tickets.cpp \
     observations.cpp \
     predictions.cpp \
-#    refpts.cpp \
+    weatherstation.cpp \
+    smtp.cpp \
     tracks.cpp
 
 HEADERS += \
@@ -51,7 +52,8 @@ HEADERS += \
     tickets.h \
     observations.h \
     predictions.h \
-#    refpts.h \
+    weatherstation.h \
+    smtp.h \
     tracks.h
 
 DISTFILES +=

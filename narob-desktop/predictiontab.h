@@ -30,24 +30,31 @@ public:
     void UpdateAllModels();
 
 private:
+    void formatNumberLabel(const QVariant &value,
+                           QLabel *label,
+                           const int decimals);
+    void updatePLabel(const QString &field,
+                      QLabel *label);
+    void writePredictionToDb();
+    void updateDisplay();
+    void sendPage();
+    void mailSent(QString);
+
     Ui::PredictionTab* ui;
-    Vehicle* mVehicle;
-    Race* mRace;
-    QTimer* mAutoTimer;
+    Vehicle *mVehicle;
+    Race *mRace;
     Settings *mSettingsTable;
     DbRecordBase *mSettings;
-    PredictionsModel* mPredictionsModel;
-    TicketsModel* mTicketsModel;
+    PredictionsModel *mPredictionsModel;
+    Prediction *mCurrentPrediction;
+    TicketsModel *mTicketsModel;
     PreviousPredictionsWidget *mPreviousPredictionsWidget;
-
-    QString formatClock(const QVariant &clock);
+    QTimer *mAutoTimer;
+    QTimer *mFactorTimer;
 
 private slots:
+    void onFactorChange();
     void makePrediction();
-    void writePredictionToDb(Prediction &prediction);
-    void updateDisplay(const Prediction &prediction);
-    void sendPage(const Prediction &prediction);
-    void mailSent(QString);
 };
 
 #endif // PREDICTIONTAB_H

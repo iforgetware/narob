@@ -22,6 +22,8 @@ class NAROBCORESHARED_EXPORT Ticket : public DbRecordBase
 {
 public:
     explicit Ticket();
+
+    void setWeather();
 };
 
 

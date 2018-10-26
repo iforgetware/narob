@@ -8,7 +8,6 @@
 #include "tickets.h"
 #include "vehicles.h"
 #include "races.h"
-//#include "refpts.h"
 
 #include "narob-core_global.h"
 
@@ -22,7 +21,10 @@ public:
 class NAROBCORESHARED_EXPORT Prediction : public DbRecordBase
 {
 public:
-    explicit Prediction();
+    explicit Prediction(const int vehicleId,
+                        const int trackId,
+                        const int raceId,
+                        const int ticketId);
     void predictClocks(bool allForVehicle,
                        bool allForTrack,
                        TicketsModel *ticketsModel);
@@ -36,7 +38,11 @@ private:
 
     bool mAllForVehicle;
     bool mAllForTrack;
+    QVariant mTrackId;
+    QVariant mRaceId;
+    QVariant mTicketId;
     TicketsModel *mTicketsModel;
+    QVector<Ticket*> mTickets;
 };
 
 

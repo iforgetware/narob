@@ -77,11 +77,22 @@ Predictions::Predictions() :
 }
 
 
-Prediction::Prediction() :
+Prediction::Prediction(const int vehicleId,
+                       const int trackId,
+                       const int raceId,
+                       const int ticketId) :
     DbRecordBase()
 {
     mFields = predictionFields();
     init("predictions");
+
+    mTrackId = trackId;
+    mRaceId = raceId;
+    mTicketId = ticketId;
+    this->setValue("vehicleId", vehicleId);
+    this->setValue("trackId", trackId);
+    this->setValue("raceId", raceId);
+    this->setValue("ticketId", ticketId);
 }
 
 void Prediction::predictClocks(bool allForVehicle,
@@ -91,18 +102,15 @@ void Prediction::predictClocks(bool allForVehicle,
     mAllForVehicle = allForVehicle;
     mAllForTrack = allForTrack;
     mTicketsModel = ticketsModel;
+    mTickets = mTicketsModel->tickets();
 
     getWeather();
-
-//    mRefPTList.clear();
 
     predictClock("sixty");
     predictClock("threeThirty");
     predictClock("eighth");
     predictClock("thousand");
     predictClock("quarter");
-
-//    return mRefPTList;
 }
 
 void Prediction::getWeather()
@@ -111,11 +119,13 @@ void Prediction::getWeather()
 
     Observation* observation = new Observation();
     observationsModel->select();
+
     if(this->value("dateTime").toDateTime().isValid()){
-        observation = observationsModel->observationForTime(this->value("dateTime").toDateTime());
+        observation = observationsModel->
+                      observationForTime(this->value("dateTime").toDateTime());
     }else{
         observation = observationsModel->lastObservation();
-        this->setValue("DateTime", observation->value("dateTime").toDateTime());
+        this->setValue("dateTime", observation->value("dateTime").toDateTime());
     }
 
     if(observation){
@@ -142,14 +152,14 @@ QVector<Ticket*> Prediction::validTickets(const QString &clock)
 
     bool valid;
 
-    foreach(Ticket* ticket, mTicketsModel->tickets()){
+    foreach(Ticket* ticket, mTickets){
         valid = true;
 
         if(!mAllForVehicle){
-            valid = ticket->value("trackId") == this->value("trackId");
+            valid = ticket->value("trackId") == mTrackId;
 
             if(!mAllForTrack){
-                valid = ticket->value("raceId") == this->value("raceId");
+                valid = ticket->value("raceId") == mRaceId;
             }
         }
 
@@ -157,12 +167,8 @@ QVector<Ticket*> Prediction::validTickets(const QString &clock)
             valid = ticket->value(clock).toDouble() > 0;
         }
 
-        if(valid){
-            QVariant ticketId = this->value("ticketId");
-
-            if(ticketId.toInt()){
-                valid = (ticket->value("id") != ticketId);
-            }
+        if(valid && mTicketId.toInt()){
+            valid = (ticket->value("id") != mTicketId);
         }
 
         if(valid){
@@ -199,7 +205,6 @@ struct Line
 
         if(!denominator){
             denominator = 0.000001;
-            //qDebug("denominator ZERO - WRITE CODE");
         }
 
         mSlope = (sumXY - (sumX * yMean)) / denominator;

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets sql serialport network
+QT       += core gui widgets sql serialport
 
 TARGET = narob-desktop
 TEMPLATE = app
@@ -45,9 +45,7 @@ SOURCES += \
     ticketdialog.cpp \
     observationswidget.cpp \
     providerbox.cpp \
-    weatherstation.cpp \
     ticketseditwidget.cpp \
-    smtp.cpp \
     tabledisplaywidgetbase.cpp \
     dialogbase.cpp \
     previouspredictionswidget.cpp \
@@ -77,9 +75,7 @@ HEADERS += \
     ticketdialog.h \
     observationswidget.h \
     providerbox.h \
-    weatherstation.h \
     ticketseditwidget.h \
-    smtp.h \
     tabledisplaywidgetbase.h \
     dialogbase.h \
     previouspredictionswidget.h \

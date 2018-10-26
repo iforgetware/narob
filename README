@@ -9,6 +9,13 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.3.5
+    - moved weather station and smtp from desktop to core
+    - more cleanup
+
+v0.3.4
+    - refined code for predictions and tickets
+
 v0.3.3
     - further ticket entry refinement
         - weather is now labels instead of edits
