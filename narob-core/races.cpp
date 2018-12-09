@@ -1,37 +1,25 @@
 #include <QSqlQuery>
+#include <QDebug>
 
 #include "races.h"
 
-Fields raceFields()
-{
-    Fields f;
-
-    f << Field("id", "id", 0, 0)
-      << Field("date", "Date", 100, -2)
-      << Field("name", "Name", 150, -4)
-      << Field("trackId", "Track", 150, 0);
-
-    return f;
-}
-
 Races::Races() :
-    DbTableBase()
+    DbTableBase("races",
+                RACE_FIELDS)
 {
-    mFields = raceFields();
-    mTable = "races";
 }
 
 
 Race::Race() :
-    DbRecordBase()
+    DbRecordBase("races",
+                 RACE_FIELDS)
 {
-    mFields = raceFields();
-    init("races");
+    init();
 }
 
 RacesModel::RacesModel(QObject *parent) :
     ModelBase("races",
-              raceFields(),
+              RACE_FIELDS,
               parent)
 {
     setJoinMode(QSqlRelationalTableModel::LeftJoin);

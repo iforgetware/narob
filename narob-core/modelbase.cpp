@@ -3,10 +3,10 @@
 ModelBase::ModelBase(QString table,
                      Fields fields,
                      QObject *parent) :
-    QSqlRelationalTableModel(parent)
+    QSqlRelationalTableModel(parent),
+    mFields(fields)
 {
     setTable(table);
-    mFields = fields;
     setHeaders();
     setEditStrategy(QSqlTableModel::OnManualSubmit);
     select();

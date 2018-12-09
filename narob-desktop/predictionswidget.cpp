@@ -11,11 +11,10 @@ PredictionsWidget::PredictionsWidget(PredictionsModel *model,
 
     ui->tableView->setModel(mPredictionsModel);
 
-    setupColumns(mPredictionsModel->fields());
+    setupColumns(PREDICTION_FIELDS);
 
     hide("raceId");
     hide("vehicleId");
-    hide("trackId");
     hide("ticketId");
 
     QVector<QString> types;

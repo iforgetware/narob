@@ -17,8 +17,15 @@ PredictionTab::PredictionTab(TicketsModel *model,
     mRace(race),
     mSettingsTable(new Settings),
     mSettings(mSettingsTable->getSettings()),
-    mPredictionsModel(new PredictionsModel(mVehicle, mRace, 0, this)),
     mTicketsModel(model),
+    mPredictionsModel(new PredictionsModel(mVehicle->value("id").toInt(),
+                                           mRace->value("id").toInt(),
+                                           0,
+                                           this)),
+    mCurrentPrediction(Prediction(model,
+                                  vehicle,
+                                  race,
+                                  0)),
     mAutoTimer(new QTimer(this)),
     mFactorTimer(new QTimer(this))
 {
@@ -29,8 +36,6 @@ PredictionTab::PredictionTab(TicketsModel *model,
                                      this);
 
     ui->gridLayout_2->addWidget(mPreviousPredictionsWidget, 0, 0);
-
-//    mSettings = mSettingsTable->getSettings();
 
     ui->vehicleWeightSpinBox->setValue(mVehicle->value("weight").toInt());
     ui->riderWeightSpinBox->setValue(mTicketsModel->lastWeight());
@@ -43,11 +48,6 @@ PredictionTab::PredictionTab(TicketsModel *model,
                                              .toString());
     ui->textNumberEdit->setText(mVehicle->value("textNumber")
                                 .toString());
-
-    mCurrentPrediction = new Prediction(mVehicle->value("id").toInt(),
-                                        mRace->value("trackId").toInt(),
-                                        mRace->value("id").toInt(),
-                                        0);
 
     connect(ui->vehicleWeightSpinBox,
             QOverload<int>::of(&QSpinBox::valueChanged),
@@ -69,6 +69,16 @@ PredictionTab::PredictionTab(TicketsModel *model,
             this,
             &PredictionTab::onFactorChange);
 
+    connect(ui->trackTicketsCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &PredictionTab::onTrackTicketsCheckboxChange);
+
+    connect(ui->vehicleTicketsCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &PredictionTab::onVehicleTicketsCheckboxChange);
+
     connect(mAutoTimer, &QTimer::timeout,
             this, &PredictionTab::makePrediction);
 
@@ -80,6 +90,8 @@ PredictionTab::PredictionTab(TicketsModel *model,
 
 PredictionTab::~PredictionTab()
 {
+    delete mSettingsTable;
+    delete mSettings;
     delete mAutoTimer;
     delete mFactorTimer;
     delete ui;
@@ -90,29 +102,22 @@ void PredictionTab::UpdateAllModels()
     mPreviousPredictionsWidget->updateModel();
 }
 
-void PredictionTab::onFactorChange()
-{
-    mFactorTimer->start(CHANGE_DELAY);
-}
-
 void PredictionTab::makePrediction()
 {
-    mCurrentPrediction->setValue("dateTime", QDateTime());
-    mCurrentPrediction->setValue("riderWeight", ui->riderWeightSpinBox->value());
-    mCurrentPrediction->setValue("vehicleWeight", ui->vehicleWeightSpinBox->value());
-    mCurrentPrediction->setValue("windAdjustment", ui->windAdjustmentSpinBox->value());
-    mCurrentPrediction->setValue("weightAdjustment", ui->weightAdjustmentSpinBox->value());
+    mCurrentPrediction.predictClocks(QDateTime(),
+                                     ui->riderWeightSpinBox->value(),
+                                     ui->vehicleWeightSpinBox->value(),
+                                     ui->windAdjustmentSpinBox->value(),
+                                     ui->weightAdjustmentSpinBox->value(),
+                                     ui->vehicleTicketsCheckBox->isChecked(),
+                                     ui->trackTicketsCheckBox->isChecked());
 
-    mCurrentPrediction->predictClocks(ui->vehicleTicketsCheckBox->isChecked(),
-                             ui->trackTicketsCheckBox->isChecked(),
-                             mTicketsModel);
-
-    int minute = mCurrentPrediction->value("dateTime")
+    int minute = mCurrentPrediction.value("dateTime")
                  .toDateTime()
                  .time()
                  .minute();
 
-    if(minute % 5 == 0){
+    if(minute % 1 == 0){ // DEV ONLY - chenge to 5 or add setting to settings
         writePredictionToDb();
     }
 
@@ -123,16 +128,18 @@ void PredictionTab::makePrediction()
 
 void PredictionTab::writePredictionToDb()
 {
-    mPredictionsModel->addRow(*mCurrentPrediction);
+    if(mCurrentPrediction.value("temperature").toDouble() > 0){
+        mPredictionsModel->addRow(mCurrentPrediction);
 
-    if(ui->eToPhoneCheckBox->isChecked() || ui->qToPhoneCheckBox->isChecked()){
-        sendPage();
-    }
+        if(ui->eToPhoneCheckBox->isChecked() || ui->qToPhoneCheckBox->isChecked()){
+            sendPage();
+        }
 
-    while(mPredictionsModel->rowCount(QModelIndex()) > 5){
-        mPredictionsModel->removeRow(mPredictionsModel->rowCount(QModelIndex()) - 1);
-        mPredictionsModel->submitAll();
-        mPreviousPredictionsWidget->updateModel();
+        while(mPredictionsModel->rowCount(QModelIndex()) > 5){
+            mPredictionsModel->removeRow(mPredictionsModel->rowCount(QModelIndex()) - 1);
+            mPredictionsModel->submitAll();
+            mPreviousPredictionsWidget->updateModel();
+        }
     }
 }
 
@@ -169,11 +176,23 @@ void PredictionTab::updateDisplay()
     updatePLabel("quarterP", ui->quarterP);
 }
 
-void PredictionTab::updatePLabel(const QString &field, QLabel *label)
+void PredictionTab::pageLine(QString line, QString field, int decimals)
 {
-    label->setText(QString::number(mCurrentPrediction->value(field).toDouble(),
-                                   'f',
-                                   3));
+    if(decimals == -3){
+        mPage.append(QString(line)
+                     .arg(QString(mCurrentPrediction.value(field)
+                             .toTime().toString("hh:mm"))));
+    }else if(decimals == 0){
+        mPage.append(QString(line)
+                     .arg(QString::number(mCurrentPrediction
+                                     .value(field)
+                                     .toInt())));
+    }else{
+        mPage.append(QString(line)
+                     .arg(QString::number(mCurrentPrediction
+                                         .value(field)
+                                         .toDouble())));
+    }
 }
 
 void PredictionTab::sendPage()
@@ -183,54 +202,22 @@ void PredictionTab::sendPage()
        || mSettings->value("emailPW").toString() == ""){
         qDebug("No email settings to page with - WRITE CODE");
     }else{
-        QMap<QString, QString> *suffixes = new QMap<QString, QString>;
-
-        suffixes->insert("Alltel", "message.alltel.com");
-        suffixes->insert("AT&T", "txt.att.net");
-        suffixes->insert("Boost Mobile", "myboostmobile.com");
-        suffixes->insert("Cricket Wireless", "mms.cricketwireless.net");
-        suffixes->insert("Sprint", "messaging.sprintpcs.com");
-        suffixes->insert("T-Mobile", "momail.net");
-        suffixes->insert("U.S. Cellular", "email.uscc.net");
-        suffixes->insert("Verizon", "vtext.com");
-        suffixes->insert("Virgin Mobile", "vmobl.com");
-        suffixes->insert("Republic Wireless", "text.republicwireless.com");
+        mPage = "\n";
 
         QString suffix = QString("@%1")
-                         .arg(suffixes->value(ui->textProviderComboBox->currentText()));
+                         .arg(TEXT_SUFFIXES
+                              .value(ui->textProviderComboBox->currentText()));
 
-        QString body("\n");
-
-        body.append(QString("%1\n")
-                    .arg(QString(mCurrentPrediction->value("dateTime")
-                                 .toTime().toString("hh:mm"))));
-        body.append(QString("Temp -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("temperature")
-                                         .toDouble())));
-        body.append(QString("Humid -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("humidity")
-                                         .toDouble())));
-        body.append(QString("Press -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("pressure")
-                                         .toDouble())));
-        body.append(QString("Vap P -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("vaporPressure")
-                                         .toDouble())));
-        body.append(QString("Dew P -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("dewPoint")
-                                         .toDouble())));
-        body.append(QString("D Alt -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("densityAltitude")
-                                         .toInt())));
-        body.append(QString("W Speed -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("windSpeed")
-                                         .toInt())));
-        body.append(QString("W Gust -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("windGust")
-                                         .toInt())));
-        body.append(QString("W Dir -> %1\n")
-                    .arg(QString::number(mCurrentPrediction->value("windDirection")
-                                         .toInt())));
+        pageLine("%1\n", "dateTime", -3);
+        pageLine("Temp -> %1\n", "temperature", 1);
+        pageLine("Humid -> %1\n", "humidity", 1);
+        pageLine("Press -> %1\n", "pressure", 2);
+        pageLine("Vap P -> %1\n", "vaporPressure", 2);
+        pageLine("Dew P -> %1\n", "dewPoint", 1);
+        pageLine("D Alt -> %1\n", "densityAltitude", 0);
+        pageLine("W Speed -> %1\n", "windSpeed", 0);
+        pageLine("W Gust -> %1\n", "windGust", 0);
+        pageLine("W Dir -> %1\n", "windDirection", 0);
 
         Smtp *smtpW = new Smtp(this);
         //connect(smtpW, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
@@ -239,18 +226,14 @@ void PredictionTab::sendPage()
                         .arg(ui->textNumberEdit->text())
                         .arg(suffix),
                         "Weather",
-                        body);
+                        mPage);
 
-        body.clear();
+        mPage = "\n";
 
         if(ui->eToPhoneCheckBox->isChecked()){
-            body.append("Predictions\n");
-            body.append(QString("By d alt -> %1\n")
-                        .arg(QString::number(mCurrentPrediction->value("eighthD")
-                                             .toDouble())));
-            body.append(QString("Average -> %1\n")
-                        .arg(QString::number(mCurrentPrediction->value("eighthA")
-                                             .toDouble())));
+            pageLine("%1\n", "dateTime", -3);
+            pageLine("By d alt -> %1\n", "eighthD", 3);
+            pageLine("Average -> %1\n", "eighthA", 3);
 
             Smtp *smtpE = new Smtp(this);
             //connect(smtpE, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
@@ -258,20 +241,16 @@ void PredictionTab::sendPage()
             smtpE->sendMail(QString("%1%2")
                             .arg(ui->textNumberEdit->text())
                             .arg(suffix),
-                            "Eighth",
-                            body);
+                            "1/8",
+                            mPage);
         }
 
-        body.clear();
+        mPage = "\n";
 
         if(ui->qToPhoneCheckBox->isChecked()){
-            body.append("Predictions\n");
-            body.append(QString("By d alt -> %1\n")
-                        .arg(QString::number(mCurrentPrediction->value("quarterD")
-                                             .toDouble())));
-            body.append(QString("Average -> %1\n")
-                        .arg(QString::number(mCurrentPrediction->value("quarterA")
-                                             .toDouble())));
+            pageLine("%1\n", "dateTime", -3);
+            pageLine("By d alt -> %1\n", "quarterD", 3);
+            pageLine("Average -> %1\n", "quarterA", 3);
 
             Smtp *smtpQ = new Smtp(this);
             //connect(smtpQ, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
@@ -279,8 +258,8 @@ void PredictionTab::sendPage()
             smtpQ->sendMail(QString("%1%2")
                             .arg(ui->textNumberEdit->text())
                             .arg(suffix),
-                            "Quarter",
-                            body);
+                            "1/4",
+                            mPage);
         }
     }
 }
@@ -291,4 +270,37 @@ void PredictionTab::mailSent(QString status)
     {
         qDebug("page sent");
     }
+}
+
+void PredictionTab::updatePLabel(const QString &field, QLabel *label)
+{
+    if(mCurrentPrediction.value(field).toDouble() == 0.0){
+        label->setText("");
+    }else{
+        label->setText(QString::number(mCurrentPrediction.value(field)
+                                       .toDouble(),
+                                       'f',
+                                       3));
+    }
+}
+
+void PredictionTab::onTrackTicketsCheckboxChange(){
+    if(ui->trackTicketsCheckBox->isChecked()){
+            ui->vehicleTicketsCheckBox->setCheckState(Qt::Unchecked);
+    }
+
+    onFactorChange();
+}
+
+void PredictionTab::onVehicleTicketsCheckboxChange(){
+    if(ui->vehicleTicketsCheckBox->isChecked()){
+        ui->trackTicketsCheckBox->setCheckState(Qt::Unchecked);
+    }
+
+    onFactorChange();
+}
+
+void PredictionTab::onFactorChange()
+{
+    mFactorTimer->start(CHANGE_DELAY);
 }

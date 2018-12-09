@@ -4,9 +4,11 @@
 #include "dbtablebase.h"
 #include "databasemanager.h"
 
-DbTableBase::DbTableBase()
+DbTableBase::DbTableBase(QString table,
+                         Fields fields) :
+    mTable(table),
+    mFields(fields)
 {
-
 }
 
 void DbTableBase::init() const

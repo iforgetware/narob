@@ -9,14 +9,15 @@
 class DbRecordBase : public QSqlRecord
 {
 public:
-    DbRecordBase();
+    DbRecordBase(QString table,
+                 Fields fields);
 
-    void setFields(const Fields &fields);
-    void init(const QString &table);
+    void init();
 
     void populate(QSqlRecord rec);
 
-protected:
+private:
+    QString mTable;
     Fields mFields;
 };
 

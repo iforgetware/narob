@@ -25,36 +25,40 @@ public:
     explicit PredictionTab(TicketsModel* model,
                            Vehicle *vehicle,
                            Race *race,
-                           QWidget *parent = 0);
+                           QWidget *parent = nullptr);
     ~PredictionTab();
     void UpdateAllModels();
 
 private:
+    void writePredictionToDb();
+    void updateDisplay();
+    void sendPage();
+    void pageLine(QString line, QString field, int decimals);
+    void mailSent(QString);
     void formatNumberLabel(const QVariant &value,
                            QLabel *label,
                            const int decimals);
     void updatePLabel(const QString &field,
                       QLabel *label);
-    void writePredictionToDb();
-    void updateDisplay();
-    void sendPage();
-    void mailSent(QString);
 
     Ui::PredictionTab* ui;
     Vehicle *mVehicle;
     Race *mRace;
     Settings *mSettingsTable;
     DbRecordBase *mSettings;
-    PredictionsModel *mPredictionsModel;
-    Prediction *mCurrentPrediction;
     TicketsModel *mTicketsModel;
+    PredictionsModel *mPredictionsModel;
+    Prediction mCurrentPrediction;
     PreviousPredictionsWidget *mPreviousPredictionsWidget;
+    QString mPage;
     QTimer *mAutoTimer;
     QTimer *mFactorTimer;
 
 private slots:
-    void onFactorChange();
     void makePrediction();
+    void onTrackTicketsCheckboxChange();
+    void onVehicleTicketsCheckboxChange();
+    void onFactorChange();
 };
 
 #endif // PREDICTIONTAB_H

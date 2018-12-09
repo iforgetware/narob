@@ -6,13 +6,14 @@
 class DbTableBase
 {
 public:
-    DbTableBase();
+    DbTableBase(QString table,
+                Fields fields);
 
     void init() const;
 
-protected:
-    Fields mFields;
+private:
     QString mTable;
+    Fields mFields;
 };
 
 #endif // DBTABLEBASE_H

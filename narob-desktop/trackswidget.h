@@ -10,7 +10,7 @@ class TracksWidget : public TableEditWidgetBase
     Q_OBJECT
 
 public:
-    explicit TracksWidget(QWidget *parent = 0);
+    explicit TracksWidget(QWidget *parent = nullptr);
 
 private slots:
     void addTrack();

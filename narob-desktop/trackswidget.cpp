@@ -13,7 +13,7 @@ TracksWidget::TracksWidget(QWidget *parent) :
 
     ui->tableView->setModel(mTracksModel);
 
-    setupColumns(mTracksModel->fields());
+    setupColumns(TRACK_FIELDS);
 
     initTable();
 

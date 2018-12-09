@@ -7,6 +7,13 @@
 
 #include "narob-core_global.h"
 
+static Fields TRACK_FIELDS{Field("id", "id", 0, 0),
+            Field("name", "Name", 150, -4),
+            Field("elevation", "Elev", 50, 0),
+            Field("bearing", "Bear", 50, 0),
+            Field("radio", "Radio", 50, 1)};
+
+
 class Tracks : public DbTableBase
 {
 public:
@@ -26,7 +33,7 @@ class NAROBCORESHARED_EXPORT TracksModel : public ModelBase
     Q_OBJECT
 
 public:
-    explicit TracksModel(QObject *parent = 0);
+    explicit TracksModel(QObject *parent = nullptr);
 
     Track *getTrack(const int row);
     Track *trackForId(const int id);

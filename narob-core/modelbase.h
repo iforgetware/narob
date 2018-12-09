@@ -13,13 +13,12 @@ class NAROBCORESHARED_EXPORT ModelBase : public QSqlRelationalTableModel
 public:
     ModelBase(QString table,
               Fields fields,
-              QObject *parent = 0);
+              QObject *parent = nullptr);
 
     void setHeaders();
-    Fields fields() { return mFields; }
     void addRow(QSqlRecord &rec);
 
-protected:
+private:
     Fields mFields;
 };
 

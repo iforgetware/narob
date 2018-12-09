@@ -1,109 +1,26 @@
 #include "tickets.h"
-#include "observations.h"
 
 #include <QColor>
 #include <QDebug>
 
-Fields ticketFields()
-{
-    Fields f;
-
-    f << Field("id", "id", 0, 0)
-
-      << Field("vehicleId", "Vehicle", 150, 0)
-      << Field("trackId", "Track", 150, 0)
-      << Field("raceId", "Race", 150, 0)
-
-      << Field("dateTime", "Date       Time", 160, -3)
-
-      << Field("lane", "Lane", 50, 0)
-      << Field("delay", "Delay", 50, 3)
-      << Field("reaction", "R/T", 60, 3)
-      << Field("sixty", "60'", 50, 13)
-      << Field("threeThirty", "330'", 50, 13)
-      << Field("eighth", "1/8", 50, 13)
-      << Field("eighthMPH", "1/8 MPH", 75, 2)
-      << Field("thousand", "1000'", 50, 13)
-      << Field("quarter", "1/4", 60, 13)
-      << Field("quarterMPH", "1/4 MPH", 75, 2)
-
-      << Field("dial", "Dial", 50, 2)
-      << Field("vehicleWeight", "V Weight", 70, 0)
-      << Field("riderWeight", "R Weight", 70, 1)
-
-      << Field("temperature", "Temp", 50, 1)
-      << Field("humidity", "Humid",50, 1)
-      << Field("pressure", "Pres", 50, 2)
-      << Field("vaporPressure", "V Pres", 50, 2)
-      << Field("dewPoint", "D Point", 60, 1)
-      << Field("densityAltitude", "D Alt", 50, 0)
-      << Field("windSpeed", "W Speed", 70, 0)
-      << Field("windGust", "W Gust", 70, 0)
-      << Field("windDirection", "W Dir", 60, 0)
-
-      << Field("notes", "Notes", 0, 0);
-
-    return f;
-}
-
 Tickets::Tickets() :
-    DbTableBase()
+    DbTableBase("tickets",
+                TICKET_FIELDS)
 {
-    mFields = ticketFields();
-    mTable = "tickets";
 }
 
 
 Ticket::Ticket() :
-    DbRecordBase()
+    DbRecordBase("tickets",
+                 TICKET_FIELDS)
 {
-    mFields = ticketFields();
-    init("tickets");
-}
-
-void Ticket::setWeather()
-// this is currently not used because of the lack of access to the ticket
-// object in the ticket dialog
-//
-// probably should find a way to use this to preserve data encapsulation
-
-{
-    ObservationsModel *observationsModel = new ObservationsModel();
-
-    Observation* observation = new Observation();
-
-    observation = observationsModel->observationForTime(this->value("dateTime").toDateTime());
-
-    if(observation){
-        this->setValue("temperature",
-                       observation->value("temperature"));
-        this->setValue("humidity",
-                       observation->value("humidity"));
-        this->setValue("pressure",
-                       observation->value("pressure"));
-        this->setValue("vaporPressure",
-                       observation->value("vaporPressure"));
-        this->setValue("dewPoint",
-                       observation->value("dewPoint"));
-        this->setValue("densityAltitude",
-                       observation->value("densityAltitude"));
-        this->setValue("windSpeed",
-                       observation->value("windSpeed"));
-        this->setValue("windGust",
-                       observation->value("windGust"));
-        this->setValue("windDirection",
-                       observation->value("windDirection"));
-    }else{
-        qDebug("Weather not found - WRITE CODE");
-    }
-
-    delete observation;
+    init();
 }
 
 TicketsModel::TicketsModel(Vehicle *vehicle,
                            QObject *parent) :
     ModelBase("tickets",
-              ticketFields(),
+              TICKET_FIELDS,
               parent),
     mVehicle(vehicle)
 {
@@ -126,7 +43,7 @@ QVariant TicketsModel::data(const QModelIndex &item, int role) const
            item.column() == fieldIndex("thousand") ||
            item.column() == fieldIndex("quarter")){
 
-            if(item.data().toDouble() < 0){
+            if(item.data().toDouble() <= 0){
                 return QVariant(QColor(Qt::gray));
             }
         }
@@ -135,7 +52,7 @@ QVariant TicketsModel::data(const QModelIndex &item, int role) const
     return QSqlRelationalTableModel::data(item, role);
 }
 
-QVector<Ticket*> TicketsModel::tickets()
+QVector<Ticket*> TicketsModel::allTickets()
 {
     QVector<Ticket*> ticketsVector;
 

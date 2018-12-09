@@ -9,6 +9,14 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.3.6
+    - added parameters to predictClocks method to replace setValue's on prediction
+    - made database fields globals instead of variables in headers
+    - made text suffixes a global
+    - cleaned up predictions
+    - moved prediction info routines into prediction objects
+    - fixed memory leak in TicketsModel::AllTickets function used by predictions
+
 v0.3.5
     - moved weather station and smtp from desktop to core
     - more cleanup

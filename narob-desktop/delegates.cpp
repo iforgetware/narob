@@ -1,9 +1,6 @@
 #include "delegates.h"
 #include <QTime>
-#include <QSqlRelationalTableModel>
-#include <QSortFilterProxyModel>
 #include <QDebug>
-#include <QSqlRecord>
 
 #include <math.h>
 

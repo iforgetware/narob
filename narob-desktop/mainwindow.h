@@ -9,6 +9,8 @@
 #include "databasemanager.h"
 #include "racecontroltab.h"
 
+#include <QTimer>
+
 namespace Ui {
 class MainWindow;
 }
@@ -30,7 +32,9 @@ private:
     Ui::MainWindow *ui;
     QVector<RaceControlTab*> mRaceControlTabList;
 
-public slots:
+//    QTimer *memTimer;
+
+private slots:
     void handleOpenRaceControl(Vehicle* vehicle, Race* race);
     void handleStatusUpdate(QString status);
     void handleCloseTab(int index);
@@ -40,6 +44,8 @@ public slots:
     void handleTestTP();
     void handleTestWind();
     void handleTestWeight();
+
+    void handleMemTimer();
 };
 
 #endif // MAINWINDOW_H

@@ -13,7 +13,7 @@ VehiclesWidget::VehiclesWidget(QWidget *parent) :
 
     ui->tableView->setModel(mVehiclesModel);
 
-    setupColumns(mVehiclesModel->fields());
+    setupColumns(VEHICLE_FIELDS);
 
     initTable();
 

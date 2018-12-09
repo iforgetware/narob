@@ -5,27 +5,10 @@
 #include "settings.h"
 #include "databasemanager.h"
 
-Fields settingsFields()
-{
-    Fields f;
-
-    f << Field("id", "id", 0, 0)
-      << Field("windAdjustment", "Wind Adjustment", 50, 3)
-      << Field("weightAdjustment", "Weight Adjustment", 50, 3)
-      << Field("textNumber", "Text Number", 150, -4)
-      << Field("textProvider", "Text Provider", 150, -4)
-      << Field("emailUser", "Email User", 250, -4)
-      << Field("emailPW", "Email Password", 250, -4)
-      << Field("emailHost", "Email Host", 250, -4);
-
-    return f;
-}
-
 Settings::Settings() :
-    DbTableBase()
+    DbTableBase("settings",
+                SETTINGS_FIELDS)
 {
-    mFields = settingsFields();
-    mTable = "settings";
 }
 
 DbRecordBase *Settings::getSettings()
@@ -34,9 +17,9 @@ DbRecordBase *Settings::getSettings()
     query.exec("SELECT * FROM settings "
                "WHERE id = 1");
 
-    DbRecordBase *settings = new DbRecordBase();
-    settings->setFields(mFields);
-    settings->init("settings");
+    DbRecordBase *settings = new DbRecordBase("settings",
+                                              SETTINGS_FIELDS);
+    settings->init();
 
     if(query.next()){
         settings->populate(query.record());

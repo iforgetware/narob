@@ -13,7 +13,7 @@ RacesWidget::RacesWidget(QWidget *parent) :
 
     ui->tableView->setModel(mRacesModel);
 
-    setupColumns(mRacesModel->fields());
+    setupColumns(RACE_FIELDS);
 
     initTable();
 

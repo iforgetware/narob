@@ -26,7 +26,7 @@ TicketsWidget::TicketsWidget(TicketsModel *model,
     ui->tableView->setItemDelegateForColumn(2, new TrackColumnDelegate(this));
     ui->tableView->setItemDelegateForColumn(3, new RaceColumnDelegate(this));
 
-    setupColumns(mTicketsModel->fields());
+    setupColumns(TICKET_FIELDS);
 
     hide("vehicleId");
     hide("predictionId");

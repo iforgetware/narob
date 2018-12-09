@@ -3,6 +3,7 @@
 
 #include <QtCore/qglobal.h>
 #include <QVector>
+#include <QMap>
 
 struct Field
 {
@@ -32,6 +33,16 @@ typedef QVector<Field> Fields;
 
 const int CHANGE_DELAY = 1000;
 
+static QMap<QString, QString> TEXT_SUFFIXES{{"Alltel", "message.alltel.com"},
+                                            {"AT&T", "txt.att.net"},
+                                            {"Boost Mobile", "myboostmobile.com"},
+                                            {"Cricket Wireless", "mms.cricketwireless.net"},
+                                            {"Sprint", "messaging.sprintpcs.com"},
+                                            {"T-Mobile", "momail.net"},
+                                            {"U.S. Cellular", "email.uscc.net"},
+                                            {"Verizon", "vtext.com"},
+                                            {"Virgin Mobile", "vmobl.com"},
+                                            {"Republic Wireless", "text.republicwireless.com"}};
 
 #if defined(NAROBCORE_LIBRARY)
 #  define NAROBCORESHARED_EXPORT Q_DECL_EXPORT

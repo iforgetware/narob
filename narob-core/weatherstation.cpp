@@ -163,28 +163,30 @@ void WeatherStation::writeToDB()
     o.setValue("windGust", mWGusts / mSampleCount);
     o.setValue("windDirection", mWDirs / mSampleCount);
 
-    mObservationsModel->addRow(o);
+    if(o.value("temperature").toDouble() > 0.0){
+        mObservationsModel->addRow(o);
 
-    emit newWeatherWritten();
-    emit sendStatus(QString("Current Weather ->   "
-                            "Temperature: %1      "
-                            "Humidity: %2      "
-                            "Pressure: %3      "
-                            "Vapor Press: %4      "
-                            "Dew Point: %5      "
-                            "Density Altitude: %6      "
-                            "Wind Speed: %7      "
-                            "Wind Gust: %8      "
-                            "Wind Direction: %9")
-                    .arg(o.value("temperature").toDouble())
-                    .arg(o.value("humidity").toDouble())
-                    .arg(o.value("pressure").toDouble())
-                    .arg(o.value("vaporPressure").toDouble())
-                    .arg(o.value("dewPoint").toDouble())
-                    .arg(o.value("densityAltitude").toInt())
-                    .arg(o.value("windSpeed").toInt())
-                    .arg(o.value("windGust").toInt())
-                    .arg(o.value("windDirection").toInt()));
+        emit newWeatherWritten();
+        emit sendStatus(QString("Current Weather ->   "
+                                "Temperature: %1      "
+                                "Humidity: %2      "
+                                "Pressure: %3      "
+                                "Vapor Press: %4      "
+                                "Dew Point: %5      "
+                                "Density Altitude: %6      "
+                                "Wind Speed: %7      "
+                                "Wind Gust: %8      "
+                                "Wind Direction: %9")
+                        .arg(o.value("temperature").toDouble())
+                        .arg(o.value("humidity").toDouble())
+                        .arg(o.value("pressure").toDouble())
+                        .arg(o.value("vaporPressure").toDouble())
+                        .arg(o.value("dewPoint").toDouble())
+                        .arg(o.value("densityAltitude").toInt())
+                        .arg(o.value("windSpeed").toInt())
+                        .arg(o.value("windGust").toInt())
+                        .arg(o.value("windDirection").toInt()));
+    }
 
     mTemps = 0;
     mHums = 0;

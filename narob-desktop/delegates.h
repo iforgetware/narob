@@ -2,7 +2,6 @@
 #define DELEGATES_H
 
 #include <QStyledItemDelegate>
-#include <QSqlRelationalDelegate>
 
 
 class BoolDelegate : public QStyledItemDelegate
@@ -10,7 +9,7 @@ class BoolDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit BoolDelegate(QObject *parent = 0);
+    explicit BoolDelegate(QObject *parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
@@ -20,7 +19,7 @@ class DateDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit DateDelegate(QObject *parent = 0);
+    explicit DateDelegate(QObject *parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
@@ -30,7 +29,7 @@ class DateTimeDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit DateTimeDelegate(QObject* parent = 0);
+    explicit DateTimeDelegate(QObject* parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
@@ -40,7 +39,7 @@ class OneDecimalDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit OneDecimalDelegate(QObject *parent = 0);
+    explicit OneDecimalDelegate(QObject *parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
@@ -50,7 +49,7 @@ class TwoDecimalDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit TwoDecimalDelegate(QObject *parent = 0);
+    explicit TwoDecimalDelegate(QObject *parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
@@ -60,7 +59,7 @@ class ThreeDecimalDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit ThreeDecimalDelegate(QObject *parent = 0);
+    explicit ThreeDecimalDelegate(QObject *parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
@@ -70,7 +69,7 @@ class ClockDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit ClockDelegate(QObject *parent = 0);
+    explicit ClockDelegate(QObject *parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
@@ -80,7 +79,7 @@ class RaceColumnDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit RaceColumnDelegate(QObject* parent = 0);
+    explicit RaceColumnDelegate(QObject* parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 
@@ -90,7 +89,7 @@ class TrackColumnDelegate : public QStyledItemDelegate
     Q_OBJECT
 
 public:
-    explicit TrackColumnDelegate(QObject* parent = 0);
+    explicit TrackColumnDelegate(QObject* parent = nullptr);
     QString displayText(const QVariant &value, const QLocale &locale) const;
 };
 

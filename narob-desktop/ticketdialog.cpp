@@ -15,7 +15,6 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
     ui(new Ui::TicketDialog),
     mVehicle(vehicle),
     mRace(race),
-    mObservation(new Observation()),
     mObservationsModel(new ObservationsModel(this)),
     mTicketsModel(new TicketsModel(vehicle, this)),
     mDateTimer(new QTimer(this)),
@@ -34,20 +33,20 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
 
     mId = mModel->data(indexForField("id")).toInt();
 
-    mPredictedRun = new Prediction(mVehicle->value("id").toInt(),
-                                   mRace->value("trackId").toInt(),
-                                   mRace->value("id").toInt(),
+    mPredictedRun = new Prediction(mTicketsModel,
+                                   mVehicle,
+                                   mRace,
                                    mId);
 
     if(row == -1){
         mModel->setData(indexForField("vehicleId"),
-                        mVehicle->value("id").toInt());
+                        mVehicle->value("id"));
 
         mModel->setData(indexForField("trackId"),
-                        mRace->value("trackId").toInt());
+                        mRace->value("trackId"));
 
         mModel->setData(indexForField("raceId"),
-                        mRace->value("id").toInt());
+                        mRace->value("id"));
 
         ui->vehicleWeightSpinBox->setValue(mVehicle->value("weight").toInt());
         ui->riderWeightSpinBox->setValue(mTicketsModel->lastWeight());
@@ -57,8 +56,6 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
         cDT.setTime(QTime(QTime::currentTime().hour(),
                           QTime::currentTime().minute()));
         ui->dateTimeEdit->setDateTime(cDT);
-
-        updateWeather();
 
         ui->sixtyGoodCheckBox->setChecked(true);
         ui->threeThirtyGoodCheckBox->setChecked(true);
@@ -80,10 +77,11 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
     }
 
     updateWeather();
-    updatePrediction();
 
-    connect(ui->dateTimeEdit, &QDateTimeEdit::dateTimeChanged,
-            this, &TicketDialog::onDateChange);
+    connect(ui->dateTimeEdit,
+            &QDateTimeEdit::dateTimeChanged,
+            this,
+            &TicketDialog::onDateChange);
 
     connect(ui->vehicleWeightSpinBox,
             QOverload<int>::of(&QSpinBox::valueChanged),
@@ -105,6 +103,16 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
             this,
             &TicketDialog::onFactorChange);
 
+    connect(ui->trackTicketsCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &TicketDialog::onTrackTicketsCheckboxChange);
+
+    connect(ui->vehicleTicketsCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &TicketDialog::onVehicleTicketsCheckboxChange);
+
     connect(mDateTimer, &QTimer::timeout,
             this, &TicketDialog::updateWeather);
 
@@ -122,6 +130,7 @@ TicketDialog::~TicketDialog()
 {
     delete mDateTimer;
     delete mFactorTimer;
+    delete mPredictedRun;
     delete ui;
 }
 
@@ -174,24 +183,18 @@ void TicketDialog::createUi()
 }
 
 void TicketDialog::updateWeather()
-// this should probably be rewritten to use the setWeather method in the
-// ticket object
 {
     mObservation = mObservationsModel->observationForTime(ui->dateTimeEdit->dateTime());
 
-    if(mObservation){
-        updateWValue("temperature");
-        updateWValue("humidity");
-        updateWValue("pressure");
-        updateWValue("vaporPressure");
-        updateWValue("dewPoint");
-        updateWValue("densityAltitude");
-        updateWValue("windSpeed");
-        updateWValue("windGust");
-        updateWValue("windDirection");
-    }else{
-        qDebug("Weather not found - WRITE CODE");
-    }
+    updateWValue("temperature");
+    updateWValue("humidity");
+    updateWValue("pressure");
+    updateWValue("vaporPressure");
+    updateWValue("dewPoint");
+    updateWValue("densityAltitude");
+    updateWValue("windSpeed");
+    updateWValue("windGust");
+    updateWValue("windDirection");
 
     updateWLabel("temperature", ui->temperature, 1);
     updateWLabel("humidity", ui->humidity, 1);
@@ -210,15 +213,13 @@ void TicketDialog::updateWeather()
 
 void TicketDialog::updatePrediction()
 {
-    mPredictedRun->setValue("dateTime", ui->dateTimeEdit->dateTime());
-    mPredictedRun->setValue("riderWeight", ui->riderWeightSpinBox->value());
-    mPredictedRun->setValue("vehicleWeight", ui->vehicleWeightSpinBox->value());
-    mPredictedRun->setValue("windAdjustment", ui->windAdjustmentSpinBox->value());
-    mPredictedRun->setValue("weightAdjustment", ui->weightAdjustmentSpinBox->value());
-
-    mPredictedRun->predictClocks(ui->vehicleTicketsCheckBox->isChecked(),
-                                 ui->trackTicketsCheckBox->isChecked(),
-                                 mTicketsModel);
+    mPredictedRun->predictClocks(ui->dateTimeEdit->dateTime(),
+                                 ui->riderWeightSpinBox->value(),
+                                 ui->vehicleWeightSpinBox->value(),
+                                 ui->windAdjustmentSpinBox->value(),
+                                 ui->weightAdjustmentSpinBox->value(),
+                                 ui->vehicleTicketsCheckBox->isChecked(),
+                                 ui->trackTicketsCheckBox->isChecked());
 
     updatePLabel("sixtyD", ui->sixtyD);
     updatePLabel("threeThirtyD", ui->threeThirtyD);
@@ -253,19 +254,6 @@ void TicketDialog::updatePrediction()
     mFactorTimer->stop();
 }
 
-void TicketDialog::handleClockGood(QLineEdit *edit, QCheckBox *checkBox)
-{
-    double clockAbs = edit->text().toDouble();
-    double clock;
-
-    if(checkBox->isChecked()){
-        clock = clockAbs;
-    }else{
-        clock = -clockAbs;
-    }
-    edit->setText(QString::number(clock, 'f', 3));
-}
-
 void TicketDialog::formatDoubleEdit(const QString &field,
                                     QLineEdit *edit,
                                     const int decimals)
@@ -278,7 +266,9 @@ void TicketDialog::formatNumberLabel(const QVariant &value,
                                      QLabel *label,
                                      const int decimals)
 {
-    if(decimals){
+    if(value.toDouble() == 0.0){
+        label->setText("");
+    }else if(decimals){
         label->setText(QString::number(value.toDouble(), 'f', decimals));
     }else{
         label->setText(QString::number(value.toInt()));
@@ -290,7 +280,7 @@ void TicketDialog::formatClockEdit(const QString &field,
                                    QCheckBox *checkBox)
 {
     double clock = mModel->data(indexForField(field)).toDouble();
-    if(clock < 0){
+    if(clock <= 0){
         checkBox->setChecked(false);
     }else{
         checkBox->setChecked(true);
@@ -301,12 +291,14 @@ void TicketDialog::formatClockEdit(const QString &field,
 void TicketDialog::updateWValue(const QString &field)
 {
     mModel->setData(indexForField(field),
-                    mObservation->value(field));
+                    mObservation.value(field));
 }
 
 void TicketDialog::updatePLabel(const QString &field, QLabel *label)
 {
-    formatNumberLabel(mPredictedRun->value(field), label, 3);
+    formatNumberLabel(mPredictedRun->value(field),
+                      label,
+                      3);
 }
 
 void TicketDialog::updateWLabel(const QString &field, QLabel *label, const int decimals)
@@ -318,51 +310,40 @@ void TicketDialog::updateWLabel(const QString &field, QLabel *label, const int d
 
 void TicketDialog::onShowPredictionsClicked()
 {
-    PredictionsModel *predictionsModel = new PredictionsModel(mVehicle,
-                                                              mRace,
+    PredictionsModel *predictionsModel = new PredictionsModel(mVehicle->value("id").toInt(),
+                                                              mRace->value("id").toInt(),
                                                               mId,
                                                               this);
 
-    Prediction prediction(mVehicle->value("id").toInt(),
-                          mRace->value("trackId").toInt(),
-                          mRace->value("id").toInt(),
-                          mId);
-
-    prediction.setValue("riderWeight", ui->riderWeightSpinBox->value());
-    prediction.setValue("vehicleWeight", ui->vehicleWeightSpinBox->value());
-    prediction.setValue("windAdjustment", ui->windAdjustmentSpinBox->value());
-    prediction.setValue("weightAdjustment", ui->weightAdjustmentSpinBox->value());
-
-    QDateTime ticketDateTime = ui->dateTimeEdit->dateTime();
-    QTime ticketTime = ticketDateTime.time();
-    QTime startTime = ticketTime.addSecs(-300);
-
-    for(int i = 0; i < 11; i++){
-        prediction.setValue("dateTime", QDateTime(ticketDateTime.date(),
-                                                  startTime.addSecs(i * 60)));
-
-        prediction.predictClocks(ui->vehicleTicketsCheckBox->isChecked(),
-                                 ui->trackTicketsCheckBox->isChecked(),
-                                 mTicketsModel);
-
-        predictionsModel->addRow(prediction);
-    }
-
     TicketPredictionsDialog *ticketPredictionsDialog
-            = new TicketPredictionsDialog(predictionsModel, this);
+            = new TicketPredictionsDialog(predictionsModel,
+                                          mPredictedRun,
+                                          this);
 
     ticketPredictionsDialog->exec();
 
-    for(int r = 0; r < predictionsModel->rowCount(); r++){
-        predictionsModel->removeRow(r);
-    }
-
-    predictionsModel->submitAll();
+    delete ticketPredictionsDialog;
 }
 
 void TicketDialog::onDateChange()
 {
     mDateTimer->start(CHANGE_DELAY);
+}
+
+void TicketDialog::onTrackTicketsCheckboxChange(){
+    if(ui->trackTicketsCheckBox->isChecked()){
+            ui->vehicleTicketsCheckBox->setCheckState(Qt::Unchecked);
+    }
+
+    onFactorChange();
+}
+
+void TicketDialog::onVehicleTicketsCheckboxChange(){
+    if(ui->vehicleTicketsCheckBox->isChecked()){
+        ui->trackTicketsCheckBox->setCheckState(Qt::Unchecked);
+    }
+
+    onFactorChange();
 }
 
 void TicketDialog::onFactorChange()
@@ -381,4 +362,17 @@ void TicketDialog::onButtonBoxAccepted()
     mMapper->submit();
     mModel->submitAll();
     emit ready();
+}
+
+void TicketDialog::handleClockGood(QLineEdit *edit, QCheckBox *checkBox)
+{
+    double clockAbs = edit->text().toDouble();
+    double clock;
+
+    if(checkBox->isChecked()){
+        clock = clockAbs;
+    }else{
+        clock = -clockAbs;
+    }
+    edit->setText(QString::number(clock, 'f', 3));
 }

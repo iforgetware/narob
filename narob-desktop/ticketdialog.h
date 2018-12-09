@@ -56,7 +56,7 @@ private:
     int mId;
     Vehicle *mVehicle;
     Race *mRace;
-    Observation *mObservation;
+    Observation mObservation;
     Prediction *mPredictedRun;
     ObservationsModel *mObservationsModel;
     TicketsModel *mTicketsModel;
@@ -66,6 +66,8 @@ private:
 private slots:
     void onShowPredictionsClicked();
     void onDateChange();
+    void onTrackTicketsCheckboxChange();
+    void onVehicleTicketsCheckboxChange();
     void onFactorChange();
     void onButtonBoxAccepted();
 };

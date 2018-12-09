@@ -2,37 +2,23 @@
 
 #include "tracks.h"
 
-Fields trackFields()
-{
-    Fields f;
-
-    f << Field("id", "id", 0, 0)
-      << Field("name", "Name", 150, -4)
-      << Field("elevation", "Elev", 50, 0)
-      << Field("bearing", "Bear", 50, 0)
-      << Field("radio", "Radio", 50, 1);
-
-    return f;
-}
-
 Tracks::Tracks() :
-    DbTableBase()
+    DbTableBase("tracks",
+                TRACK_FIELDS)
 {
-    mFields = trackFields();
-    mTable = "tracks";
 }
 
 
 Track::Track() :
-    DbRecordBase()
+    DbRecordBase("tracks",
+                 TRACK_FIELDS)
 {
-    mFields = trackFields();
-    init("tracks");
+    init();
 }
 
 TracksModel::TracksModel(QObject *parent) :
     ModelBase("tracks",
-              trackFields(),
+              TRACK_FIELDS,
               parent)
 {
 }

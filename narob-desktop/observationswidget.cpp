@@ -11,7 +11,7 @@ ObservationsWidget::ObservationsWidget(QWidget *parent) :
 
     ui->tableView->setModel(mObservationsModel);
 
-    setupColumns(mObservationsModel->fields());
+    setupColumns(OBSERVATION_FIELDS);
 
     initTable();
 }

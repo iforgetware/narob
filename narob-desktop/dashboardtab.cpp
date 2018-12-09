@@ -1,6 +1,8 @@
 #include "dashboardtab.h"
 #include "ui_dashboardtab.h"
 
+#include <QDebug>
+
 DashboardTab::DashboardTab(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::DashboardTab)

@@ -1,13 +1,18 @@
 #include "ticketpredictionsdialog.h"
 #include "ui_ticketpredictionsdialog.h"
 
-TicketPredictionsDialog::TicketPredictionsDialog(PredictionsModel *model,
+TicketPredictionsDialog::TicketPredictionsDialog(PredictionsModel *predictionsModel,
+                                                 Prediction *predictedRun,
                                                  QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TicketPredictionsDialog),
-    mPredictionsModel(model)
+    mPredictionsModel(predictionsModel)
 {
     ui->setupUi(this);
+
+    foreach(Prediction* prediction, predictedRun->adjacentPredictions()){
+        mPredictionsModel->addRow(*prediction);
+    }
 
     mPredictionsWidget = new PredictionsWidget(mPredictionsModel,
                                                this);
@@ -17,5 +22,11 @@ TicketPredictionsDialog::TicketPredictionsDialog(PredictionsModel *model,
 
 TicketPredictionsDialog::~TicketPredictionsDialog()
 {
+    for(int r = 0; r < mPredictionsModel->rowCount(); r++){
+        mPredictionsModel->removeRow(r);
+    }
+
+    mPredictionsModel->submitAll();
+
     delete ui;
 }

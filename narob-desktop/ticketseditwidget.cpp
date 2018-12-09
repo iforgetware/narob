@@ -24,7 +24,7 @@ TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
 
     ui->tableView->setModel(mTicketsRaceModel);
 
-    setupColumns(mTicketsModel->fields());
+    setupColumns(TICKET_FIELDS);
 
     initTable();
 

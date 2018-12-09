@@ -15,8 +15,9 @@ class TicketPredictionsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TicketPredictionsDialog(PredictionsModel *model,
-                                     QWidget *parent = 0);
+    explicit TicketPredictionsDialog(PredictionsModel *predictionsModel,
+                                     Prediction *predictedRun,
+                                     QWidget *parent = nullptr);
     ~TicketPredictionsDialog();
 
 private:

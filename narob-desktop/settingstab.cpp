@@ -3,8 +3,6 @@
 #include "settings.h"
 #include "databasemanager.h"
 
-#include <QSqlQuery>
-
 #include <QDebug>
 
 SettingsTab::SettingsTab(QWidget *parent) :

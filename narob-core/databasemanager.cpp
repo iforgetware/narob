@@ -34,17 +34,16 @@ void DatabaseManager::debugQuery(const QSqlQuery& query)
 
 void DatabaseManager::initTables()
 {
-    tracks.init();
-    races.init();
-    vehicles.init();
-    tickets.init();
-    observations.init();
-    predictions.init();
-//    refPTs.init();
-    settings.init();
+    mTracks.init();
+    mRaces.init();
+    mVehicles.init();
+    mTickets.init();
+    mObservations.init();
+    mPredictions.init();
+    mSettings.init();
 }
 
-void DatabaseManager::updateLogbook()
+void DatabaseManager::updateLogbook() //DEV ONLY
 {
     QSqlQuery query;
     query.exec("DROP TABLE IF EXISTS refPTs");
@@ -54,7 +53,7 @@ void DatabaseManager::updateLogbook()
     query.exec("ALTER TABLE tickets RENAME TO ticketsOld");
     debugQuery(query);
 
-    predictions.init();
+    mPredictions.init();
 
     Fields otFields;
 
@@ -145,14 +144,12 @@ void DatabaseManager::updateLogbook()
 
              << Field("notes", "Notes", 0, 0);
 
-    DbRecordBase oldTicket;
-    oldTicket.setFields(otFields);
-    oldTicket.init("ticketsOld");
+    DbRecordBase oldTicket("ticketsOld",
+                           otFields);
 
-    tickets.init();
-    DbRecordBase newTicket;
-    newTicket.setFields(ntFields);
-    newTicket.init("tickets");
+    mTickets.init();
+    DbRecordBase newTicket("tickets",
+                           ntFields);
 
     ModelBase oldTicketsModel("ticketsOld", otFields);
     ModelBase newTicketsModel("tickets", ntFields);
@@ -218,7 +215,10 @@ void DatabaseManager::testWeather() // DEV ONLY
     Race *race = racesModel.getRace(0);
 
     TicketsModel ticketsModel(vehicle, this);
-    PredictionsModel predictionsModel(vehicle, race, 0, this);
+    PredictionsModel predictionsModel(vehicle->value("id").toInt(),
+                                      race->value("id").toInt(),
+                                      0,
+                                      this);
 
     Ticket t;
 
@@ -294,7 +294,7 @@ void DatabaseManager::testWeather() // DEV ONLY
 
     qDebug("Weather test - observations written - DEV ONLY");
 
-    Prediction p(1, 1, 1, 0);
+    Prediction p(&ticketsModel, vehicle, race, 0);
 
     p.setValue("riderWeight", 150);
     p.setValue("vehicleWeight", 350);
@@ -432,7 +432,10 @@ void DatabaseManager::testWind() // DEV ONLY
     Race *race = racesModel.getRace(0);
 
     TicketsModel ticketsModel(vehicle, this);
-    PredictionsModel predictionsModel(vehicle, race, 0, this);
+    PredictionsModel predictionsModel(vehicle->value("id").toInt(),
+                                      race->value("id").toInt(),
+                                      0,
+                                      this);
 
     Ticket t;
 
@@ -496,7 +499,7 @@ void DatabaseManager::testWind() // DEV ONLY
 
     qDebug("Wind test - observations written - DEV ONLY");
 
-    Prediction p(vehicle->value("id").toInt(), 2, 2, 0);
+    Prediction p(&ticketsModel, vehicle, race, 0);
 
     p.setValue("riderWeight", 150);
     p.setValue("vehicleWeight", 350);
@@ -563,7 +566,10 @@ void DatabaseManager::testWeight() // DEV ONLY
     Race *race = racesModel.getRace(0);
 
     TicketsModel ticketsModel(vehicle, this);
-    PredictionsModel predictionsModel(vehicle, race, 0, this);
+    PredictionsModel predictionsModel(vehicle->value("id").toInt(),
+                                      race->value("id").toInt(),
+                                      0,
+                                      this);
 
 
     Ticket t;
@@ -628,7 +634,7 @@ void DatabaseManager::testWeight() // DEV ONLY
 
     qDebug("Weight test - observation written - DEV ONLY");
 
-    Prediction p(vehicle->value("id").toInt(), 3, 1, 0);
+    Prediction p(&ticketsModel, vehicle, race, 0);
 
     p.setValue("riderWeight", 150.0 + i);
     p.setValue("vehicleWeight", 350);

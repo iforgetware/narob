@@ -7,178 +7,6 @@
 #include "tickets.h"
 #include "observations.h"
 
-Fields predictionFields()
-{
-    Fields f;
-
-    f << Field("id", "id", 0, 0)
-
-      << Field("vehicleId", "Vehicle", 150, 0)
-      << Field("trackId", "Track", 150, 0)
-      << Field("raceId", "Race", 150, 0)
-      << Field("ticketId", "Ticket", 150, 0)
-
-      << Field("dateTime", "Date       Time", 160, -3)
-
-      << Field("vehicleWeight", "V Weight", 70, 0)
-      << Field("riderWeight", "R Weight", 70, 1)
-
-      << Field("temperature", "Temp", 50, 1)
-      << Field("humidity", "Humid",50, 1)
-      << Field("pressure", "Pres", 50, 2)
-      << Field("vaporPressure", "V Pres", 50, 2)
-      << Field("dewPoint", "D Point", 60, 1)
-      << Field("densityAltitude", "D Alt", 50, 0)
-      << Field("windSpeed", "W Speed", 70, 0)
-      << Field("windGust", "W Gust", 70, 0)
-      << Field("windDirection", "W Dir", 60, 0)
-
-      << Field("windAdjustment", "Wd A", 50, 3)
-      << Field("weightAdjustment", "Wt A", 50, 3)
-
-      << Field("sixtyD", "60'", 50, 3)
-      << Field("threeThirtyD", "330'", 50, 3)
-      << Field("eighthD", "1/8", 50, 3)
-      << Field("thousandD", "1000'", 50, 3)
-      << Field("quarterD", "1/4", 60, 3)
-
-      << Field("sixtyA", "60'", 50, 3)
-      << Field("threeThirtyA", "330'", 50, 3)
-      << Field("eighthA", "1/8", 50, 3)
-      << Field("thousandA", "1000'", 50, 3)
-      << Field("quarterA", "1/4", 60, 3)
-
-      << Field("sixtyT", "60'", 50, 3)
-      << Field("threeThirtyT", "330'", 50, 3)
-      << Field("eighthT", "1/8", 50, 3)
-      << Field("thousandT", "1000'", 50, 3)
-      << Field("quarterT", "1/4", 60, 3)
-
-      << Field("sixtyH", "60'", 50, 3)
-      << Field("threeThirtyH", "330'", 50, 3)
-      << Field("eighthH", "1/8", 50, 3)
-      << Field("thousandH", "1000'", 50, 3)
-      << Field("quarterH", "1/4", 60, 3)
-
-      << Field("sixtyP", "60'", 50, 3)
-      << Field("threeThirtyP", "330'", 50, 3)
-      << Field("eighthP", "1/8", 50, 3)
-      << Field("thousandP", "1000'", 50, 3)
-      << Field("quarterP", "1/4", 60, 3);
-
-    return f;
-}
-
-Predictions::Predictions() :
-    DbTableBase()
-{
-    mFields = predictionFields();
-    mTable = "predictions";
-}
-
-
-Prediction::Prediction(const int vehicleId,
-                       const int trackId,
-                       const int raceId,
-                       const int ticketId) :
-    DbRecordBase()
-{
-    mFields = predictionFields();
-    init("predictions");
-
-    mTrackId = trackId;
-    mRaceId = raceId;
-    mTicketId = ticketId;
-    this->setValue("vehicleId", vehicleId);
-    this->setValue("trackId", trackId);
-    this->setValue("raceId", raceId);
-    this->setValue("ticketId", ticketId);
-}
-
-void Prediction::predictClocks(bool allForVehicle,
-                               bool allForTrack,
-                               TicketsModel *ticketsModel)
-{
-    mAllForVehicle = allForVehicle;
-    mAllForTrack = allForTrack;
-    mTicketsModel = ticketsModel;
-    mTickets = mTicketsModel->tickets();
-
-    getWeather();
-
-    predictClock("sixty");
-    predictClock("threeThirty");
-    predictClock("eighth");
-    predictClock("thousand");
-    predictClock("quarter");
-}
-
-void Prediction::getWeather()
-{
-    ObservationsModel *observationsModel = new ObservationsModel();
-
-    Observation* observation = new Observation();
-    observationsModel->select();
-
-    if(this->value("dateTime").toDateTime().isValid()){
-        observation = observationsModel->
-                      observationForTime(this->value("dateTime").toDateTime());
-    }else{
-        observation = observationsModel->lastObservation();
-        this->setValue("dateTime", observation->value("dateTime").toDateTime());
-    }
-
-    if(observation){
-        this->setValue("temperature", observation->value("temperature"));
-        this->setValue("humidity", observation->value("humidity"));
-        this->setValue("pressure", observation->value("pressure"));
-        this->setValue("vaporPressure", observation->value("vaporPressure"));
-        this->setValue("dewPoint", observation->value("dewPoint"));
-        this->setValue("densityAltitude" ,observation->value("densityAltitude"));
-        this->setValue("windSpeed", observation->value("windSpeed"));
-        this->setValue("windGust", observation->value("windGust"));
-        this->setValue("windDirection", observation->value("windDirection"));
-    }else{
-        qDebug("Weather not found - WRITE CODE");
-    }
-
-    delete observationsModel;
-    delete observation;
-}
-
-QVector<Ticket*> Prediction::validTickets(const QString &clock)
-{
-    QVector<Ticket*> tickets;
-
-    bool valid;
-
-    foreach(Ticket* ticket, mTickets){
-        valid = true;
-
-        if(!mAllForVehicle){
-            valid = ticket->value("trackId") == mTrackId;
-
-            if(!mAllForTrack){
-                valid = ticket->value("raceId") == mRaceId;
-            }
-        }
-
-        if(valid){
-            valid = ticket->value(clock).toDouble() > 0;
-        }
-
-        if(valid && mTicketId.toInt()){
-            valid = (ticket->value("id") != mTicketId);
-        }
-
-        if(valid){
-            tickets.append(ticket);
-        }
-    }
-
-    return tickets;
-}
-
 typedef QList<QPointF> Points;
 
 struct Line
@@ -192,7 +20,7 @@ struct Line
 
         qreal sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
 
-        for(int i = 0;i < nPoints; i++) {
+        for(int i = 0; i < nPoints; i++) {
             sumX += pts[i].rx();
             sumY += pts[i].ry();
             sumXY += pts[i].rx() * pts[i].ry();
@@ -203,7 +31,7 @@ struct Line
         double yMean = sumY / nPoints;
         double denominator = sumX2 - sumX * xMean;
 
-        if(!denominator){
+        if(denominator == 0.0){
             denominator = 0.000001;
         }
 
@@ -217,16 +45,235 @@ struct Line
     }
 };
 
+Predictions::Predictions() :
+    DbTableBase("predictions",
+                PREDICTION_FIELDS)
+{
+}
+
+
+Prediction::Prediction(TicketsModel *model,
+                       Vehicle *vehicle,
+                       Race *race,
+                       const int ticketId) :
+    DbRecordBase("predictions",
+                 PREDICTION_FIELDS),
+    mTrackId(race->value("trackId").toInt()),
+    mRaceId(race->value("id").toInt()),
+    mTicketId(ticketId),
+    mVehicle(vehicle),
+    mRace(race),
+    mTicketsModel(model)
+{
+    init();
+
+    this->setValue("vehicleId", vehicle->value("id").toInt());
+    this->setValue("raceId", mRaceId);
+    this->setValue("ticketId", mTicketId);
+}
+
+void Prediction::predictClocks(QDateTime dateTime,
+                               double riderWeight,
+                               int vehicleWeight,
+                               double windAdjustment,
+                               double weightAdjustment,
+                               bool allForVehicle,
+                               bool allForTrack)
+{
+    this->setValue("dateTime",dateTime);
+    this->setValue("riderWeight", riderWeight);
+    this->setValue("vehicleWeight", vehicleWeight);
+    this->setValue("windAdjustment", windAdjustment);
+    this->setValue("weightAdjustment", weightAdjustment);
+    this->setValue("allForVehicle", allForVehicle);
+    this->setValue("allForTrack", allForTrack);
+
+    mAllForTrack = allForTrack;
+    mAllForVehicle = allForVehicle;
+
+    mTickets = mTicketsModel->allTickets();
+
+    getWeather();
+
+    predictClock("sixty");
+    predictClock("threeThirty");
+    predictClock("eighth");
+    predictClock("thousand");
+    predictClock("quarter");
+
+    foreach(Ticket *ticket, mTickets){
+        delete ticket;
+    }
+}
+
+QVector<Prediction*> Prediction::adjacentPredictions(){
+    QVector<Prediction*> aPredictions;
+
+    QDateTime ticketDateTime = this->value("dateTime").toDateTime();
+    QTime ticketTime = ticketDateTime.time();
+    QTime startTime = ticketTime.addSecs(-300);
+
+    for(int i = 0; i < 11; i++){
+        Prediction *prediction = new Prediction(mTicketsModel,
+                                                mVehicle,
+                                                mRace,
+                                                mTicketId);
+
+        prediction->predictClocks(QDateTime(ticketDateTime.date(),
+                                            startTime.addSecs(i * 60)),
+                                  this->value("riderWeight").toDouble(),
+                                  this->value("vehicleWeight").toInt(),
+                                  this->value("windAdjustment").toDouble(),
+                                  this->value("weightAdjustment").toDouble(),
+                                  mAllForVehicle,
+                                  mAllForTrack);
+
+        aPredictions.append(prediction);
+    }
+
+    return aPredictions;
+}
+
+void Prediction::predictClock(const QString &clock)
+{
+    Points tPoints;
+    Points hPoints;
+    Points pPoints;
+    Points dPoints;
+
+    double factor = 1.0;
+
+    if(clock == "sixty"){
+        factor = 22.0;
+    }else if(clock == "threeThirty"){
+        factor = 4.0;
+    }else if(clock == "eighth"){
+        factor = 2.0;
+    }else if(clock == "thousand"){
+        factor = 1.32;
+    }
+
+    QVector<Ticket*> tickets = validTickets(clock);
+
+    if(tickets.count() > 1 && this->value("temperature").toDouble() > 0.0){
+        foreach(Ticket* ticket, tickets){
+            double adjustedClock = ticket->value(clock).toDouble()
+                                   + (this->windCorrection(ticket) / factor)
+                                   + (this->weightCorrection(ticket) / factor);
+
+            tPoints.append(QPointF(ticket->value("temperature").toDouble(),
+                                   adjustedClock));
+            hPoints.append(QPointF(ticket->value("humidity").toDouble(),
+                                   adjustedClock));
+            pPoints.append(QPointF(ticket->value("pressure").toDouble(),
+                                   adjustedClock));
+            dPoints.append(QPointF(ticket->value("densityAltitude").toInt(),
+                                   adjustedClock));
+        }
+
+        Line tLine(tPoints);
+        Line hLine(hPoints);
+        Line pLine(pPoints);
+        Line dLine(dPoints);
+
+        this->setValue(clock + "T",
+                       tLine.getYforX(this->value("temperature")
+                                      .toDouble()));
+        this->setValue(clock + "H",
+                       hLine.getYforX(this->value("humidity")
+                                      .toDouble()));
+        this->setValue(clock + "P",
+                       pLine.getYforX(this->value("pressure")
+                                      .toDouble()));
+        this->setValue(clock + "D",
+                       dLine.getYforX(this->value("densityAltitude")
+                                      .toInt()));
+        this->setValue(clock + "A",
+                       (this->value(clock + "T").toDouble()
+                        + this->value(clock + "H").toDouble()
+                        + this->value(clock + "P").toDouble())
+                       / 3);
+    }else{
+        this->setValue(clock + "T", 0.0);
+        this->setValue(clock + "H", 0.0);
+        this->setValue(clock + "P", 0.0);
+        this->setValue(clock + "D", 0.0);
+        this->setValue(clock + "A", 0.0);
+    }
+}
+
+void Prediction::getWeather()
+{
+    ObservationsModel *observationsModel = new ObservationsModel();
+
+    Observation observation;
+    observationsModel->select();
+
+    if(this->value("dateTime").toDateTime().isValid()){
+        observation = observationsModel->
+                      observationForTime(this->value("dateTime").toDateTime());
+    }else{
+        observation = observationsModel->lastObservation();
+        this->setValue("dateTime", observation.value("dateTime").toDateTime());
+    }
+
+    this->setValue("temperature", observation.value("temperature"));
+    this->setValue("humidity", observation.value("humidity"));
+    this->setValue("pressure", observation.value("pressure"));
+    this->setValue("vaporPressure", observation.value("vaporPressure"));
+    this->setValue("dewPoint", observation.value("dewPoint"));
+    this->setValue("densityAltitude" ,observation.value("densityAltitude"));
+    this->setValue("windSpeed", observation.value("windSpeed"));
+    this->setValue("windGust", observation.value("windGust"));
+    this->setValue("windDirection", observation.value("windDirection"));
+
+    delete observationsModel;
+}
+
+QVector<Ticket*> Prediction::validTickets(const QString &clock)
+{
+    QVector<Ticket*> vTickets;
+
+    bool valid;
+
+    foreach(Ticket* ticket, mTickets){
+        valid = true;
+
+        if(!mAllForVehicle){
+            valid = ticket->value("trackId").toInt() == mTrackId;
+
+            if(!mAllForTrack){
+                valid = ticket->value("raceId").toInt() == mRaceId;
+            }
+        }
+
+        if(valid && mTicketId){
+            valid = (ticket->value("id").toInt() != mTicketId);
+        }
+
+        if(valid){
+            valid = ticket->value(clock).toDouble() > 0;
+        }
+
+        if(valid){
+            vTickets.append(ticket);
+        }
+    }
+
+    return vTickets;
+}
+
 double windFactor(int windSpeed, int windDirection)
 {
     double wFactor = 0;
     double dFactor = 0;
 
+    // wind direction   0 = headwind ( higher ET )
+    //                180 = tailwind ( lower ET )
+
     if(windDirection < 50){
         dFactor = (50 - windDirection) * 0.02;
-    }
-
-    if(windDirection > 130){
+    }else if(windDirection > 130){
         dFactor = (windDirection - 130) * -0.02;
     }
 
@@ -239,8 +286,6 @@ double windFactor(int windSpeed, int windDirection)
 
 double Prediction::windCorrection(Ticket *ticket)
 {
-    // wind direction   0 = headwind ( higher ET )
-    //                180 = tailwind ( lower ET )
     double correction = 0;
     double windDifference = 0;
 
@@ -267,88 +312,21 @@ double Prediction::weightCorrection(Ticket *ticket)
     return correction;
 }
 
-double formatClock(double clock)
-{
-    return QString::number(clock, 'f', 3).toDouble();
-}
 
-void Prediction::predictClock(const QString &clock)
-{
-    Points tPoints;
-    Points hPoints;
-    Points pPoints;
-    Points dPoints;
-
-    double factor = 1.0;
-
-    if(clock == "sixty"){
-        factor = 22.0;
-    }else if(clock == "threeThirty"){
-        factor = 4.0;
-    }else if(clock == "eighth"){
-        factor = 2.0;
-    }else if(clock == "thousand"){
-        factor = 1.32;
-    }
-
-    QVector<Ticket*> tickets = validTickets(clock);
-
-    if(tickets.count() > 1){
-        foreach(Ticket* ticket, tickets){
-            double adjustedClock = ticket->value(clock).toDouble()
-                                   + (this->windCorrection(ticket) / factor)
-                                   + (this->weightCorrection(ticket) / factor);
-            tPoints.append(QPointF(ticket->value("temperature").toDouble(),
-                                   adjustedClock));
-            hPoints.append(QPointF(ticket->value("humidity").toDouble(),
-                                   adjustedClock));
-            pPoints.append(QPointF(ticket->value("pressure").toDouble(),
-                                   adjustedClock));
-            dPoints.append(QPointF(ticket->value("densityAltitude").toInt(),
-                                   adjustedClock));
-        }
-
-        Line tLine(tPoints);
-        Line hLine(hPoints);
-        Line pLine(pPoints);
-        Line dLine(dPoints);
-
-        this->setValue(clock + "T",
-                       formatClock(tLine.getYforX(this->value("temperature")
-                                                  .toDouble())));
-        this->setValue(clock + "H",
-                       formatClock(hLine.getYforX(this->value("humidity")
-                                                  .toDouble())));
-        this->setValue(clock + "P",
-                       formatClock(pLine.getYforX(this->value("pressure")
-                                                  .toDouble())));
-        this->setValue(clock + "A",
-                       formatClock((this->value(clock + "T").toDouble()
-                                    + this->value(clock + "H").toDouble()
-                                    + this->value(clock + "P").toDouble())
-                                   / 3));
-        this->setValue(clock + "D",
-                       formatClock(dLine.getYforX(this->value("densityAltitude")
-                                                  .toInt())));
-    }
-}
-
-
-PredictionsModel::PredictionsModel(Vehicle *vehicle,
-                                   Race *race,
+PredictionsModel::PredictionsModel(int vehicleId,
+                                   int raceId,
                                    int ticketId,
                                    QObject *parent) :
     ModelBase("predictions",
-              predictionFields(),
-              parent),
-    mVehicle(vehicle),
-    mRace(race),
-    mTicketId(ticketId)
+              PREDICTION_FIELDS,
+              parent)
 {
-    QString filter = QString("vehicleId = %1 AND raceId = %2 AND ticketID = %3")
-                     .arg(mVehicle->value("id").toInt())
-                     .arg(mRace->value("id").toInt())
-                     .arg(mTicketId);
+    QString filter = QString("vehicleId = %1 AND "
+                             "raceId = %2 AND "
+                             "ticketID = %3")
+                     .arg(vehicleId)
+                     .arg(raceId)
+                     .arg(ticketId);
 
 
     setFilter(filter);

@@ -9,6 +9,19 @@
 
 #include "narob-core_global.h"
 
+static Fields OBSERVATION_FIELDS{Field("id", "id", 0, 0),
+            Field("dateTime", "Date       Time", 160, -3),
+            Field("temperature", "Temp", 50, 1),
+            Field("humidity", "Humid",50, 1),
+            Field("pressure", "Pres", 50, 2),
+            Field("vaporPressure", "V Pres", 50, 2),
+            Field("dewPoint", "D Point", 60, 1),
+            Field("densityAltitude", "D Alt", 60, 0),
+            Field("windSpeed", "W Speed", 70, 0),
+            Field("windGust", "W Gust", 70, 0),
+            Field("windDirection", "W Dir", 60, 0)};
+
+
 class Observations : public DbTableBase
 {
 public:
@@ -52,9 +65,8 @@ class NAROBCORESHARED_EXPORT ObservationsModel : public ModelBase
 public:
     explicit ObservationsModel(QObject *parent = nullptr);
 
-    Observation *getObservation(const int row);
-    Observation *lastObservation();
-    Observation *observationForTime(QDateTime dateTime);
+    Observation lastObservation();
+    Observation observationForTime(QDateTime dateTime);
 };
 
 

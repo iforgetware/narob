@@ -7,7 +7,6 @@
 #include "tickets.h"
 #include "observations.h"
 #include "predictions.h"
-//#include "refpts.h"
 #include "settings.h"
 
 #include <QObject>
@@ -22,7 +21,7 @@ class NAROBCORESHARED_EXPORT DatabaseManager : public QObject
     Q_OBJECT
 
 public:
-    explicit DatabaseManager(QObject *parent = 0);
+    explicit DatabaseManager(QObject *parent = nullptr);
     ~DatabaseManager();
 
     static void debugQuery(const QSqlQuery& query);
@@ -38,15 +37,13 @@ private:
     void clearDatabase();
     void setupTest();
 
-public:
-    Tracks tracks;
-    Races races;
-    Vehicles vehicles;
-    Tickets tickets;
-    Observations observations;
-    Predictions predictions;
-//    RefPTs refPTs;
-    Settings settings;
+    Tracks mTracks;
+    Races mRaces;
+    Vehicles mVehicles;
+    Tickets mTickets;
+    Observations mObservations;
+    Predictions mPredictions;
+    Settings mSettings;
 };
 
 #endif // DATABASEMANAGER_H

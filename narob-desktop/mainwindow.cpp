@@ -3,8 +3,71 @@
 #include "tracks.h"
 
 #include <QDebug>
+#include <QFile>
+#include <QTextStream>
 
 using namespace std;
+
+typedef struct {
+    QString name;
+    int pId;
+    int m;
+    int vm;
+    int rm;
+    int sm;
+    int fm;
+} processMem_t;
+
+int getNumFromLine(QString l)
+{
+    QString num;
+    for(int i = 0; i < l.length(); i++){
+        QString c = l.mid(i, 1);
+        if(c >= '0' && c <= '9'){
+            num += c;
+        }
+    }
+
+    return num.toInt();
+}
+
+processMem_t GetProcessMemory()
+{
+    QFile file("/proc/self/status");
+
+    file.open(QIODevice::ReadOnly);
+
+    QTextStream in(&file);
+    QString line = in.readLine();
+    processMem_t processMem;
+
+
+    while (!line.isNull()) {
+//        qDebug() << line;
+        if(line.mid(0, 5) == "Name:"){
+            processMem.name = line.mid(6);
+        }else if(line.mid(0,4) == "Pid:"){
+            processMem.pId = getNumFromLine(line);
+        }else if(line.mid(0,7) == "VmSize:"){
+            processMem.vm = getNumFromLine(line);
+        }else if(line.mid(0,6) == "VmRSS:"){
+            processMem.rm = getNumFromLine(line);
+        }else if(line.mid(0,8) == "RssAnon:"){
+            processMem.m = getNumFromLine(line);
+        }else if(line.mid(0,8) == "RssFile:"){
+            processMem.fm = getNumFromLine(line);
+        }else if(line.mid(0,9) == "RssShmem:"){
+            processMem.sm = getNumFromLine(line);
+        }
+
+        line = in.readLine();
+    }
+
+    file.close();
+
+    return processMem;
+}
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -39,9 +102,48 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->settingsTab, &SettingsTab::testWeight,
             this, &MainWindow::handleTestWeight);
 
+
+    // memory usage log
+
+//    memTimer = new QTimer(this);
+//    connect(memTimer, &QTimer::timeout,
+//            this, &MainWindow::handleMemTimer);
+//    memTimer->start(60000);
+
+
+    QFile outFile("/tmp/narobmem.txt");
+    outFile.open(QIODevice::WriteOnly);
+    outFile.close();
+
     ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(ui->dashboardTab));
 
     showMaximized();
+}
+
+void MainWindow::handleMemTimer()
+{
+    processMem_t mem;
+    mem = GetProcessMemory();
+
+    QFile outFile("/tmp/narobmem.txt");
+    outFile.open(QIODevice::Append);
+    QTextStream out(&outFile);
+
+    // output format is
+    // hh:mm PhysicalM VirtualM ResidentM SharedM
+
+    out << QTime::currentTime().toString("hh:mm")
+        << " "
+        << QString::number(mem.m / 1024.0, 'f', 1)
+        << " "
+        << QString::number(mem.vm / 1024.0, 'f', 1)
+        << " "
+        << QString::number(mem.rm / 1024.0, 'f', 1)
+        << " "
+        << QString::number((mem.sm + mem.fm) / 1024.0, 'f', 1)
+        << "\n";
+
+    outFile.close();
 }
 
 MainWindow::~MainWindow()
