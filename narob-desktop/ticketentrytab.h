@@ -1,6 +1,8 @@
 #ifndef TICKETENTRYTAB_H
 #define TICKETENTRYTAB_H
 
+#include <memory>
+
 #include <QWidget>
 
 #include "vehicles.h"
@@ -18,9 +20,9 @@ class TicketEntryTab : public QWidget
 
 public:
     explicit TicketEntryTab(TicketsModel* model,
-                            Vehicle* vehicle,
-                            Race* race,
-                            QWidget *parent = 0);
+                            std::shared_ptr<Vehicle> vehicle,
+                            std::shared_ptr<Race> race,
+                            QWidget *parent = nullptr);
     ~TicketEntryTab();
     void updateAllModels();
 private:

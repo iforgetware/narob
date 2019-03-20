@@ -3,10 +3,8 @@
 #include "racedialog.h"
 
 RacesWidget::RacesWidget(QWidget *parent) :
-    TableEditWidgetBase(parent)
+    TableEditWidgetBase("Races", parent)
 {
-    setTitle("Races");
-
     mRacesModel = new RacesModel(ui->tableView);
 
     mModel = mRacesModel;
@@ -15,7 +13,7 @@ RacesWidget::RacesWidget(QWidget *parent) :
 
     setupColumns(RACE_FIELDS);
 
-    initTable();
+    init();
 
     connect(mAddButton, &QPushButton::clicked,
             this, &RacesWidget::addRace);
@@ -41,9 +39,8 @@ void RacesWidget::addRace()
 void RacesWidget::editRace()
 {
     if(selected()){
-        int rRow = getSelection();
-
-        RaceDialog *raceDialog = new RaceDialog(rRow, this);
+        RaceDialog *raceDialog = new RaceDialog(selectedRow(),
+                                                this);
         connect(raceDialog, &RaceDialog::ready,
                 this, &RacesWidget::updateModel);
 
@@ -51,7 +48,7 @@ void RacesWidget::editRace()
     }
 }
 
-Race* RacesWidget::getSelectedRace()
+std::shared_ptr<Race> RacesWidget::selectedRace() const
 {
-    return mRacesModel->getRace(getSelection());
+    return mRacesModel->raceForRow(selectedRow());
 }

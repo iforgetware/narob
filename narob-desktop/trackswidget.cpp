@@ -3,10 +3,8 @@
 #include "trackdialog.h"
 
 TracksWidget::TracksWidget(QWidget *parent) :
-    TableEditWidgetBase(parent)
+    TableEditWidgetBase("Tracks", parent)
 {
-    setTitle("Tracks");
-
     mTracksModel = new TracksModel(ui->tableView);
 
     mModel  = mTracksModel;
@@ -15,7 +13,7 @@ TracksWidget::TracksWidget(QWidget *parent) :
 
     setupColumns(TRACK_FIELDS);
 
-    initTable();
+    init();
 
     connect(mAddButton, &QPushButton::clicked,
             this, &TracksWidget::addTrack);
@@ -25,6 +23,8 @@ TracksWidget::TracksWidget(QWidget *parent) :
 
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &TracksWidget::editTrack);
+
+    hide("elevation");
 }
 
 void TracksWidget::addTrack()
@@ -39,9 +39,8 @@ void TracksWidget::addTrack()
 void TracksWidget::editTrack()
 {
     if(selected()){
-        int tRow = getSelection();
-
-        TrackDialog *trackDialog = new TrackDialog(tRow, this);
+        TrackDialog *trackDialog = new TrackDialog(selectedRow(),
+                                                   this);
         connect(trackDialog, &TrackDialog::ready,
                 this, &TracksWidget::updateModel);
 

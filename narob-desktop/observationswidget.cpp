@@ -1,10 +1,8 @@
 #include "observationswidget.h"
 
 ObservationsWidget::ObservationsWidget(QWidget *parent) :
-    TableDisplayWidgetBase(parent)
+    TableDisplayWidgetBase("Observations", parent)
 {
-    setTitle("Observations");
-
     mObservationsModel = new ObservationsModel(ui->tableView);
 
     mModel = mObservationsModel;

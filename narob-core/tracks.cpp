@@ -13,7 +13,6 @@ Track::Track() :
     DbRecordBase("tracks",
                  TRACK_FIELDS)
 {
-    init();
 }
 
 TracksModel::TracksModel(QObject *parent) :
@@ -23,16 +22,9 @@ TracksModel::TracksModel(QObject *parent) :
 {
 }
 
-Track* TracksModel::getTrack(const int row)
+QString TracksModel::trackName(const int id)
 {
-    Track *track = new Track();
-    track->populate(record(row));
-
-    return track;
-}
-
-Track *TracksModel::trackForId(const int id)
-{
+    QString name = "";
     QSqlQuery query;
     query.prepare("SELECT * FROM tracks "
                   "WHERE id = :id");
@@ -40,13 +32,13 @@ Track *TracksModel::trackForId(const int id)
 
     query.exec();
 
-    Track *track = new Track();
+    Track track;
 
     if(query.next()){
-        track->populate(query.record());
+        name = query.record().value("name").toString();
     }
 
     query.clear();
 
-    return track;
+    return name;
 }

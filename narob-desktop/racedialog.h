@@ -14,7 +14,7 @@ class RaceDialog : public DialogBase
 
 public:
     explicit RaceDialog(int row = -1,
-                        QWidget *parent = 0);
+                        QWidget *parent = nullptr);
     ~RaceDialog();
 
 private:

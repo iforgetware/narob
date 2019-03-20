@@ -8,45 +8,41 @@
 #include <QVector>
 
 PredictionTab::PredictionTab(TicketsModel *model,
-                             Vehicle *vehicle,
-                             Race *race,
+                             std::shared_ptr<Vehicle> vehicle,
+                             std::shared_ptr<Race> race,
                              QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PredictionTab),
-    mVehicle(vehicle),
-    mRace(race),
-    mSettingsTable(new Settings),
-    mSettings(mSettingsTable->getSettings()),
     mTicketsModel(model),
-    mPredictionsModel(new PredictionsModel(mVehicle->value("id").toInt(),
-                                           mRace->value("id").toInt(),
+    mPredictionsModel(new PredictionsModel(vehicle->value("id").toInt(),
+                                           race->value("id").toInt(),
                                            0,
                                            this)),
+    mPreviousPredictionsWidget(new PreviousPredictionsWidget(
+                                   mPredictionsModel,
+                                   this)),
     mCurrentPrediction(Prediction(model,
-                                  vehicle,
-                                  race,
+                                  vehicle->value("id").toInt(),
+                                  race->value("trackId").toInt(),
+                                  race->value("id").toInt(),
                                   0)),
     mAutoTimer(new QTimer(this)),
     mFactorTimer(new QTimer(this))
 {
     ui->setupUi(this);
 
-    mPreviousPredictionsWidget = new PreviousPredictionsWidget(
-                                     mPredictionsModel,
-                                     this);
-
     ui->gridLayout_2->addWidget(mPreviousPredictionsWidget, 0, 0);
 
-    ui->vehicleWeightSpinBox->setValue(mVehicle->value("weight").toInt());
+    ui->vehicleWeightSpinBox->setValue(vehicle->value("weight").toInt());
     ui->riderWeightSpinBox->setValue(mTicketsModel->lastWeight());
 
-    ui->weightAdjustmentSpinBox->setValue(mVehicle->value("weightAdjustment")
+    ui->weightAdjustmentSpinBox->setValue(vehicle->value("weightAdjustment")
                                           .toDouble());
-    ui->windAdjustmentSpinBox->setValue(mVehicle->value("windAdjustment")
+    ui->windAdjustmentSpinBox->setValue(vehicle->value("windAdjustment")
                                         .toDouble());
-    ui->textProviderComboBox->setCurrentText(mVehicle->value("textProvider")
+    ui->textProviderComboBox->setCurrentText(vehicle->value("textProvider")
                                              .toString());
-    ui->textNumberEdit->setText(mVehicle->value("textNumber")
+    ui->textNumberEdit->setText(vehicle->value("textNumber")
                                 .toString());
 
     connect(ui->vehicleWeightSpinBox,
@@ -90,8 +86,6 @@ PredictionTab::PredictionTab(TicketsModel *model,
 
 PredictionTab::~PredictionTab()
 {
-    delete mSettingsTable;
-    delete mSettings;
     delete mAutoTimer;
     delete mFactorTimer;
     delete ui;
@@ -197,9 +191,9 @@ void PredictionTab::pageLine(QString line, QString field, int decimals)
 
 void PredictionTab::sendPage()
 {
-    if(mSettings->value("emailUser").toString() == ""
-       || mSettings->value("emailHost").toString() == ""
-       || mSettings->value("emailPW").toString() == ""){
+    if(Settings::get("emailUser").toString() == ""
+       || Settings::get("emailHost").toString() == ""
+       || Settings::get("emailPW").toString() == ""){
         qDebug("No email settings to page with - WRITE CODE");
     }else{
         mPage = "\n";

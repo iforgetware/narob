@@ -14,13 +14,13 @@ class TableWidgetBase : public QWidget
     Q_OBJECT
 
 public:
-    explicit TableWidgetBase(QWidget *parent = 0);
+    explicit TableWidgetBase(const QString title, QWidget *parent = nullptr);
     ~TableWidgetBase();
 
     void updateModel();
 
 protected:
-    void setTitle(const QString &title);
+//    void setTitle(const QString &title);
     void setupColumns(const Fields &fields);
     void hide(const QString &columnName);
 

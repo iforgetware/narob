@@ -38,6 +38,8 @@ void WeatherTab::startWeatherStation()
             this,
             &WeatherTab::sendStatus);
 
+    mWeatherStation->openComPort();
+
     if(mWeatherStation->isRunning()){
         connect(mWeatherStation,
                 &WeatherStation::newWeatherWritten,

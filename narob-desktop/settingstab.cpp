@@ -11,16 +11,14 @@ SettingsTab::SettingsTab(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    mSettingsTable = new Settings();
-    mSettings = mSettingsTable->getSettings();
 
-    ui->windAdjustmentSpinBox->setValue(mSettings->value("windAdjustment").toDouble());
-    ui->weightAdjustmentSpinBox->setValue(mSettings->value("weightAdjustment").toDouble());
-    ui->textNumberEdit->setText(mSettings->value("textNumber").toString());
-    ui->textProviderComboBox->setCurrentText(mSettings->value("textProvider").toString());
-    ui->emailUserEdit->setText(mSettings->value("emailUser").toString());
-    ui->emailPWEdit->setText(mSettings->value("emailPW").toString());
-    ui->emailHostEdit->setText(mSettings->value("emailHost").toString());
+    ui->windAdjustmentSpinBox->setValue(Settings::get("windAdjustment").toDouble());
+    ui->weightAdjustmentSpinBox->setValue(Settings::get("weightAdjustment").toDouble());
+    ui->textNumberEdit->setText(Settings::get("textNumber").toString());
+    ui->textProviderComboBox->setCurrentText(Settings::get("textProvider").toString());
+    ui->emailUserEdit->setText(Settings::get("emailUser").toString());
+    ui->emailPWEdit->setText(Settings::get("emailPW").toString());
+    ui->emailHostEdit->setText(Settings::get("emailHost").toString());
 
     displayUpdate();
 
@@ -51,29 +49,27 @@ SettingsTab::~SettingsTab()
 
 void SettingsTab::onSaveButtonClicked()
 {
-    mSettings->setValue("windAdjustment", ui->windAdjustmentSpinBox->value());
+    Settings::set("windAdjustment", ui->windAdjustmentSpinBox->value());
 
-    mSettings->setValue("weightAdjustment", ui->weightAdjustmentSpinBox->value());
+    Settings::set("weightAdjustment", ui->weightAdjustmentSpinBox->value());
 
     if(ui->textNumberEdit->text().trimmed() != ""){
-        mSettings->setValue("textNumber", ui->textNumberEdit->text());
+        Settings::set("textNumber", ui->textNumberEdit->text());
     }
 
-    mSettings->setValue("textProvider", ui->textProviderComboBox->currentText());
+    Settings::set("textProvider", ui->textProviderComboBox->currentText());
 
     if(ui->emailUserEdit->text().trimmed() != ""){
-        mSettings->setValue("emailUser", ui->emailUserEdit->text());
+        Settings::set("emailUser", ui->emailUserEdit->text());
     }
 
     if(ui->emailPWEdit->text().trimmed() != ""){
-        mSettings->setValue("emailPW", ui->emailPWEdit->text());
+        Settings::set("emailPW", ui->emailPWEdit->text());
     }
 
     if(ui->emailHostEdit->text().trimmed() != ""){
-        mSettings->setValue("emailHost", ui->emailHostEdit->text());
+        Settings::set("emailHost", ui->emailHostEdit->text());
     }
-
-    mSettingsTable->updateSettings(mSettings);
 
     displayUpdate();
 }
@@ -132,18 +128,18 @@ void SettingsTab::onTestWeightButtonClicked()
 void SettingsTab::displayUpdate()
 {
     ui->windAdjustmentLabel->setText(QString("ET adjustment per 1MPH of wind -> %1")
-                                     .arg(mSettings->value("windAdjustment").toString()));
+                                     .arg(Settings::get("windAdjustment").toString()));
     ui->weightAdjustmentLabel->setText(QString("ET adjustment per 1lb of weight -> %1")
-                                       .arg(mSettings->value("weightAdjustment").toString()));
+                                       .arg(Settings::get("weightAdjustment").toString()));
     ui->textNumberLabel->setText(QString("Texting number -> %1")
-                                 .arg(mSettings->value("textNumber").toString()));
+                                 .arg(Settings::get("textNumber").toString()));
     ui->textProviderLabel->setText(QString("Text Provider -> %1")
-                                   .arg(mSettings->value("textProvider").toString()));
+                                   .arg(Settings::get("textProvider").toString()));
     ui->emailUserLabel->setText(QString("Email username -> %1")
-                                .arg(mSettings->value("emailUser").toString()));
+                                .arg(Settings::get("emailUser").toString()));
     ui->emailPWLabel->setText(QString("Email password -> %1")
-                              .arg(mSettings->value("emailPW").toString()));
+                              .arg(Settings::get("emailPW").toString()));
     ui->emailHostLabel->setText(QString("Email host -> %1")
-                                .arg(mSettings->value("emailHost").toString()));
+                                .arg(Settings::get("emailHost").toString()));
 }
 

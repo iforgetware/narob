@@ -1,5 +1,7 @@
 #include "dialogbase.h"
 
+#include <QDebug>
+
 DialogBase::DialogBase(QWidget *parent) :
     QDialog(parent),
     mMapper(new QDataWidgetMapper(this))

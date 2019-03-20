@@ -15,7 +15,8 @@ TrackDialog::TrackDialog(int row, QWidget *parent) :
 
     setModelRow(row);
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DialogBase::onButtonBoxAccepted);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,
+            this, &DialogBase::onButtonBoxAccepted);
 }
 
 TrackDialog::~TrackDialog()
@@ -28,10 +29,10 @@ void TrackDialog::setupModel()
     mModel = new TracksModel(this);
 
     mMapper->setModel(mModel);
-    mMapper->addMapping(ui->nameEdit, 1);
-    mMapper->addMapping(ui->elevationEdit, 2);
-    mMapper->addMapping(ui->bearingEdit, 3);
-    mMapper->addMapping(ui->radioSpinBox, 4);
+    mMapper->addMapping(ui->nameEdit, mModel->fieldIndex("name"));
+    mMapper->addMapping(ui->elevationEdit, mModel->fieldIndex("elevation"));
+    mMapper->addMapping(ui->bearingEdit, mModel->fieldIndex("bearing"));
+    mMapper->addMapping(ui->radioSpinBox, mModel->fieldIndex("radio"));
 }
 
 void TrackDialog::createUi()

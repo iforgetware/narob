@@ -3,7 +3,6 @@
 
 #include "dialogbase.h"
 #include "vehicles.h"
-#include "settings.h"
 
 namespace Ui {
 class VehicleDialog;
@@ -15,7 +14,7 @@ class VehicleDialog : public DialogBase
 
 public:
     explicit VehicleDialog(int row = -1,
-                           QWidget *parent = 0);
+                           QWidget *parent = nullptr);
     ~VehicleDialog();
 
 private:
@@ -23,9 +22,6 @@ private:
 
     void setupModel();
     void createUi();
-
-    Settings *mSettingsTable;
-    DbRecordBase *mSettings;
 };
 
 #endif // VEHICLEDIALOG_H

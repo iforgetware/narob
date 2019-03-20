@@ -14,14 +14,11 @@ class SettingsTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit SettingsTab(QWidget *parent = 0);
+    explicit SettingsTab(QWidget *parent = nullptr);
     ~SettingsTab();
 
 private:
     Ui::SettingsTab *ui;
-
-    Settings *mSettingsTable;
-    DbRecordBase *mSettings;
 
 private slots:
     void onSaveButtonClicked();

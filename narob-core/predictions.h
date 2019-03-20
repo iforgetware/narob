@@ -1,6 +1,8 @@
 #ifndef PREDICTIONS_H
 #define PREDICTIONS_H
 
+#include <memory>
+
 #include "dbtablebase.h"
 #include "dbrecordbase.h"
 #include "modelbase.h"
@@ -11,7 +13,8 @@
 
 #include "narob-core_global.h"
 
-static Fields PREDICTION_FIELDS{Field("id", "id", 0, 0),
+const Fields PREDICTION_FIELDS{
+            Field("id", "id", 0, 0),
 
             Field("vehicleId", "Vehicle", 150, 0),
             Field("raceId", "Race", 150, 0),
@@ -79,8 +82,9 @@ class NAROBCORESHARED_EXPORT Prediction : public DbRecordBase
 {
 public:
     explicit Prediction(TicketsModel *model,
-                        Vehicle *vehicle,
-                        Race *race,
+                        const int vehicleId,
+                        const int trackId,
+                        const int raceId,
                         const int ticketId);
     void predictClocks(QDateTime dateTime,
                        double riderWeight,
@@ -92,21 +96,33 @@ public:
     QVector<Prediction*> adjacentPredictions();
 
 private:
-    QVector<Ticket*> validTickets(const QString &clock);
     void getWeather();
     void predictClock(const QString &clock);
-    double windCorrection(Ticket *ticket);
-    double weightCorrection(Ticket *ticket);
+    double windCorrection(std::shared_ptr<Ticket> ticket);
+    double weightCorrection(std::shared_ptr<Ticket> ticket);
 
+    int mVehicleId;
     int mTrackId;
     int mRaceId;
     int mTicketId;
-    Vehicle *mVehicle;
-    Race *mRace;
+    double mRiderWeight;
+    int mVehicleWeight;
+    double mWindAdjustment;
+    double mWeightAdjustment;
     bool mAllForVehicle;
     bool mAllForTrack;
     TicketsModel *mTicketsModel;
-    QVector<Ticket*> mTickets;
+    std::unique_ptr<std::vector<std::shared_ptr<Ticket>>> mTickets;
+
+    double mTemperature;
+    double mHumidity;
+    double mPressure;
+    double mVaporPressure;
+    double mDewPoint;
+    int mDensityAltitude;
+    int mWindSpeed;
+    int mWindGust;
+    int mWindDirection;
 };
 
 

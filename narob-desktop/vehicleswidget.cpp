@@ -3,10 +3,8 @@
 #include "vehicledialog.h"
 
 VehiclesWidget::VehiclesWidget(QWidget *parent) :
-    TableEditWidgetBase(parent)
+    TableEditWidgetBase("Vehicles", parent)
 {
-    setTitle("Vehicles");
-
     mVehiclesModel = new VehiclesModel(ui->tableView);
 
     mModel = mVehiclesModel;
@@ -15,7 +13,21 @@ VehiclesWidget::VehiclesWidget(QWidget *parent) :
 
     setupColumns(VEHICLE_FIELDS);
 
-    initTable();
+
+
+
+
+
+
+    // add columns for passes since last oil and tire changes
+
+
+
+
+
+
+
+    init();
 
     connect(mAddButton, &QPushButton::clicked,
             this, &VehiclesWidget::addVehicle);
@@ -25,6 +37,14 @@ VehiclesWidget::VehiclesWidget(QWidget *parent) :
 
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &VehiclesWidget::editVehicle);
+
+    hide("weight");
+    hide("windAdjustment");
+    hide("weightAdjustment");
+    hide("textNumber");
+    hide("textProvider");
+    hide("lastOilChange");
+    hide("lastTireChange");
 }
 
 void VehiclesWidget::addVehicle()
@@ -39,9 +59,8 @@ void VehiclesWidget::addVehicle()
 void VehiclesWidget::editVehicle()
 {
     if(selected()){
-        int tRow = getSelection();
-
-        VehicleDialog *vehicleDialog = new VehicleDialog(tRow, this);
+        VehicleDialog *vehicleDialog = new VehicleDialog(selectedRow(),
+                                                         this);
         connect(vehicleDialog, &VehicleDialog::ready,
                 this, &VehiclesWidget::updateModel);
 
@@ -49,7 +68,7 @@ void VehiclesWidget::editVehicle()
     }
 }
 
-Vehicle *VehiclesWidget::getSelectedVehicle()
+std::shared_ptr<Vehicle> VehiclesWidget::selectedVehicle() const
 {
-    return mVehiclesModel->getVehicle(getSelection());
+    return mVehiclesModel->vehicleForRow(selectedRow());
 }

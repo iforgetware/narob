@@ -43,7 +43,9 @@ private:
     Tickets mTickets;
     Observations mObservations;
     Predictions mPredictions;
-    Settings mSettings;
+
+signals:
+    void dbUpdate();
 };
 
 #endif // DATABASEMANAGER_H

@@ -7,7 +7,8 @@
 
 #include "narob-core_global.h"
 
-static Fields TRACK_FIELDS{Field("id", "id", 0, 0),
+const Fields TRACK_FIELDS{
+            Field("id", "id", 0, 0),
             Field("name", "Name", 150, -4),
             Field("elevation", "Elev", 50, 0),
             Field("bearing", "Bear", 50, 0),
@@ -35,8 +36,7 @@ class NAROBCORESHARED_EXPORT TracksModel : public ModelBase
 public:
     explicit TracksModel(QObject *parent = nullptr);
 
-    Track *getTrack(const int row);
-    Track *trackForId(const int id);
+    QString trackName(const int id);
 };
 
 #endif // TRACKS_H

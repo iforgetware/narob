@@ -5,18 +5,17 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
 #include "smtp.h"
+#include "settings.h"
 
 Smtp::Smtp(QObject *parent) :
     QObject(parent),
-    mSettingsTable(new Settings),
-    mSettings(mSettingsTable->getSettings()),
     mSocket(new QSslSocket(this)),
     mPort(465),
     mTimeout(30000),
-    mUser(mSettings->value("emailUser").toString()),
-    mPass(mSettings->value("emailPW").toString()),
-    mHost(mSettings->value("emailHost").toString()),
-    mFrom(mSettings->value("emailUser").toString()),
+    mUser(Settings::get("emailUser").toString()),
+    mPass(Settings::get("emailPW").toString()),
+    mHost(Settings::get("emailHost").toString()),
+    mFrom(Settings::get("emailUser").toString()),
     mTextStream(new QTextStream(mSocket))
 {
     connect(mSocket, &QSslSocket::stateChanged, this, &Smtp::stateChanged);
@@ -51,8 +50,6 @@ void Smtp::sendMail(const QString &to,
 
 Smtp::~Smtp()
 {
-    delete mSettingsTable;
-    delete mSettings;
     delete mTextStream;
     delete mSocket;
 }

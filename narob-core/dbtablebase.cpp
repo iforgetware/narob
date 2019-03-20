@@ -4,6 +4,38 @@
 #include "dbtablebase.h"
 #include "databasemanager.h"
 
+QString columnType(QString col, int del)
+{
+    // look into using varchar(length) for text fields
+
+    QString type = "";
+
+    switch(del){
+    case -4:
+    case -3:
+    case -2:
+        type.append(" TEXT");
+        break;
+
+    case -1:
+    case 0:
+        type.append(" INTEGER");
+        if(col == "id"){
+            type.append(" PRIMARY KEY");
+        }
+        break;
+
+    case 1:
+    case 2:
+    case 3:
+    case 13:
+        type.append(" REAL");
+    }
+
+    return type;
+}
+
+
 DbTableBase::DbTableBase(QString table,
                          Fields fields) :
     mTable(table),
@@ -13,8 +45,6 @@ DbTableBase::DbTableBase(QString table,
 
 void DbTableBase::init() const
 {
-    // look into using varchar(length) for text fields
-
     if(!QSqlDatabase::database().tables().contains(mTable)){
 
         QString queryText = QString("CREATE TABLE %1 (").arg(mTable);
@@ -26,27 +56,7 @@ void DbTableBase::init() const
             }
 
             queryText.append(field.mColumn);
-            switch(field.mDelegate){
-            case -4:
-            case -3:
-            case -2:
-                queryText.append(" TEXT");
-                break;
-
-            case -1:
-            case 0:
-                queryText.append(" INTEGER");
-                if(field.mColumn == "id"){
-                    queryText.append(" PRIMARY KEY");
-                }
-                break;
-
-            case 1:
-            case 2:
-            case 3:
-            case 13:
-                queryText.append(" REAL");
-            }
+            queryText.append(columnType(field.mColumn, field.mDelegate));
         }
 
         queryText.append(")");
@@ -65,27 +75,7 @@ void DbTableBase::init() const
                 QString queryText = QString("ALTER TABLE %1 ADD COLUMN %2 ")
                                     .arg(mTable)
                                     .arg(field.mColumn);
-                switch(field.mDelegate){
-                case -4:
-                case -3:
-                case -2:
-                    queryText.append(" TEXT");
-                    break;
-
-                case -1:
-                case 0:
-                    queryText.append(" INTEGER");
-                    if(field.mColumn == "id"){
-                        queryText.append(" PRIMARY KEY");
-                    }
-                    break;
-
-                case 1:
-                case 2:
-                case 3:
-                case 13:
-                    queryText.append(" REAL");
-                }
+                queryText.append(columnType(field.mColumn, field.mDelegate));
 
                 QSqlQuery query;
                 query.exec(queryText);

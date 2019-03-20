@@ -7,8 +7,8 @@
 
 #include <QDebug>
 
-TicketDialog::TicketDialog(Vehicle* vehicle,
-                           Race* race,
+TicketDialog::TicketDialog(std::shared_ptr<Vehicle> vehicle,
+                           std::shared_ptr<Race> race,
                            int row,
                            QWidget *parent) :
     DialogBase(parent),
@@ -16,7 +16,7 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
     mVehicle(vehicle),
     mRace(race),
     mObservationsModel(new ObservationsModel(this)),
-    mTicketsModel(new TicketsModel(vehicle, this)),
+    mTicketsModel(new TicketsModel(vehicle->value("id").toInt(), this)),
     mDateTimer(new QTimer(this)),
     mFactorTimer(new QTimer(this))
 {
@@ -34,8 +34,9 @@ TicketDialog::TicketDialog(Vehicle* vehicle,
     mId = mModel->data(indexForField("id")).toInt();
 
     mPredictedRun = new Prediction(mTicketsModel,
-                                   mVehicle,
-                                   mRace,
+                                   mVehicle->value("id").toInt(),
+                                   mRace->value("trackId").toInt(),
+                                   mRace->value("id").toInt(),
                                    mId);
 
     if(row == -1){

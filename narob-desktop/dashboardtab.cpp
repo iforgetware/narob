@@ -28,18 +28,8 @@ void DashboardTab::onOpenRaceControlButtonClicked()
 {
     if(ui->vehiclesWidget->selected() && ui->racesWidget->selected()) {
 
-
-
-
-        // write racesmodel->getTrackId accessor
-        // use this to get id for tickets and predictions etc.
-        // possibly only pass race and track id's instead of whole objects
-
-
-
-
-        emit openRaceControl(ui->vehiclesWidget->getSelectedVehicle(),
-                             ui->racesWidget->getSelectedRace());
+        emit openRaceControl(ui->vehiclesWidget->selectedVehicle(),
+                             ui->racesWidget->selectedRace());
     }else{
         qDebug("Vehicle and Race not selected - WRITE CODE");
     }

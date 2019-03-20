@@ -9,7 +9,8 @@
 
 #include "narob-core_global.h"
 
-static Fields OBSERVATION_FIELDS{Field("id", "id", 0, 0),
+const Fields OBSERVATION_FIELDS{
+            Field("id", "id", 0, 0),
             Field("dateTime", "Date       Time", 160, -3),
             Field("temperature", "Temp", 50, 1),
             Field("humidity", "Humid",50, 1),
@@ -18,8 +19,10 @@ static Fields OBSERVATION_FIELDS{Field("id", "id", 0, 0),
             Field("dewPoint", "D Point", 60, 1),
             Field("densityAltitude", "D Alt", 60, 0),
             Field("windSpeed", "W Speed", 70, 0),
-            Field("windGust", "W Gust", 70, 0),
-            Field("windDirection", "W Dir", 60, 0)};
+            Field("windDirection", "W Dir", 60, 0),
+            Field("windGust", "G Speed", 70, 0),
+            Field("windGustDirection", "G Dir", 60, 0)
+};
 
 
 class Observations : public DbTableBase
@@ -40,10 +43,6 @@ public:
 // save the 11 around a ticket to this
 // never purge this table
 // only delete when ticket is deleted
-
-// move prediction math into predictions.cpp, make public methods
-// display 11 predictions in dialog of ticket detail
-// may need seperate tab
 
 
 

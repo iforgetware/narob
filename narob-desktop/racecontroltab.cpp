@@ -4,34 +4,32 @@
 
 #include <QDebug>
 
-RaceControlTab::RaceControlTab(Vehicle* vehicle,
-                               Race* race,
+RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
+                               std::shared_ptr<Race> race,
                                QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RaceControlTab),
-    mVehicle(vehicle),
-    mRace(race),
-    mTicketsModel(new TicketsModel(mVehicle, this))
+    mTicketsModel(new TicketsModel(vehicle->value("id").toInt(),
+                                   this))
 {
     ui->setupUi(this);
 
     ui->tabWidget->setTabsClosable(false);
 
     mTicketEntryTab = new TicketEntryTab(mTicketsModel,
-                                                        mVehicle,
-                                                        mRace,
-                                                        this);
+                                         vehicle,
+                                         race,
+                                         this);
 
     mTrackHistoryTab = new TrackHistoryTab(mTicketsModel,
-                                                           mRace->value("trackId").toInt(),
-                                                           this);
-
+                                           race->value("trackId").toInt(),
+                                           this);
 
     mLogbookTab = new LogbookTab(mTicketsModel, this);
 
     mPredictionTab = new PredictionTab(mTicketsModel,
-                                       mVehicle,
-                                       mRace,
+                                       vehicle,
+                                       race,
                                        this);
 
     ui->tabWidget->addTab(mTicketEntryTab, "Ticket Entry");

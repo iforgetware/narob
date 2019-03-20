@@ -126,5 +126,6 @@ QString TrackColumnDelegate::displayText(const QVariant &value, const QLocale &l
     Q_UNUSED(locale);
 
     TracksModel* tracksModel = new TracksModel();
-    return tracksModel->trackForId(value.toInt())->value("name").toString();
+
+    return tracksModel->trackName(value.toInt());
 }

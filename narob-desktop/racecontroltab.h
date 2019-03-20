@@ -1,8 +1,9 @@
 #ifndef RACECONTROLTAB_H
 #define RACECONTROLTAB_H
 
+#include <memory>
+
 #include <QWidget>
-//#include <QVector>
 
 #include "vehicles.h"
 #include "races.h"
@@ -21,15 +22,15 @@ class RaceControlTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit RaceControlTab(Vehicle *vehicle, Race *race, QWidget *parent = 0);
+    explicit RaceControlTab(std::shared_ptr<Vehicle> vehicle,
+                            std::shared_ptr<Race> race,
+                            QWidget *parent = nullptr);
     ~RaceControlTab();
     void updateAllModels();
 
 private:
     Ui::RaceControlTab *ui;
 
-    Vehicle* mVehicle;
-    Race* mRace;
     TicketsModel* mTicketsModel;
     TicketEntryTab *mTicketEntryTab;
     TrackHistoryTab *mTrackHistoryTab;

@@ -1,13 +1,14 @@
 #ifndef PREDICTIONTAB_H
 #define PREDICTIONTAB_H
 
+#include <memory>
+
 #include "modelbase.h"
 #include "predictions.h"
 #include "vehicles.h"
 #include "races.h"
 #include "tickets.h"
 #include "observations.h"
-#include "settings.h"
 #include "previouspredictionswidget.h"
 
 #include <QWidget>
@@ -23,8 +24,8 @@ class PredictionTab : public QWidget
 
 public:
     explicit PredictionTab(TicketsModel* model,
-                           Vehicle *vehicle,
-                           Race *race,
+                           std::shared_ptr<Vehicle> vehicle,
+                           std::shared_ptr<Race> race,
                            QWidget *parent = nullptr);
     ~PredictionTab();
     void UpdateAllModels();
@@ -42,14 +43,10 @@ private:
                       QLabel *label);
 
     Ui::PredictionTab* ui;
-    Vehicle *mVehicle;
-    Race *mRace;
-    Settings *mSettingsTable;
-    DbRecordBase *mSettings;
     TicketsModel *mTicketsModel;
     PredictionsModel *mPredictionsModel;
-    Prediction mCurrentPrediction;
     PreviousPredictionsWidget *mPreviousPredictionsWidget;
+    Prediction mCurrentPrediction;
     QString mPage;
     QTimer *mAutoTimer;
     QTimer *mFactorTimer;

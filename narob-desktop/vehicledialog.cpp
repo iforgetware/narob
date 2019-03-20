@@ -1,10 +1,11 @@
 #include "vehicledialog.h"
 #include "ui_vehicledialog.h"
 
+#include "settings.h"
+
 VehicleDialog::VehicleDialog(int row, QWidget *parent) :
     DialogBase(parent),
-    ui(new Ui::VehicleDialog),
-    mSettingsTable(new Settings)
+    ui(new Ui::VehicleDialog)
 {
     ui->setupUi(this);
 
@@ -14,13 +15,11 @@ VehicleDialog::VehicleDialog(int row, QWidget *parent) :
 
     setModelRow(row);
 
-    mSettings = mSettingsTable->getSettings();
-
     if(row == -1){
-        ui->weightAdjustmentSpinBox->setValue(mSettings->value("weightAdjustment").toDouble());
-        ui->windAdjustmentSpinBox->setValue(mSettings->value("windAdjustment").toDouble());
-        ui->textNumberEdit->setText(mSettings->value("textNumber").toString());
-        ui->textProviderComboBox->setCurrentText(mSettings->value("textProvider").toString());
+        ui->weightAdjustmentSpinBox->setValue(Settings::get("weightAdjustment").toDouble());
+        ui->windAdjustmentSpinBox->setValue(Settings::get("windAdjustment").toDouble());
+        ui->textNumberEdit->setText(Settings::get("textNumber").toString());
+        ui->textProviderComboBox->setCurrentText(Settings::get("textProvider").toString());
     }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DialogBase::onButtonBoxAccepted);
@@ -43,6 +42,8 @@ void VehicleDialog::setupModel()
     mMapper->addMapping(ui->weightAdjustmentSpinBox, mModel->fieldIndex("weightAdjustment"));
     mMapper->addMapping(ui->textNumberEdit, mModel->fieldIndex("textNumber"));
     mMapper->addMapping(ui->textProviderComboBox, mModel->fieldIndex("textProvider"));
+    mMapper->addMapping(ui->lastOilChangeEdit, mModel->fieldIndex("lastOilChange"));
+    mMapper->addMapping(ui->lastTireChangeEdit, mModel->fieldIndex("lastTireChange"));
 }
 
 void VehicleDialog::createUi()

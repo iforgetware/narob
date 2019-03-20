@@ -1,7 +1,10 @@
 #include "tickets.h"
 
 #include <QColor>
+#include <QSqlQuery>
 #include <QDebug>
+
+using namespace std;
 
 Tickets::Tickets() :
     DbTableBase("tickets",
@@ -14,17 +17,16 @@ Ticket::Ticket() :
     DbRecordBase("tickets",
                  TICKET_FIELDS)
 {
-    init();
 }
 
-TicketsModel::TicketsModel(Vehicle *vehicle,
+TicketsModel::TicketsModel(int vehicleId,
                            QObject *parent) :
     ModelBase("tickets",
               TICKET_FIELDS,
               parent),
-    mVehicle(vehicle)
+    mVehicleId(vehicleId)
 {
-    QString filter = QString("vehicleId = %1").arg(mVehicle->value("id").toInt());
+    QString filter = QString("vehicleId = %1").arg(mVehicleId);
 
     setFilter(filter);
 
@@ -52,14 +54,39 @@ QVariant TicketsModel::data(const QModelIndex &item, int role) const
     return QSqlRelationalTableModel::data(item, role);
 }
 
-QVector<Ticket*> TicketsModel::allTickets()
+unique_ptr<vector<shared_ptr<Ticket>>> TicketsModel::predictionTickets(
+        bool allForTrack,
+        bool allForVehicle,
+        int trackId,
+        int raceId,
+        int ticketId)
 {
-    QVector<Ticket*> ticketsVector;
+    auto ticketsVector = make_unique<vector<shared_ptr<Ticket>>>();
+
+    bool valid;
 
     for(int row = 0; row < rowCount(); row++){
-        Ticket *ticket = new Ticket();
+        auto ticket = make_unique<Ticket>();
+
         ticket->populate(record(row));
-        ticketsVector.append(ticket);
+
+        valid = true;
+
+        if(!allForVehicle){
+            valid = ticket->value("trackId").toInt() == trackId;
+
+            if(!allForTrack){
+                valid = ticket->value("raceId").toInt() == raceId;
+            }
+        }
+
+        if(valid && ticketId){
+            valid = (ticket->value("id").toInt() != ticketId);
+        }
+
+        if(valid){
+            ticketsVector->push_back(move(ticket));
+        }
     }
 
     return ticketsVector;
@@ -68,14 +95,30 @@ QVector<Ticket*> TicketsModel::allTickets()
 double TicketsModel::lastWeight()
 {
     double riderWeight = 0;
-    Ticket *ticket = new Ticket();
 
     if(rowCount()){
-        ticket->populate(record(0));
-        riderWeight = ticket->value("riderWeight").toDouble();
+        riderWeight = record(0).value("riderWeight").toDouble();
     }
 
     return riderWeight;
+}
+
+int TicketsModel::ticketsSinceDateTime(const QDateTime dateTime) const
+{
+    if(dateTime.isValid()){
+        QSqlQuery query;
+        query.prepare("SELECT * FROM tickets "
+                      "WHERE vehicleId = :vehicleId "
+                      "AND dateTime >= :dateTime");
+        query.bindValue(":vehicleId", mVehicleId);
+        query.bindValue(":dateTime", dateTime);
+
+        query.exec();
+
+        return query.size();
+    }else{
+        return 0;
+    }
 }
 
 
@@ -85,7 +128,8 @@ TicketsRaceModel::TicketsRaceModel(int raceId, QObject *parent) :
 {
 }
 
-bool TicketsRaceModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool TicketsRaceModel::filterAcceptsRow(int sourceRow,
+                                        const QModelIndex &sourceParent) const
 {
     QModelIndex raceIndex = sourceModel()->index(sourceRow, 3, sourceParent);
 
@@ -99,7 +143,8 @@ TicketsTrackModel::TicketsTrackModel(int trackId, QObject *parent) :
 {
 }
 
-bool TicketsTrackModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool TicketsTrackModel::filterAcceptsRow(int sourceRow,
+                                         const QModelIndex &sourceParent) const
 {
     QModelIndex trackIndex = sourceModel()->index(sourceRow, 2, sourceParent);
 

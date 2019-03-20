@@ -10,10 +10,10 @@ class ObservationsWidget : public TableDisplayWidgetBase
     Q_OBJECT
 
 public:
-    explicit ObservationsWidget(QWidget *parent = 0);
+    explicit ObservationsWidget(QWidget *parent = nullptr);
 
 public slots:
-    void refresh() { mObservationsModel->select(); }
+    //void refresh() { mObservationsModel->select(); }
 
 private:
     ObservationsModel *mObservationsModel;

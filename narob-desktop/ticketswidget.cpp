@@ -8,11 +8,9 @@
 TicketsWidget::TicketsWidget(TicketsModel *model,
                              int trackId,
                              QWidget* parent) :
-    TableDisplayWidgetBase(parent),
+    TableDisplayWidgetBase("Tickets", parent),
     mTicketsModel(model)
 {
-    setTitle("Tickets");
-
     mModel = mTicketsModel;
 
     if(trackId){
@@ -23,13 +21,14 @@ TicketsWidget::TicketsWidget(TicketsModel *model,
         ui->tableView->setModel(mTicketsModel);
     }
 
-    ui->tableView->setItemDelegateForColumn(2, new TrackColumnDelegate(this));
-    ui->tableView->setItemDelegateForColumn(3, new RaceColumnDelegate(this));
-
     setupColumns(TICKET_FIELDS);
 
+    ui->tableView->setItemDelegateForColumn(mModel->fieldIndex("trackId"),
+                                            new TrackColumnDelegate(this));
+    ui->tableView->setItemDelegateForColumn(mModel->fieldIndex("raceId"),
+                                            new RaceColumnDelegate(this));
+
     hide("vehicleId");
-    hide("predictionId");
 
     if(trackId){
         hide("trackId");

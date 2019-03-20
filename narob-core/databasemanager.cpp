@@ -40,7 +40,6 @@ void DatabaseManager::initTables()
     mTickets.init();
     mObservations.init();
     mPredictions.init();
-    mSettings.init();
 }
 
 void DatabaseManager::updateLogbook() //DEV ONLY
@@ -192,10 +191,8 @@ void DatabaseManager::clearDatabase() // DEV ONLY
     QStringList tables = mDatabase.tables();
 
     foreach (QString table, tables){
-        if(table != "settings"){
-            query.exec(QString("DROP TABLE %1").arg(table));
-            debugQuery(query);
-        }
+        query.exec(QString("DROP TABLE %1").arg(table));
+        debugQuery(query);
     }
 
     query.clear();
@@ -211,10 +208,10 @@ void DatabaseManager::testWeather() // DEV ONLY
     VehiclesModel vehiclesModel;
     RacesModel racesModel;
 
-    Vehicle *vehicle = vehiclesModel.getVehicle(0);
-    Race *race = racesModel.getRace(0);
+    auto vehicle = vehiclesModel.vehicleForRow(0);
+    auto race = racesModel.raceForRow(0);
 
-    TicketsModel ticketsModel(vehicle, this);
+    TicketsModel ticketsModel(vehicle->value("id").toInt(), this);
     PredictionsModel predictionsModel(vehicle->value("id").toInt(),
                                       race->value("id").toInt(),
                                       0,
@@ -294,7 +291,11 @@ void DatabaseManager::testWeather() // DEV ONLY
 
     qDebug("Weather test - observations written - DEV ONLY");
 
-    Prediction p(&ticketsModel, vehicle, race, 0);
+    Prediction p(&ticketsModel,
+                 vehicle->value("id").toInt(),
+                 race->value("trackId").toInt(),
+                 race->value("id").toInt(),
+                 0);
 
     p.setValue("riderWeight", 150);
     p.setValue("vehicleWeight", 350);
@@ -356,9 +357,9 @@ void DatabaseManager::testTP() // DEV ONLY
     ObservationsModel observationsModel;
     VehiclesModel vehiclesModel;
 
-    Vehicle *vehicle = vehiclesModel.getVehicle(0);
+    auto vehicle = vehiclesModel.vehicleForRow(0);
 
-    TicketsModel ticketsModel(vehicle, this);
+    TicketsModel ticketsModel(vehicle->value("id").toInt(), this);
 
     Ticket t;
     Observation o;
@@ -428,10 +429,10 @@ void DatabaseManager::testWind() // DEV ONLY
     VehiclesModel vehiclesModel;
     RacesModel racesModel;
 
-    Vehicle *vehicle = vehiclesModel.getVehicle(0);
-    Race *race = racesModel.getRace(0);
+    auto vehicle = vehiclesModel.vehicleForRow(0);
+    auto race = racesModel.raceForRow(0);
 
-    TicketsModel ticketsModel(vehicle, this);
+    TicketsModel ticketsModel(vehicle->value("id").toInt(), this);
     PredictionsModel predictionsModel(vehicle->value("id").toInt(),
                                       race->value("id").toInt(),
                                       0,
@@ -499,7 +500,11 @@ void DatabaseManager::testWind() // DEV ONLY
 
     qDebug("Wind test - observations written - DEV ONLY");
 
-    Prediction p(&ticketsModel, vehicle, race, 0);
+    Prediction p(&ticketsModel,
+                 vehicle->value("id").toInt(),
+                 race->value("trackId").toInt(),
+                 race->value("id").toInt(),
+                 0);
 
     p.setValue("riderWeight", 150);
     p.setValue("vehicleWeight", 350);
@@ -562,10 +567,10 @@ void DatabaseManager::testWeight() // DEV ONLY
     VehiclesModel vehiclesModel;
     RacesModel racesModel;
 
-    Vehicle *vehicle = vehiclesModel.getVehicle(0);
-    Race *race = racesModel.getRace(0);
+    auto vehicle = vehiclesModel.vehicleForRow(0);
+    auto race = racesModel.raceForRow(0);
 
-    TicketsModel ticketsModel(vehicle, this);
+    TicketsModel ticketsModel(vehicle->value("id").toInt(), this);
     PredictionsModel predictionsModel(vehicle->value("id").toInt(),
                                       race->value("id").toInt(),
                                       0,
@@ -634,7 +639,11 @@ void DatabaseManager::testWeight() // DEV ONLY
 
     qDebug("Weight test - observation written - DEV ONLY");
 
-    Prediction p(&ticketsModel, vehicle, race, 0);
+    Prediction p(&ticketsModel,
+                 vehicle->value("id").toInt(),
+                 race->value("trackId").toInt(),
+                 race->value("id").toInt(),
+                 0);
 
     p.setValue("riderWeight", 150.0 + i);
     p.setValue("vehicleWeight", 350);

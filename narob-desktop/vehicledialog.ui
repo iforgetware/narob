@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>271</width>
+    <width>536</width>
     <height>457</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Vehicle</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -137,6 +137,47 @@
          </item>
          <item row="5" column="0">
           <widget class="QLineEdit" name="textNumberEdit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QFrame" name="maintenanceFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="maintenanceInfo">
+        <property name="title">
+         <string>Maintenance Info</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <widget class="QLabel" name="lastOilChangeLabel">
+           <property name="text">
+            <string>Last oil change</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QDateTimeEdit" name="lastOilChangeEdit"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lastTireChangeLabel">
+           <property name="text">
+            <string>Last tire change</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QDateTimeEdit" name="lastTireChangeEdit"/>
          </item>
         </layout>
        </widget>

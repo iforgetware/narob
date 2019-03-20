@@ -1,4 +1,5 @@
 #include "vehicles.h"
+#include "tickets.h"
 
 Vehicles::Vehicles() :
     DbTableBase("vehicles",
@@ -11,8 +12,24 @@ Vehicle::Vehicle() :
     DbRecordBase("vehicles",
                  VEHICLE_FIELDS)
 {
-    init();
 }
+
+int Vehicle::passesSinceOilChange() const
+{
+    TicketsModel ticketsModel(value("id").toInt());
+
+    return ticketsModel.ticketsSinceDateTime(value("lastOilChange")
+                                             .toDateTime());
+}
+
+int Vehicle::passesSinceTireChange() const
+{
+    TicketsModel ticketsModel(value("id").toInt());
+
+    return ticketsModel.ticketsSinceDateTime(value("lastTireChange")
+                                             .toDateTime());
+}
+
 
 VehiclesModel::VehiclesModel(QObject *parent) :
     ModelBase("vehicles",
@@ -21,9 +38,9 @@ VehiclesModel::VehiclesModel(QObject *parent) :
 {
 }
 
-Vehicle* VehiclesModel::getVehicle(const int row)
+std::shared_ptr<Vehicle> VehiclesModel::vehicleForRow(const int row) const
 {
-    Vehicle *vehicle = new Vehicle();
+    auto vehicle = std::make_shared<Vehicle>();
     vehicle->populate(record(row));
 
     return vehicle;

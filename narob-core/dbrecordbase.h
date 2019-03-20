@@ -12,8 +12,6 @@ public:
     DbRecordBase(QString table,
                  Fields fields);
 
-    void init();
-
     void populate(QSqlRecord rec);
 
 private:

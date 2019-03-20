@@ -1,6 +1,8 @@
 #ifndef DASHBOARDTAB_H
 #define DASHBOARDTAB_H
 
+#include <memory>
+
 #include <QWidget>
 
 #include "vehicles.h"
@@ -16,7 +18,7 @@ class DashboardTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit DashboardTab(QWidget *parent = 0);
+    explicit DashboardTab(QWidget *parent = nullptr);
     ~DashboardTab();
     void updateAllModels();
 
@@ -27,7 +29,8 @@ private slots:
     void onOpenRaceControlButtonClicked();
 
 signals:
-    void openRaceControl(Vehicle *vehicle, Race *race);
+    void openRaceControl(std::shared_ptr<Vehicle>,
+                         std::shared_ptr<Race>);
 };
 
 #endif // DASHBOARDTAB_H

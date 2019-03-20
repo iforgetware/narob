@@ -2,11 +2,9 @@
 
 PredictionsWidget::PredictionsWidget(PredictionsModel *model,
                                      QWidget *parent) :
-    TableDisplayWidgetBase(parent),
+    TableDisplayWidgetBase("Predictions", parent),
     mPredictionsModel(model)
 {
-    setTitle("Predictions");
-
     mModel = mPredictionsModel;
 
     ui->tableView->setModel(mPredictionsModel);

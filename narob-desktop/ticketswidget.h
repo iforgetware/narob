@@ -12,7 +12,7 @@ class TicketsWidget : public TableDisplayWidgetBase
 public:
     explicit TicketsWidget(TicketsModel *model,
                            int trackId,
-                           QWidget* parent = 0);
+                           QWidget* parent = nullptr);
 
 private:
     TicketsModel* mTicketsModel;

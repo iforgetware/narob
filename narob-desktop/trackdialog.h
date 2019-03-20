@@ -14,7 +14,7 @@ class TrackDialog : public DialogBase
 
 public:
     explicit TrackDialog(int row = -1,
-                         QWidget *parent = 0);
+                         QWidget *parent = nullptr);
     ~TrackDialog();
 
 private:

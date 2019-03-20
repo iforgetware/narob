@@ -10,7 +10,7 @@ QT       += sql serialport network
 
 TARGET = narob-core
 TEMPLATE = lib
-CONFIG += lib c++11
+CONFIG += lib c++14
 
 DEFINES += NAROBCORE_LIBRARY
 

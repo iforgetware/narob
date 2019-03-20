@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <memory>
+
 #include <QMainWindow>
 #include <QVector>
 
@@ -30,12 +32,13 @@ private:
     DatabaseManager *mDBM;
 
     Ui::MainWindow *ui;
-    QVector<RaceControlTab*> mRaceControlTabList;
+    QVector<RaceControlTab*> mRaceControlTabs;
 
 //    QTimer *memTimer;
 
 private slots:
-    void handleOpenRaceControl(Vehicle* vehicle, Race* race);
+    void handleOpenRaceControl(std::shared_ptr<Vehicle> vehicle,
+                               std::shared_ptr<Race> race);
     void handleStatusUpdate(QString status);
     void handleCloseTab(int index);
 

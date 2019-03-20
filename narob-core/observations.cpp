@@ -13,7 +13,6 @@ Observation::Observation() :
     DbRecordBase("observations",
                  OBSERVATION_FIELDS)
 {
-    init();
 }
 
 ObservationsModel::ObservationsModel(QObject *parent) :

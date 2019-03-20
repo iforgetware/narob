@@ -35,9 +35,9 @@ void RaceDialog::setupModel()
     mMapper->setItemDelegate(new QSqlRelationalDelegate(ui->trackComboBox));
 
     mMapper->setModel(mModel);
-    mMapper->addMapping(ui->dateEdit, 1);
-    mMapper->addMapping(ui->nameEdit, 2);
-    mMapper->addMapping(ui->trackComboBox, 3);
+    mMapper->addMapping(ui->dateEdit, mModel->fieldIndex("date"));
+    mMapper->addMapping(ui->nameEdit, mModel->fieldIndex("name"));
+    mMapper->addMapping(ui->trackComboBox, mModel->fieldIndex("trackId"));
 }
 
 void RaceDialog::createUi()

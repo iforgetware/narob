@@ -2,8 +2,8 @@
 #include "ui_ticketentrytab.h"
 
 TicketEntryTab::TicketEntryTab(TicketsModel* model,
-                               Vehicle* vehicle,
-                               Race* race,
+                               std::shared_ptr<Vehicle> vehicle,
+                               std::shared_ptr<Race> race,
                                QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TicketEntryTab)

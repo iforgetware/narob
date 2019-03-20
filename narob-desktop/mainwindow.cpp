@@ -153,10 +153,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    // Connect SQL logging and database state setting to main window
-    //connect(&db, SIGNAL(dbChanged(bool)), this, SLOT(dbState(bool)));
-    //connect(&db, SIGNAL(sqlExecuted(QString, int)), this, SLOT(logSql(QString,int)));
-
     setWindowTitle(QApplication::applicationName() + " by " + QApplication::organizationName());
 }
 
@@ -165,31 +161,28 @@ void MainWindow::updateAllModels()
     ui->dashboardTab->updateAllModels();
     ui->weatherTab->updateAllModels();
 
-    foreach(RaceControlTab *raceControlTab, mRaceControlTabList){
-        raceControlTab->updateAllModels();
+    foreach(RaceControlTab *rCT, mRaceControlTabs){
+        rCT->updateAllModels();
     }
 }
 
-void MainWindow::handleOpenRaceControl(Vehicle* vehicle, Race* race)
+void MainWindow::handleOpenRaceControl(std::shared_ptr<Vehicle> vehicle,
+                                       std::shared_ptr<Race> race)
 {
     RaceControlTab *raceControlTab = new RaceControlTab(vehicle, race, this);
 
     TracksModel tracksModel;
-    Track *track = new Track();
-
-    track = tracksModel.trackForId(race->value("trackId").toInt());
+    QString trackName = tracksModel.trackName(race->value("trackId").toInt());
 
     ui->tabWidget->addTab(raceControlTab,
                           vehicle->value("number").toString()
                           + " @ "
                           + race->value("name").toString()
                           + " @ "
-                          + track->value("name").toString());
+                          + trackName);
 
     ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(raceControlTab));
-    mRaceControlTabList.append(raceControlTab);
-
-    delete track;
+    mRaceControlTabs.append(raceControlTab);
 }
 
 void MainWindow::handleStatusUpdate(QString status)
@@ -202,7 +195,19 @@ void MainWindow::handleCloseTab(int index)
     if(index != ui->tabWidget->indexOf(ui->dashboardTab)
        && index != ui->tabWidget->indexOf(ui->weatherTab)
        && index != ui->tabWidget->indexOf(ui->settingsTab)){
+
+        foreach(RaceControlTab *rCT, mRaceControlTabs){
+
+            if(rCT == ui->tabWidget->widget(index)){
+                mRaceControlTabs.removeOne(rCT);
+            }
+        }
+
         delete ui->tabWidget->widget(index);
+
+        if(mRaceControlTabs.isEmpty()){
+            ui->tabWidget->setCurrentIndex(ui->tabWidget->indexOf(ui->dashboardTab));
+        }
     }
 }
 

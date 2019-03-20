@@ -8,7 +8,7 @@ class ProviderBox : public QComboBox
     Q_OBJECT
 
 public:
-    ProviderBox(QWidget *parent = 0);
+    ProviderBox(QWidget *parent = nullptr);
 
 };
 

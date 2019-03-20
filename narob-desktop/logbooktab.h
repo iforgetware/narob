@@ -17,7 +17,7 @@ class LogbookTab : public QWidget
 
 public:
     explicit LogbookTab(TicketsModel* model,
-                        QWidget *parent = 0);
+                        QWidget *parent = nullptr);
     ~LogbookTab();
     void updateAllModels();
 

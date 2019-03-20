@@ -1,6 +1,8 @@
 #ifndef TICKETDIALOG_H
 #define TICKETDIALOG_H
 
+#include <memory>
+
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QLabel>
@@ -23,8 +25,8 @@ class TicketDialog : public DialogBase
     Q_OBJECT
 
 public:
-    explicit TicketDialog(Vehicle* vehicle,
-                          Race* race,
+    explicit TicketDialog(std::shared_ptr<Vehicle> vehicle,
+                          std::shared_ptr<Race> race,
                           int row = -1,
                           QWidget *parent = nullptr);
     ~TicketDialog();
@@ -54,8 +56,8 @@ private:
     Ui::TicketDialog *ui;
 
     int mId;
-    Vehicle *mVehicle;
-    Race *mRace;
+    std::shared_ptr<Vehicle> mVehicle;
+    std::shared_ptr<Race> mRace;
     Observation mObservation;
     Prediction *mPredictedRun;
     ObservationsModel *mObservationsModel;

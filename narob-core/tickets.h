@@ -1,7 +1,10 @@
 #ifndef TICKETS_H
 #define TICKETS_H
 
+#include <memory>
+
 #include <QVector>
+#include <QDateTime>
 #include <QSortFilterProxyModel>
 
 #include "dbtablebase.h"
@@ -11,7 +14,8 @@
 
 #include "narob-core_global.h"
 
-static Fields TICKET_FIELDS{Field("id", "id", 0, 0),
+const Fields TICKET_FIELDS{
+            Field("id", "id", 0, 0),
 
             Field("vehicleId", "Vehicle", 150, 0),
             Field("trackId", "Track", 150, 0),
@@ -66,15 +70,21 @@ class NAROBCORESHARED_EXPORT TicketsModel : public ModelBase
     Q_OBJECT
 
 public:
-    explicit TicketsModel(Vehicle *vehicle,
+    explicit TicketsModel(int vehicleId,
                           QObject *parent = nullptr);
     QVariant data(const QModelIndex &item, int role) const;
 
-    QVector<Ticket*> allTickets();
-    double lastWeight();
+    std::unique_ptr<std::vector<std::shared_ptr<Ticket>>>predictionTickets(
+            bool allForTrack,
+            bool allForVehicle,
+            int trackId,
+            int raceId,
+            int ticketId);
 
-private:
-    Vehicle *mVehicle;
+    double lastWeight();
+    int ticketsSinceDateTime(const QDateTime dateTime) const;
+
+    int mVehicleId;
 };
 
 
@@ -86,7 +96,8 @@ public:
     TicketsRaceModel(int raceId, QObject* parent);
 
 protected:
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    bool filterAcceptsRow(int sourceRow,
+                          const QModelIndex &sourceParent) const;
 
 private:
     int mRaceId;
@@ -101,7 +112,8 @@ public:
     TicketsTrackModel(int trackId, QObject* parent);
 
 protected:
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    bool filterAcceptsRow(int sourceRow,
+                          const QModelIndex &sourceParent) const;
 
 private:
     int mTrackId;

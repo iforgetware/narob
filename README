@@ -9,6 +9,18 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.3.7
+    - changed to Davis Vantage Vue weather station
+        - had to do DA calcs in code
+    - moved settings from db table to QSettings
+    - changed Prediction to take id's as arguments instead of whole DB record pointers
+    - made Prediction more efficient
+        - added member variables to reduce number of function calls in calcs
+        - moved tikcet validity check from Prediction to TicketsModel
+    - standardized model return values
+        - smart pointers for multiple or multi-use objects
+        - values for short-lived or single objects
+
 v0.3.6
     - added parameters to predictClocks method to replace setValue's on prediction
     - made database fields globals instead of variables in headers

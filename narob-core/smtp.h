@@ -15,7 +15,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <QtWidgets/QMessageBox>
 #include <QByteArray>
 
-#include "settings.h"
 #include "narob-core_global.h"
 
 class NAROBCORESHARED_EXPORT Smtp : public QObject
@@ -42,8 +41,6 @@ private slots:
     void sendLine(QString line);
 
 private:
-    Settings *mSettingsTable;
-    DbRecordBase *mSettings;
     QSslSocket *mSocket;
     quint16 mPort;
     int mTimeout;

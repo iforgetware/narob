@@ -5,18 +5,14 @@
 #include "ticketdialog.h"
 
 TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
-                                     Vehicle *vehicle,
-                                     Race *race,
+                                     std::shared_ptr<Vehicle> vehicle,
+                                     std::shared_ptr<Race> race,
                                      QWidget *parent) :
-    TableEditWidgetBase(parent),
+    TableEditWidgetBase("Tickets", parent),
     mTicketsModel(model),
     mVehicle(vehicle),
     mRace(race)
 {
-    setTitle("Tickets");
-
-    //mTicketsModel = new TicketsModel(mVehicle, ui->tableView);
-
     mModel = mTicketsModel;
 
     mTicketsRaceModel = new TicketsRaceModel(mRace->value("id").toInt(), this);
@@ -24,9 +20,9 @@ TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
 
     ui->tableView->setModel(mTicketsRaceModel);
 
-    setupColumns(TICKET_FIELDS);
+    init();
 
-    initTable();
+    setupColumns(TICKET_FIELDS);
 
     connect(mAddButton, &QPushButton::clicked,
             this, &TicketsEditWidget::addTicket);
@@ -58,12 +54,9 @@ void TicketsEditWidget::addTicket()
 void TicketsEditWidget::editTicket()
 {
     if(selected()){
-        QModelIndex tIndex = getSelectionIndex();
-        int tRow = mTicketsRaceModel->mapToSource(tIndex).row();
-
         TicketDialog *ticketDialog = new TicketDialog(mVehicle,
                                                       mRace,
-                                                      tRow,
+                                                      selectedRow(),
                                                       this);
         connect(ticketDialog, &TicketDialog::ready,
                 this,&TicketsEditWidget::updateModel);

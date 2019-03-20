@@ -5,22 +5,18 @@
 
 #include <QDebug>
 
-TableWidgetBase::TableWidgetBase(QWidget *parent) :
+TableWidgetBase::TableWidgetBase(const QString title, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TableWidgetBase)
+    ui(new Ui::TableWidgetBase),
+    mTitle(title)
 {
     ui->setupUi(this);
+    ui->title->setText(mTitle);
 }
 
 TableWidgetBase::~TableWidgetBase()
 {
     delete ui;
-}
-
-void TableWidgetBase::setTitle(const QString &title)
-{
-    mTitle = title;
-    ui->title->setText(mTitle);
 }
 
 void TableWidgetBase::setupColumns(const Fields &fields)

@@ -1,8 +1,9 @@
 #include "tabledisplaywidgetbase.h"
 #include "ui_tablewidgetbase.h"
 
-TableDisplayWidgetBase::TableDisplayWidgetBase(QWidget *parent) :
-    TableWidgetBase(parent)
+TableDisplayWidgetBase::TableDisplayWidgetBase(const QString title,
+                                               QWidget *parent) :
+    TableWidgetBase(title, parent)
 {
 }
 

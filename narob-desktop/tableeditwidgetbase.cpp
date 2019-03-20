@@ -4,8 +4,8 @@
 #include "tableeditwidgetbase.h"
 #include "ui_tablewidgetbase.h"
 
-TableEditWidgetBase::TableEditWidgetBase(QWidget *parent) :
-    TableWidgetBase(parent)
+TableEditWidgetBase::TableEditWidgetBase(const QString title, QWidget *parent) :
+    TableWidgetBase(title, parent)
 {
 }
 
@@ -13,7 +13,7 @@ TableEditWidgetBase::~TableEditWidgetBase()
 {
 }
 
-void TableEditWidgetBase::initTable()
+void TableEditWidgetBase::init()
 {
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -22,9 +22,10 @@ void TableEditWidgetBase::initTable()
     ui->tableView->verticalHeader()->setVisible(false);
     hide("id");
 
-    mAddButton = new QPushButton("Add", this);
-    mEditButton = new QPushButton("Edit", this);
-    mDeleteButton = new QPushButton("Delete", this);
+    QString item = mTitle.chopped(1);
+    mAddButton = new QPushButton("Add " + item, this);
+    mEditButton = new QPushButton("Edit " + item, this);
+    mDeleteButton = new QPushButton("Delete " + item, this);
 
     QFrame* buttonFrame = new QFrame(this);
     QHBoxLayout* bFLayout = new QHBoxLayout(buttonFrame);
@@ -47,38 +48,26 @@ void TableEditWidgetBase::initTable()
 
     connect(mDeleteButton, &QPushButton::clicked,
             this, &TableEditWidgetBase::deleteSelectedRow);
-
-    show();
 }
 
-bool TableEditWidgetBase::selected()
+bool TableEditWidgetBase::selected() const
 {
     return ui->tableView->selectionModel()->hasSelection();
 }
 
-int TableEditWidgetBase::getSelection()
+int TableEditWidgetBase::selectedRow() const
 {
     if(selected()){
-//        return ui->tableView->selectionModel()->currentIndex().row();
-        return getSelectionIndex().row();
+        return ui->tableView->selectionModel()->currentIndex().row();
     }else{
         return 0;
-    }
-}
-
-QModelIndex TableEditWidgetBase::getSelectionIndex()
-{
-    if(selected()){
-        return ui->tableView->selectionModel()->currentIndex();
-    }else{
-        return QModelIndex();
     }
 }
 
 void TableEditWidgetBase::deleteSelectedRow()
 {
     if(selected()){
-        mModel->removeRow(getSelection());
+        mModel->removeRow(selectedRow());
         mModel->submitAll();
         updateModel();
     }

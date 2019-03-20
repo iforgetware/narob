@@ -10,14 +10,13 @@ class TableEditWidgetBase : public TableWidgetBase
     Q_OBJECT
 
 public:
-    explicit TableEditWidgetBase(QWidget *parent = 0);
+    explicit TableEditWidgetBase(const QString title, QWidget *parent = nullptr);
     ~TableEditWidgetBase();
 
-    void initTable();
+    void init();
 
-    bool selected();
-    int getSelection();
-    QModelIndex getSelectionIndex();
+    bool selected() const;
+    int selectedRow() const;
 
     void deleteSelectedRow();
 

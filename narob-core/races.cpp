@@ -1,7 +1,11 @@
 #include <QSqlQuery>
 #include <QDebug>
 
+#include <memory>
+
 #include "races.h"
+
+using namespace std;
 
 Races::Races() :
     DbTableBase("races",
@@ -14,7 +18,6 @@ Race::Race() :
     DbRecordBase("races",
                  RACE_FIELDS)
 {
-    init();
 }
 
 RacesModel::RacesModel(QObject *parent) :
@@ -24,22 +27,24 @@ RacesModel::RacesModel(QObject *parent) :
 {
     setJoinMode(QSqlRelationalTableModel::LeftJoin);
 
-    setRelation(3, QSqlRelation("tracks", "id", "name, trackId as trackId"));
+    setRelation(fieldIndex("trackId"),
+                QSqlRelation("tracks", "id", "name, trackId as trackId"));
 
     setSort(fieldIndex("date"), Qt::DescendingOrder);
 
     select();
 }
 
-Race* RacesModel::getRace(const int row)
+std::shared_ptr<Race> RacesModel::raceForRow(const int row) const
 {
-    Race *race = new Race();
+    auto race = make_shared<Race>();
+
     race->populate(record(row));
 
     return race;
 }
 
-Race *RacesModel::raceForId(const int id)
+std::unique_ptr<Race> RacesModel::raceForId(const int id) const
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM races "
@@ -48,7 +53,7 @@ Race *RacesModel::raceForId(const int id)
 
     query.exec();
 
-    Race *race = new Race();
+    auto race = make_unique<Race>();
 
     if(query.next()){
         race->populate(query.record());

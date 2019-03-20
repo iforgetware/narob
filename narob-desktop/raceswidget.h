@@ -1,6 +1,8 @@
 #ifndef RACESWIDGET_H
 #define RACESWIDGET_H
 
+#include <memory>
+
 #include "races.h"
 #include "tableeditwidgetbase.h"
 #include "ui_tablewidgetbase.h"
@@ -10,9 +12,9 @@ class RacesWidget : public TableEditWidgetBase
     Q_OBJECT
 
 public:
-    explicit RacesWidget(QWidget *parent = 0);
+    explicit RacesWidget(QWidget *parent = nullptr);
 
-    Race* getSelectedRace();
+    std::shared_ptr<Race> selectedRace() const;
 
 private slots:
     void addRace();

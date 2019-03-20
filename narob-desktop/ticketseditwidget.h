@@ -1,8 +1,9 @@
 #ifndef TICKETSEDITWIDGET_H
 #define TICKETSEDITWIDGET_H
 
+#include <memory>
+
 #include "tickets.h"
-//#include "ticketsracemodel.h"
 #include "tableeditwidgetbase.h"
 #include "ui_tablewidgetbase.h"
 
@@ -15,9 +16,9 @@ class TicketsEditWidget : public TableEditWidgetBase
 
 public:
     explicit TicketsEditWidget(TicketsModel *model,
-                               Vehicle* vehicle,
-                               Race* race,
-                               QWidget *parent = 0);
+                               std::shared_ptr<Vehicle> vehicle,
+                               std::shared_ptr<Race> race,
+                               QWidget *parent = nullptr);
 
 private slots:
     void addTicket();
@@ -27,8 +28,8 @@ private:
     TicketsModel *mTicketsModel;
     TicketsRaceModel* mTicketsRaceModel;
 
-    Vehicle* mVehicle;
-    Race* mRace;
+    std::shared_ptr<Vehicle> mVehicle;
+    std::shared_ptr<Race> mRace;
 };
 
 #endif // TICKETEDITSWIDGET_H
