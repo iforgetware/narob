@@ -22,6 +22,8 @@ private:
 
     void setupModel();
     void createUi();
+
+    void updateRunCounts();
 };
 
 #endif // VEHICLEDIALOG_H

@@ -35,9 +35,13 @@ void RaceDialog::setupModel()
     mMapper->setItemDelegate(new QSqlRelationalDelegate(ui->trackComboBox));
 
     mMapper->setModel(mModel);
-    mMapper->addMapping(ui->dateEdit, mModel->fieldIndex("date"));
-    mMapper->addMapping(ui->nameEdit, mModel->fieldIndex("name"));
-    mMapper->addMapping(ui->trackComboBox, mModel->fieldIndex("trackId"));
+
+    // These should use fieldIndex({field})
+    // trackComboBox sets trackId to the track name when fI() is used
+
+    mMapper->addMapping(ui->dateEdit, 1);
+    mMapper->addMapping(ui->nameEdit, 2);
+    mMapper->addMapping(ui->trackComboBox, 3);
 }
 
 void RaceDialog::createUi()

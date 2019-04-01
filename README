@@ -5,9 +5,13 @@ I use my phone as a hotspot.
 It uses email-to-text addresses based on the service provider of the recieving phone.
 
 to do
-    - maintenance intervals
+    - maintenance intervals in vehiclesWidget
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
+
+v0.3.8
+    - added basic maintenace intervals for vehicle
+    - fixed race entry bug related to mapped trackId
 
 v0.3.7
     - changed to Davis Vantage Vue weather station

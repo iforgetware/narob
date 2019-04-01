@@ -26,7 +26,6 @@ VehiclesWidget::VehiclesWidget(QWidget *parent) :
 
 
 
-
     init();
 
     connect(mAddButton, &QPushButton::clicked,

@@ -107,15 +107,21 @@ int TicketsModel::ticketsSinceDateTime(const QDateTime dateTime) const
 {
     if(dateTime.isValid()){
         QSqlQuery query;
+
         query.prepare("SELECT * FROM tickets "
                       "WHERE vehicleId = :vehicleId "
                       "AND dateTime >= :dateTime");
         query.bindValue(":vehicleId", mVehicleId);
-        query.bindValue(":dateTime", dateTime);
+        query.bindValue(":dateTime", dateTime.toString(Qt::ISODate));
 
         query.exec();
+        qDebug() << query.executedQuery();
+        qDebug() << query.boundValue(":vehicleId");
+        qDebug() << query.boundValue(":dateTime");
 
-        return query.size();
+        query.last();
+
+        return query.at() + 1;
     }else{
         return 0;
     }

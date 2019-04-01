@@ -1,5 +1,6 @@
 #include "vehicledialog.h"
 #include "ui_vehicledialog.h"
+#include "tickets.h"
 
 #include "settings.h"
 
@@ -22,7 +23,16 @@ VehicleDialog::VehicleDialog(int row, QWidget *parent) :
         ui->textProviderComboBox->setCurrentText(Settings::get("textProvider").toString());
     }
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &DialogBase::onButtonBoxAccepted);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,
+            this, &DialogBase::onButtonBoxAccepted);
+
+    connect(ui->lastOilChangeEdit, &QDateTimeEdit::dateTimeChanged,
+            this, &VehicleDialog::updateRunCounts);
+
+    connect(ui->lastTireChangeEdit, &QDateTimeEdit::dateTimeChanged,
+            this, &VehicleDialog::updateRunCounts);
+
+    updateRunCounts();
 }
 
 VehicleDialog::~VehicleDialog()
@@ -49,4 +59,16 @@ void VehicleDialog::setupModel()
 void VehicleDialog::createUi()
 {
     ui->weightEdit->setValidator(new QIntValidator(ui->weightEdit));
+}
+
+void VehicleDialog::updateRunCounts(){
+    int vehicleId = indexForField("id").data().toInt();
+
+    TicketsModel ticketsModel(vehicleId, this);
+
+    int oR = ticketsModel.ticketsSinceDateTime(ui->lastOilChangeEdit->dateTime());
+    int tR = ticketsModel.ticketsSinceDateTime(ui->lastTireChangeEdit->dateTime());
+
+    ui->lastOilRunsLabel->setText(QString::number(oR));
+    ui->lastTireRunsLabel->setText(QString::number(tR));
 }
