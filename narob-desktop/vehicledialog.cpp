@@ -69,6 +69,9 @@ void VehicleDialog::updateRunCounts(){
     int oR = ticketsModel.ticketsSinceDateTime(ui->lastOilChangeEdit->dateTime());
     int tR = ticketsModel.ticketsSinceDateTime(ui->lastTireChangeEdit->dateTime());
 
-    ui->lastOilRunsLabel->setText(QString::number(oR));
-    ui->lastTireRunsLabel->setText(QString::number(tR));
+    if(oR == -1) oR = 0;
+    if(tR == -1) tR = 0;
+
+    ui->lastOilRunsLabel->setText(QString::number(oR) + " runs on oil");
+    ui->lastTireRunsLabel->setText(QString::number(tR) + " runs on tire");
 }

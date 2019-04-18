@@ -115,10 +115,6 @@ int TicketsModel::ticketsSinceDateTime(const QDateTime dateTime) const
         query.bindValue(":dateTime", dateTime.toString(Qt::ISODate));
 
         query.exec();
-        qDebug() << query.executedQuery();
-        qDebug() << query.boundValue(":vehicleId");
-        qDebug() << query.boundValue(":dateTime");
-
         query.last();
 
         return query.at() + 1;

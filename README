@@ -9,6 +9,10 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.3.8.1
+    - changed wind calcs to use correct trig functions
+        - average wind over 1 minute is average of measured vectors
+
 v0.3.8
     - added basic maintenace intervals for vehicle
     - fixed race entry bug related to mapped trackId

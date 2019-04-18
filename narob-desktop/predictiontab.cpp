@@ -111,7 +111,7 @@ void PredictionTab::makePrediction()
                  .time()
                  .minute();
 
-    if(minute % 1 == 0){ // DEV ONLY - chenge to 5 or add setting to settings
+    if(minute % 1 == 0){// DEV ONLY - set back to 5
         writePredictionToDb();
     }
 

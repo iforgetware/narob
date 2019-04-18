@@ -4,31 +4,18 @@
 #include <QDate>
 #include <QDebug>
 #include <QtMath>
-
-int relativeWind(const int &wDir, const int &wSpeed)
-{
-    if(wDir > 360 || wSpeed < 1){
-        return 0;
-    }else if(wDir < 181){
-        return wDir;
-    }else{
-        return 360 - wDir;
-    }
-}
-
-double formatNum(double num, int decimals)
-{
-    return QString::number(num, 'f', decimals).toDouble();
-}
+#include <QThread>
 
 // constants and conversions
 
 static double mb_to_in = 1 / 33.86389;
 static double in_to_mb = 33.86389;
-//static double ft_to_m = 0.3048;
-
-//static double in_per_mb = (1/33.86389);
 static double m_per_ft = 0.3048;
+
+double formatNum(double num, int decimals)
+{
+    return QString::number(num, 'f', decimals).toDouble();
+}
 
 double calcVPwobus(double tc)
 // Calculate the saturation vapor pressure given the temperature(celsius)
@@ -67,13 +54,6 @@ double calcVPwobus(double tc)
 
     return eso/qPow(pol, 8);
 }
-
-//double calcVP(double tc, double h)
-//{
-//    double es = calcVPwobus(tc);
-//    double emb = es * h / 100;
-//    return emb * mb_to_in;
-//}
 
 double calcDensity(double abspressmb, double e, double tc)
 //  Calculate the air density in kg/m3
@@ -176,73 +156,49 @@ int WeatherStation::calcDA(double t, double h, double p)
 
 WeatherStation::WeatherStation(ObservationsModel *model, QObject *parent) :
     QObject(parent),
-    mComPort(nullptr),
+
+    mComPortThread(new QThread()),
+    mWeatherStationPort(new WeatherStationPort()),
     mLoopPacket(""),
     mLastTime(QTime::currentTime()),
-    mReadTimer(new QTimer(this)),
     mLoopPacketGood(false),
     mRunning(false),
     mObservationsModel(model),
     mTemps(0),
     mHums(0),
     mPres(0),
+    mVPs(0),
+    mDPts(0),
     mWSpeeds(0),
     mWDirs(0),
+
+    mWXs(0),
+    mWYs(0),
+
     mWGustSpeed(0),
-    mWGustDir(0)
+    mWGustDir(0),
+    mSampleCount(0)
 {
-    //openComPort();
+    // wake gives port not open error
+    // console should stay awake for two minutes after last command
+    // sending requests every 4 seconds or so SHOULD remove the need to re-wake
+
+    mWeatherStationPort->moveToThread(mComPortThread);
+
+    connect(mComPortThread, &QThread::finished,
+            mWeatherStationPort, &QObject::deleteLater);
+
+    connect(mWeatherStationPort, &WeatherStationPort::sendStationData,
+            this, &WeatherStation::handleStationData);
+
+    mRunning = true;
+    mComPortThread->start();
 }
 
 WeatherStation::~WeatherStation()
 {
-}
-
-void WeatherStation::openComPort()
-{
-    // davis
-    //   vendor 10c4
-    //   product ea60
-    //   manufacturer Silicon Labs
-    const QList<QSerialPortInfo> allPorts = QSerialPortInfo::availablePorts();
-    for (const QSerialPortInfo &portInfo : allPorts) {
-        if(portInfo.vendorIdentifier() == 0x10c4 &&
-           portInfo.productIdentifier() == 0xea60 &&
-           portInfo.manufacturer() == "Silicon Labs"){
-
-            mComPort = new QSerialPort(this);
-
-            mComPort->setPortName(portInfo.portName());
-            mComPort->setBaudRate(19200);
-            mComPort->setDataBits(QSerialPort::Data8);
-            mComPort->setParity(QSerialPort::NoParity);
-            mComPort->setStopBits(QSerialPort::OneStop);
-
-            emit sendStatus("Found Davis Vantage Vue Weather Station");
-        }
-    }
-
-    if(mComPort != nullptr){
-        if(mComPort->open(QIODevice::ReadWrite)){
-            connect(mComPort, &QSerialPort::readyRead,
-                    this, &WeatherStation::readStationData);
-            connect(mReadTimer, &QTimer::timeout,
-                    this, &WeatherStation::sendLoopRequest);
-            connect(mComPort, &QSerialPort::errorOccurred,
-                    this, &WeatherStation::handleError);
-
-            mReadTimer->start(4000);
-
-            mRunning = true;
-            emit sendStatus("Weather station running.  Waiting for data");
-        }else{
-            qDebug() << mComPort->error();
-            qDebug("WRITE CODE");
-        }
-    }else{
-        emit sendStatus("NO WEATHER STATION FOUND");
-    }
-
+    mComPortThread->quit();
+    mComPortThread->wait();
 }
 
 int WeatherStation::val8(int p)
@@ -263,43 +219,75 @@ void WeatherStation::writeToDB()
     QTime cT = QTime::currentTime();
     cDT.setDate(QDate::currentDate());
     cDT.setTime(QTime(cT.hour(), cT.minute()));
+
+    double windAverageY = mWYs / mSampleCount;
+    double windAverageX = mWXs / mSampleCount;
+
+    double windSpeed = qSqrt(qPow(windAverageY, 2)
+                             + qPow(windAverageX, 2));
+
+    double windDirection;
+
+    windDirection = qRadiansToDegrees(qAtan2(windAverageY, windAverageX)) + 180;
+
     o.setValue("dateTime", cDT);
 
     o.setValue("temperature", formatNum(mTemps / mSampleCount, 1));
     o.setValue("humidity", formatNum(mHums / mSampleCount, 1));
     o.setValue("pressure", formatNum(mPres / mSampleCount, 2));
+    o.setValue("vaporPressure", formatNum(mVPs / mSampleCount, 2));
     o.setValue("densityAltitude", mDAs / mSampleCount);
-    o.setValue("windSpeed", mWSpeeds / mSampleCount);
-    o.setValue("windDirection", mWDirs / mSampleCount);
+    o.setValue("windSpeed", static_cast<int>(windSpeed));
+    o.setValue("windDirection", static_cast<int>(windDirection));
     o.setValue("windGust", mWGustSpeed);
     o.setValue("windGustDirection", mWGustDir);
 
     if(o.value("temperature").toDouble() > 0.0){
+
         mObservationsModel->addRow(o);
 
+        QString s = "      ";
         emit newWeatherWritten();
-        emit sendStatus(QString("Current Weather ->   "
-                                "Temperature: %1      "
-                                "Humidity: %2      "
-                                "Pressure: %3      "
-                                "Density Altitude: %6      "
-                                "Wind Speed: %7      "
-                                "Wind Gust: %8      "
-                                "Wind Direction: %9")
+        emit sendStatus(QString("Weather @ %0 ->   "
+                                "Temperature: %1"
+                                + s +
+                                "Humidity: %2"
+                                + s +
+                                "Pressure: %3"
+                                + s +
+                                "Density Altitude: %4"
+                                + s +
+                                "Wind : %5 MPH"
+                                + s +
+                                "Wind Direction: %6"
+                                + s +
+                                "Gust: %7 MPH"
+                                + s +
+                                "Gust Direction: %8"
+                                "")
+                        .arg(cDT.time().toString("h:mm AP"))
                         .arg(o.value("temperature").toDouble())
                         .arg(o.value("humidity").toDouble())
                         .arg(o.value("pressure").toDouble())
                         .arg(o.value("densityAltitude").toInt())
                         .arg(o.value("windSpeed").toInt())
+                        .arg(o.value("windDirection").toInt())
                         .arg(o.value("windGust").toInt())
-                        .arg(o.value("windDirection").toInt()));
+                        .arg(o.value("windGustDirection").toInt())
+                        );
 
         mTemps = 0;
         mHums = 0;
         mPres = 0;
+        mVPs = 0;
+        mDPts = 0;
         mDAs = 0;
         mWSpeeds = 0;
         mWDirs = 0;
+
+        mWXs = 0;
+        mWYs = 0;
+
         mWGustSpeed = 0;
         mWGustDir = 0;
 
@@ -308,67 +296,164 @@ void WeatherStation::writeToDB()
     }
 }
 
-void WeatherStation::sendLoopRequest()
+void WeatherStation::handleStationData(QByteArray data)
+{
+    mLoopPacket = data;
+
+    double t = val16(12) / 10.0;
+    double h = val8(33);
+    double p = val16(7) / 1000.0;
+    int wS = val8(14);
+    double wD = val16(16);
+
+    mTemps += t;
+    mHums += h;
+    mPres += p;
+    mDAs += calcDA(t, h, p);
+    mVPs += mVaporPressure; // this is set in calcDA
+                            // not elegant
+
+    mWYs += -wS * qSin(qDegreesToRadians(wD));
+    mWXs += -wS * qCos(qDegreesToRadians(wD));
+
+    mSampleCount += 1;
+
+    if(wS > mWGustSpeed){
+        mWGustSpeed = wS;
+        mWGustDir = static_cast<int>(wD);
+    }
+
+    QTime now = QTime::currentTime();
+
+    int span = 0;
+
+    if(now.minute() > mLastTime.minute()){
+        span = now.minute() - mLastTime.minute();
+    }else if(now.minute() == 0 && mLastTime.minute() != 0){
+        span = 60 - mLastTime.minute();
+    }
+
+    if(span){
+        if(mSampleCount == 0){
+            qDebug("No good weather samples in one minute -- WRITE CODE");
+        }else if(span > 5){
+            qDebug("More than 5 minutes without weather - WRITE CODE");
+        }else{
+            writeToDB();
+        }
+    }
+}
+
+
+WeatherStationPort::WeatherStationPort() :
+    QObject(),
+
+    mComPort(new QSerialPort(this)),
+    mReadTimer(new QTimer(this))
+{
+    connect(mComPort, &QSerialPort::errorOccurred,
+            this, &WeatherStationPort::handleError);
+
+    connect(mReadTimer, &QTimer::timeout,
+            this, &WeatherStationPort::readStation);
+
+    openComPort();
+
+    mReadTimer->start(4000);
+}
+
+void WeatherStationPort::openComPort()
+{
+    // davis
+    //   vendor 10c4
+    //   product ea60
+    //   manufacturer Silicon Labs
+    const QList<QSerialPortInfo> allPorts = QSerialPortInfo::availablePorts();
+    for (const QSerialPortInfo &portInfo : allPorts) {
+        if(portInfo.vendorIdentifier() == 0x10c4 &&
+           portInfo.productIdentifier() == 0xea60 &&
+           portInfo.manufacturer() == "Silicon Labs"){
+
+            mComPort->setPortName(portInfo.portName());
+            mComPort->setBaudRate(19200);
+            mComPort->setDataBits(QSerialPort::Data8);
+            mComPort->setParity(QSerialPort::NoParity);
+            mComPort->setStopBits(QSerialPort::OneStop);
+
+            qDebug("Found Davis Vantage Vue Weather Station");
+        }
+    }
+
+    if(mComPort->open(QIODevice::ReadWrite)){
+        qDebug("com port open");
+    }else{
+        qDebug() << mComPort->error();
+        qDebug("WRITE CODE");
+    }
+}
+
+//void WeatherStationPort::wakeStation(){
+//    QByteArray resp;
+
+//    for(int t = 0; t < 3; t++){
+//        mComPort->write("\n");
+//        QThread::sleep(2);
+//        resp = mComPort->readAll();
+//        qDebug() << "gentle wake to hex ";
+//        qDebug() << resp.toHex();
+//        if(resp == "\n\r"){
+//            qDebug("Davis console gentle wake successful");
+//            mRunning = true;
+//            return;
+//        }
+
+//        mComPort->flush();
+//        QThread::sleep(1);
+//        resp = mComPort->readAll();
+//        qDebug() << "rude wake to hex ";
+//        qDebug() << resp.toHex();
+
+//        if(resp == "\n\r"){
+//            qDebug("Davis console rude wake successful");
+//            mRunning = true;
+//            return;
+//        }
+
+//        qDebug("Davis still sleeping trying again in 2 seconds");
+
+//        QThread::sleep(2);
+//    }
+
+//    qDebug("Unable to wake Davis console");
+//    return;
+//}
+
+void WeatherStationPort::readStation()
 {
     mComPort->write("LOOP\n");
-}
 
-void WeatherStation::readStationData()
-{
+    QThread::sleep(2);
+
     QByteArray rawData = mComPort->readAll();
 
-    if(rawData.length() > 50 && rawData.contains("LOO")){
-        mLoopPacket = rawData.mid(rawData.indexOf("LOO"));
-
-        // check loop for validity
-        mLoopPacketGood = true;
+    if(rawData == "\n\r"){
+        qDebug("Got ack response");
+        return;
     }
 
-    if(mLoopPacketGood){
-        mTemps += val16(12) / 10.0;
-        mHums += val8(33);
-        mPres += val16(7) / 1000.0;
-        mDAs += calcDA(val16(12) / 10.0,
-                       val8(33),
-                       val16(7) / 1000.0);
-        mWSpeeds += val8(14);
-        mWDirs += relativeWind(val16(16), val8(14));
-
-        mSampleCount += 1;
-
-        if(val8(14) > mWGustSpeed){
-            mWGustSpeed = val8(14);
-            mWGustDir = val16(16);
-        }
-
-        QTime now = QTime::currentTime();
-
-        int span = 0;
-
-        if(now.minute() > mLastTime.minute()){
-            span = now.minute() - mLastTime.minute();
-        }else if(now.minute() == 0 && mLastTime.minute() != 0){
-            span = 60 - mLastTime.minute();
-        }
-
-        if(span){
-            if(mSampleCount == 0){
-                qDebug("No good weather samples in one minute -- WRITE CODE");
-            }else if(span > 5){
-                qDebug("More than 5 minutes without weather - WRITE CODE");
-            }else{
-                writeToDB();
-            }
-        }
-
+    if(rawData.length() > 50 && rawData.contains("LOO")){
+        emit sendStationData(rawData.mid(rawData.indexOf("LOO")));
     }else{
         qDebug("Bad Loop Packet - WRITE CODE");
+        qDebug() << "Packet data -> " << rawData;
+//        mComPort->flush();
+        mComPort->write("\n");
     }
+
+    return;
 }
 
-
-
-void WeatherStation::handleError(QSerialPort::SerialPortError serialPortError)
+void WeatherStationPort::handleError(QSerialPort::SerialPortError serialPortError)
 {
     if (serialPortError == QSerialPort::ReadError) {
         qDebug() << QObject::tr("An I/O error occurred while reading "

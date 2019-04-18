@@ -7,9 +7,41 @@
 #include <QSerialPort>
 #include <QTime>
 #include <QTimer>
+#include <QThread>
 #include <QtWidgets/QWidget>
 
 #include <QObject>
+
+class WeatherStationPort : public QObject
+{
+    Q_OBJECT
+
+public:
+    WeatherStationPort();
+
+private:
+    void openComPort();
+//    void wakeStation();
+
+    QSerialPort *mComPort;
+
+    QTimer *mReadTimer;
+
+    QByteArray mReadData = "";
+    QByteArray mLine = "";
+
+    bool mRunning;
+
+public slots:
+    void readStation();
+
+private slots:
+    void handleError(QSerialPort::SerialPortError serialPortError);
+
+signals:
+    void sendStationData(QByteArray data);
+};
+
 
 class NAROBCORESHARED_EXPORT WeatherStation : public QObject
 {
@@ -21,23 +53,18 @@ public:
     ~WeatherStation();
 
     bool isRunning(){ return mRunning; }
-    void openComPort();
 
 private:
-//    void openComPort();
-//    void handleCompleteLine(QByteArray line);
     int calcDA(double t, double h, double p);
     int val8(int p);
     int val16(int p);
     void writeToDB();
 
-    QByteArray mReadData = "";
-    QByteArray mLine = "";
+    QThread *mComPortThread;
+    WeatherStationPort *mWeatherStationPort;
 
-    QSerialPort *mComPort;
     QByteArray mLoopPacket;
     QTime mLastTime;
-    QTimer *mReadTimer;
     bool mLoopPacketGood;
     bool mRunning;
     ObservationsModel *mObservationsModel;
@@ -53,18 +80,19 @@ private:
     double mTemps;
     double mHums;
     double mPres;
+    double mVPs;
+    double mDPts;
     int mDAs;
     int mWSpeeds;
     int mWDirs;
+    double mWXs;
+    double mWYs;
     int mWGustSpeed;
     int mWGustDir;
     int mSampleCount;
 
 private slots:
-    void sendLoopRequest();
-    void readStationData();
-//    void handleTimeout();
-    void handleError(QSerialPort::SerialPortError serialPortError);
+    void handleStationData(QByteArray data);
 
 signals:
     void newWeatherWritten();

@@ -1,5 +1,7 @@
 #include "modelbase.h"
 
+#include <QDebug>
+
 ModelBase::ModelBase(QString table,
                      Fields fields,
                      QObject *parent) :
