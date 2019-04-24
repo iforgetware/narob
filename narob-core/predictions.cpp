@@ -248,34 +248,11 @@ void Prediction::getWeather()
 
 double windFactor(int windSpeed, int windDirection)
 {
-//    double wFactor = 0;
-//    double dFactor = 0;
-
     // wind direction   0 = headwind ( higher ET )
     //                180 = tailwind ( lower ET )
 
-    if(windDirection > 180){
-        windDirection = 360 - windDirection;
-    }
-
-    if(windDirection > 90){
-        return qCos(windDirection) * windSpeed;
-    }else if (windDirection < 90){
-        return qCos(windDirection) * -windSpeed;
-    }else{
-        return 0;
-    }
-//    if(windDirection < 50){
-//        dFactor = (50 - windDirection) * 0.02;
-//    }else if(windDirection > 130){
-//        dFactor = (windDirection - 130) * -0.02;
-//    }
-
-//    wFactor = windSpeed
-//              * dFactor;
-
-//    return wFactor;
-
+    return windSpeed *
+            qCos(qDegreesToRadians(static_cast<double>(windDirection)));
 }
 
 double Prediction::windCorrection(shared_ptr<Ticket> ticket)

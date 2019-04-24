@@ -133,27 +133,6 @@ double calcVirtualTemp(double tc, double abspressmb, double emb){
     return p1;
 }
 
-int WeatherStation::calcDA(double t, double h, double p)
-{
-    double tc = (5.0/9.0) * (t - 32);
-    double es = calcVPwobus(tc);
-    double emb = es * h / 100.0;
-
-    mVaporPressure = emb * mb_to_in;
-
-    double actpressmb = p * in_to_mb;
-
-    mAirDensity = calcDensity(actpressmb, emb, tc);
-    mRelAirDensity = 100.0 * (mAirDensity / 1.225);
-
-    double densaltm = calcAltitude(mAirDensity);
-    double densaltzm = calcZ(densaltm);
-
-    double da = densaltzm / m_per_ft;
-
-    return qRound(da);
-}
-
 WeatherStation::WeatherStation(ObservationsModel *model, QObject *parent) :
     QObject(parent),
 
@@ -211,6 +190,27 @@ int WeatherStation::val16(int p)
     return (mLoopPacket.at(p + 1) << 8) + static_cast<uchar>(mLoopPacket.at(p));
 }
 
+int WeatherStation::calcDA(double t, double h, double p)
+{
+    double tc = (5.0/9.0) * (t - 32);
+    double es = calcVPwobus(tc);
+    double emb = es * h / 100.0;
+
+    mVaporPressure = emb * mb_to_in;
+
+    double actpressmb = p * in_to_mb;
+
+    mAirDensity = calcDensity(actpressmb, emb, tc);
+    mRelAirDensity = 100.0 * (mAirDensity / 1.225);
+
+    double densaltm = calcAltitude(mAirDensity);
+    double densaltzm = calcZ(densaltm);
+
+    double da = densaltzm / m_per_ft;
+
+    return qRound(da);
+}
+
 void WeatherStation::writeToDB()
 {
     Observation o;
@@ -223,15 +223,14 @@ void WeatherStation::writeToDB()
     double windAverageY = mWYs / mSampleCount;
     double windAverageX = mWXs / mSampleCount;
 
-    double windSpeed = qSqrt(qPow(windAverageY, 2)
-                             + qPow(windAverageX, 2));
+    double windSpeed = qSqrt(qPow(windAverageY, 2) +
+                             qPow(windAverageX, 2));
 
-    double windDirection;
-
-    windDirection = qRadiansToDegrees(qAtan2(windAverageY, windAverageX)) + 180;
+    double windDirection = 180 +
+                           qRadiansToDegrees(qAtan2(windAverageY,
+                                                    windAverageX));
 
     o.setValue("dateTime", cDT);
-
     o.setValue("temperature", formatNum(mTemps / mSampleCount, 1));
     o.setValue("humidity", formatNum(mHums / mSampleCount, 1));
     o.setValue("pressure", formatNum(mPres / mSampleCount, 2));

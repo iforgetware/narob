@@ -9,6 +9,9 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.3.8.2
+    - refined wind math
+
 v0.3.8.1
     - changed wind calcs to use correct trig functions
         - average wind over 1 minute is average of measured vectors
