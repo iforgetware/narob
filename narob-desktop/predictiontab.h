@@ -10,9 +10,16 @@
 #include "tickets.h"
 #include "observations.h"
 #include "previouspredictionswidget.h"
+#include "trace.h"
 
 #include <QWidget>
 #include <QTimer>
+#include <QChartView>
+#include <QLineSeries>
+#include <QScatterSeries>
+#include <QValueAxis>
+
+QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
 class PredictionTab;
@@ -31,6 +38,7 @@ public:
     void UpdateAllModels();
 
 private:
+    void setupGraph();
     void writePredictionToDb();
     void updateDisplay();
     void sendPage();
@@ -50,12 +58,23 @@ private:
     QString mPage;
     QTimer *mAutoTimer;
     QTimer *mFactorTimer;
+    QChartView *mChartView;
+    QLineSeries *mEighthMedian;
+    QLineSeries *mQuarterMedian;
+    QScatterSeries *mEighthRunsScatter;
+    QScatterSeries *mQuarterRunsScatter;
+    QValueAxis *mEighthDAAxis;
+    QValueAxis *mEighthETAxis;
+    QValueAxis *mQuarterDAAxis;
+    QValueAxis *mQuarterETAxis;
+    bool mQuarterGraph;
 
 private slots:
     void makePrediction();
     void onTrackTicketsCheckboxChange();
     void onVehicleTicketsCheckboxChange();
     void onFactorChange();
+    void onLengthToggle();
 };
 
 #endif // PREDICTIONTAB_H

@@ -5,6 +5,7 @@
 
 #include "observations.h"
 #include "observationswidget.h"
+#include "weathergraphwidget.h"
 #include "weatherstation.h"
 
 //class WeatherStation;
@@ -32,6 +33,7 @@ private:
 
     ObservationsModel *mObservationsModel;
     ObservationsWidget *mObservationsWidget;
+    WeatherGraphWidget *mWeatherGraphWidget;
     WeatherStation *mWeatherStation;
 };
 

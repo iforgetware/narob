@@ -1,7 +1,6 @@
 #include <QDebug>
 
 #include <QColor>
-#include <QPointF>
 #include <QtMath>
 
 #include "predictions.h"
@@ -9,44 +8,6 @@
 #include "observations.h"
 
 using namespace std;
-
-typedef QList<QPointF> Points;
-
-struct Line
-{
-    double mSlope;
-    double mIntercept;
-
-    Line(Points &pts)
-    {
-        int nPoints = pts.size();
-
-        qreal sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
-
-        for(int i = 0; i < nPoints; i++) {
-            sumX += pts[i].rx();
-            sumY += pts[i].ry();
-            sumXY += pts[i].rx() * pts[i].ry();
-            sumX2 += pts[i].rx() * pts[i].rx();
-        }
-
-        double xMean = sumX / nPoints;
-        double yMean = sumY / nPoints;
-        double denominator = sumX2 - sumX * xMean;
-
-        if(denominator == 0.0){
-            denominator = 0.000001;
-        }
-
-        mSlope = (sumXY - (sumX * yMean)) / denominator;
-        mIntercept = yMean - (mSlope * xMean);
-    }
-
-    double getYforX(double x)
-    {
-        return (mSlope * x) + mIntercept;
-    }
-};
 
 Predictions::Predictions() :
     DbTableBase("predictions",
@@ -66,7 +27,11 @@ Prediction::Prediction(TicketsModel *model,
     mTrackId(trackId),
     mRaceId(raceId),
     mTicketId(ticketId),
-    mTicketsModel(model)
+    mTicketsModel(model),
+    mEighthPoints(Points()),
+    mQuarterPoints(Points()),
+    mEighthLine(Line()),
+    mQuarterLine(Line())
 {
     setValue("vehicleId", mVehicleId);
     setValue("raceId", mRaceId);
@@ -103,6 +68,11 @@ void Prediction::predictClocks(QDateTime dateTime,
                                                 mTicketId);
 
     getWeather();
+
+    mEighthLine = Line();
+    mEighthPoints = Points();
+    mQuarterLine = Line();
+    mQuarterPoints = Points();
 
     predictClock("sixty");
     predictClock("threeThirty");
@@ -181,12 +151,25 @@ void Prediction::predictClock(const QString &clock)
                                    adjustedClock));
             dPoints.append(QPointF(ticket->value("densityAltitude").toInt(),
                                    adjustedClock));
+            if(clock == "eighth"){
+                mEighthPoints.append(QPointF(ticket->value("densityAltitude").toInt(),
+                                             adjustedClock));
+            }else if (clock == "quarter"){
+                mQuarterPoints.append(QPointF(ticket->value("densityAltitude").toInt(),
+                                              adjustedClock));
+            }
         }
 
         Line tLine(tPoints);
         Line hLine(hPoints);
         Line pLine(pPoints);
         Line dLine(dPoints);
+
+        if(clock == "eighth"){
+            mEighthLine = dLine;
+        }else if(clock == "quarter"){
+            mQuarterLine = dLine;
+        }
 
         setValue(clock + "T",
                        tLine.getYforX(mTemperature));
@@ -307,7 +290,7 @@ PredictionsModel::PredictionsModel(int vehicleId,
 
 QVariant PredictionsModel::data(const QModelIndex &item, int role) const
 {
-    if(role == Qt::BackgroundRole){
+    if(role == Qt::ForegroundRole){
 
         int col = item.column();
 
@@ -317,7 +300,7 @@ QVariant PredictionsModel::data(const QModelIndex &item, int role) const
            col == fieldIndex("thousandA") ||
            col == fieldIndex("quarterA")){
 
-            return QVariant(QColor(Qt::lightGray));
+            return QVariant(A_COLOR);
         }
 
         if(col == fieldIndex("sixtyT") ||
@@ -326,7 +309,7 @@ QVariant PredictionsModel::data(const QModelIndex &item, int role) const
            col == fieldIndex("thousandT") ||
            col == fieldIndex("quarterT")){
 
-            return QVariant(QColor(Qt::magenta));
+            return QVariant(T_COLOR);
         }
 
         if(col == fieldIndex("sixtyH") ||
@@ -335,7 +318,7 @@ QVariant PredictionsModel::data(const QModelIndex &item, int role) const
            col == fieldIndex("thousandH") ||
            col == fieldIndex("quarterH")){
 
-            return QVariant(QColor(Qt::cyan));
+            return QVariant(H_COLOR);
         }
 
         if(col == fieldIndex("sixtyP") ||
@@ -344,7 +327,16 @@ QVariant PredictionsModel::data(const QModelIndex &item, int role) const
            col == fieldIndex("thousandP") ||
            col == fieldIndex("quarterP")){
 
-            return QVariant(QColor(Qt::yellow));
+            return QVariant(P_COLOR);
+        }
+
+        if(col == fieldIndex("sixtyD") ||
+           col == fieldIndex("threeThirtyD") ||
+           col == fieldIndex("eighthD") ||
+           col == fieldIndex("thousandD") ||
+           col == fieldIndex("quarterD")){
+
+            return QVariant(D_COLOR);
         }
 
     }

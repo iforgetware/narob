@@ -45,8 +45,9 @@ const Fields TICKET_FIELDS{
             Field("dewPoint", "D Point", 60, 1),
             Field("densityAltitude", "D Alt", 50, 0),
             Field("windSpeed", "W Speed", 70, 0),
-            Field("windGust", "W Gust", 70, 0),
             Field("windDirection", "W Dir", 60, 0),
+            Field("windGust", "W Gust", 70, 0),
+            Field("windGustDirection", "G Dir", 60, 0),
 
             Field("notes", "Notes", 0, 0)};
 

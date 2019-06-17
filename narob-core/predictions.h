@@ -94,6 +94,10 @@ public:
                        bool allForVehicle,
                        bool allForTrack);
     QVector<Prediction*> adjacentPredictions();
+    Points eighthPoints(){return mEighthPoints;}
+    Points quarterPoints(){return mQuarterPoints;}
+    Line eighthLine(){return  mEighthLine;}
+    Line quarterLine(){return mQuarterLine;}
 
 private:
     void getWeather();
@@ -123,6 +127,11 @@ private:
     int mWindSpeed;
     int mWindGust;
     int mWindDirection;
+
+    Points mEighthPoints;
+    Points mQuarterPoints;
+    Line mEighthLine;
+    Line mQuarterLine;
 };
 
 

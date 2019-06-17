@@ -14,6 +14,7 @@ PredictionsWidget::PredictionsWidget(PredictionsModel *model,
     hide("raceId");
     hide("vehicleId");
     hide("ticketId");
+    hide("trackId"); // DEV ONLY - remove column from test databases
 
     QVector<QString> types;
     types.append("D");
@@ -31,6 +32,8 @@ PredictionsWidget::PredictionsWidget(PredictionsModel *model,
 
 
 
+
+    // set colors base on *_COLOR globals
 
     // make info dialog that opens on doubleclick
 

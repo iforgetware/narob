@@ -9,6 +9,11 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.4.0
+    - added graphs
+        - weather trends
+        - runs used for prediction
+
 v0.3.8.2
     - refined wind math
 

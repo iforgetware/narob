@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets sql serialport
+QT       += core gui widgets sql serialport charts
 
 TARGET = narob-desktop
 TEMPLATE = app
@@ -25,6 +25,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     dashboardtab.cpp \
+    trace.cpp \
+    weathergraphwidget.cpp \
     weathertab.cpp \
     settingstab.cpp \
     racecontroltab.cpp \
@@ -55,6 +57,8 @@ SOURCES += \
 HEADERS += \
     mainwindow.h \
     dashboardtab.h \
+    trace.h \
+    weathergraphwidget.h \
     weathertab.h \
     settingstab.h \
     racecontroltab.h \
@@ -85,6 +89,7 @@ HEADERS += \
 FORMS += \
     mainwindow.ui \
     dashboardtab.ui \
+    weathergraphwidget.ui \
     weathertab.ui \
     settingstab.ui \
     tableeditwidgetbase.ui \

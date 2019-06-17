@@ -66,25 +66,23 @@ unique_ptr<vector<shared_ptr<Ticket>>> TicketsModel::predictionTickets(
     bool valid;
 
     for(int row = 0; row < rowCount(); row++){
-        auto ticket = make_unique<Ticket>();
-
-        ticket->populate(record(row));
-
         valid = true;
 
         if(!allForVehicle){
-            valid = ticket->value("trackId").toInt() == trackId;
+            valid = record(row).value("trackId").toInt() == trackId;
 
             if(!allForTrack){
-                valid = ticket->value("raceId").toInt() == raceId;
+                valid = record(row).value("raceId").toInt() == raceId;
             }
         }
 
         if(valid && ticketId){
-            valid = (ticket->value("id").toInt() != ticketId);
+            valid = (record(row).value("id").toInt() != ticketId);
         }
 
         if(valid){
+            auto ticket = make_unique<Ticket>();
+            ticket->populate(record(row));
             ticketsVector->push_back(move(ticket));
         }
     }

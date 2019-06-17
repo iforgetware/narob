@@ -125,6 +125,53 @@ TicketDialog::TicketDialog(std::shared_ptr<Vehicle> vehicle,
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted,
             this, &TicketDialog::onButtonBoxAccepted);
+
+    for(QLabel *label: {ui->temperatureLabel,
+                        ui->sixtyT,
+                        ui->threeThirtyT,
+                        ui->eighthT,
+                        ui->thousandT,
+                        ui->quarterT}){
+        label->setStyleSheet("color: " + T_COLOR.name());
+    }
+
+    for(QLabel *label: {ui->humidityLabel,
+                        ui->sixtyH,
+                        ui->threeThirtyH,
+                        ui->eighthH,
+                        ui->thousandH,
+                        ui->quarterH}){
+        label->setStyleSheet("color: " + H_COLOR.name());
+    }
+
+    for(QLabel *label: {ui->pressureLabel,
+                        ui->sixtyP,
+                        ui->threeThirtyP,
+                        ui->eighthP,
+                        ui->thousandP,
+                        ui->quarterP}){
+        label->setStyleSheet("color: " + P_COLOR.name());
+    }
+
+    for(QLabel *label: {ui->averageLabel,
+                        ui->sixtyA,
+                        ui->threeThirtyA,
+                        ui->eighthA,
+                        ui->thousandA,
+                        ui->quarterA}){
+        label->setStyleSheet("color: " + A_COLOR.name());
+    }
+
+    for(QLabel *label: {ui->densityALabel,
+                        ui->sixtyD,
+                        ui->threeThirtyD,
+                        ui->eighthD,
+                        ui->thousandD,
+                        ui->quarterD}){
+        label->setStyleSheet("color: " + D_COLOR.name());
+    }
+
+
 }
 
 TicketDialog::~TicketDialog()
@@ -196,6 +243,7 @@ void TicketDialog::updateWeather()
     updateWValue("windSpeed");
     updateWValue("windGust");
     updateWValue("windDirection");
+    updateWValue("windGustDirection");
 
     updateWLabel("temperature", ui->temperature, 1);
     updateWLabel("humidity", ui->humidity, 1);
@@ -206,6 +254,7 @@ void TicketDialog::updateWeather()
     updateWLabel("windSpeed", ui->windSpeed, 0);
     updateWLabel("windGust", ui->windGust, 0);
     updateWLabel("windDirection", ui->windDirection, 0);
+    updateWLabel("windGustDirection", ui->windGustDir, 0);
 
     mDateTimer->stop();
 

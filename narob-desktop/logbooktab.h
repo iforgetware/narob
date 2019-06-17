@@ -3,8 +3,6 @@
 
 #include <QWidget>
 
-#include "vehicles.h"
-#include "tickets.h"
 #include "ticketswidget.h"
 
 namespace Ui {

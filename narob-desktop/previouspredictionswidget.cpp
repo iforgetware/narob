@@ -14,6 +14,7 @@ PreviousPredictionsWidget::PreviousPredictionsWidget(PredictionsModel *model,
     hide("raceId");
     hide("vehicleId");
     hide("ticketId");
+    hide("trackId"); // DEV ONLY - remove column from test databases
 
     QVector<QString> types;
     types.append("D");

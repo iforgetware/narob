@@ -1,6 +1,9 @@
 #ifndef OBSERVATIONS_H
 #define OBSERVATIONS_H
 
+#include <memory>
+
+#include <QVector>
 #include <QDateTime>
 
 #include "dbtablebase.h"
@@ -21,7 +24,8 @@ const Fields OBSERVATION_FIELDS{
             Field("windSpeed", "W Speed", 70, 0),
             Field("windDirection", "W Dir", 60, 0),
             Field("windGust", "G Speed", 70, 0),
-            Field("windGustDirection", "G Dir", 60, 0)
+            Field("windGustDirection", "G Dir", 60, 0),
+            Field("samples", "Sam", 60, 0)
 };
 
 
@@ -66,6 +70,7 @@ public:
 
     Observation lastObservation();
     Observation observationForTime(QDateTime dateTime);
+    std::unique_ptr<std::vector<std::unique_ptr<Observation>>> observationsForToday();
 };
 
 

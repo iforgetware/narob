@@ -10,27 +10,23 @@ RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
     QWidget(parent),
     ui(new Ui::RaceControlTab),
     mTicketsModel(new TicketsModel(vehicle->value("id").toInt(),
-                                   this))
+                                   this)),
+    mTicketEntryTab(new TicketEntryTab(mTicketsModel,
+                                       vehicle,
+                                       race,
+                                       this)),
+    mTrackHistoryTab(new TrackHistoryTab(mTicketsModel,
+                                         race->value("trackId").toInt(),
+                                         this)),
+    mLogbookTab(new LogbookTab(mTicketsModel, this)),
+    mPredictionTab(new PredictionTab(mTicketsModel,
+                                     vehicle,
+                                     race,
+                                     this))
 {
     ui->setupUi(this);
 
     ui->tabWidget->setTabsClosable(false);
-
-    mTicketEntryTab = new TicketEntryTab(mTicketsModel,
-                                         vehicle,
-                                         race,
-                                         this);
-
-    mTrackHistoryTab = new TrackHistoryTab(mTicketsModel,
-                                           race->value("trackId").toInt(),
-                                           this);
-
-    mLogbookTab = new LogbookTab(mTicketsModel, this);
-
-    mPredictionTab = new PredictionTab(mTicketsModel,
-                                       vehicle,
-                                       race,
-                                       this);
 
     ui->tabWidget->addTab(mTicketEntryTab, "Ticket Entry");
     ui->tabWidget->addTab(mTrackHistoryTab, "Track History");

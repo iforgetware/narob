@@ -10,11 +10,13 @@ WeatherTab::WeatherTab(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WeatherTab),
     mObservationsModel(new ObservationsModel(this)),
-    mObservationsWidget(new ObservationsWidget(this))
+    mObservationsWidget(new ObservationsWidget(this)),
+    mWeatherGraphWidget(new WeatherGraphWidget(this))
 {
     ui->setupUi(this);
 
     ui->gridLayout->addWidget(mObservationsWidget, 0, 0);
+    ui->gridLayout->addWidget(mWeatherGraphWidget, 1, 0);
 
     startWeatherStation();
 }
@@ -45,5 +47,10 @@ void WeatherTab::startWeatherStation()
                 &WeatherStation::newWeatherWritten,
                 mObservationsWidget,
                 &ObservationsWidget::updateModel);
+
+        connect(mWeatherStation,
+                &WeatherStation::sendObservation,
+                mWeatherGraphWidget,
+                &WeatherGraphWidget::handleNewWeather);
     }
 }

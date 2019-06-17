@@ -3,7 +3,9 @@
 
 #include <QtCore/qglobal.h>
 #include <QVector>
+#include <QPointF>
 #include <QMap>
+#include <QColor>
 
 struct Field
 {
@@ -31,7 +33,57 @@ struct Field
 
 typedef QVector<Field> Fields;
 
+typedef QList<QPointF> Points;
+
+struct Line
+{
+    double mSlope;
+    double mIntercept;
+
+    Line()
+    {
+        mSlope = 0;
+        mIntercept = 0;
+    }
+
+    Line(Points &pts)
+    {
+        int nPoints = pts.size();
+
+        qreal sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+
+        for(int i = 0; i < nPoints; i++) {
+            sumX += pts[i].rx();
+            sumY += pts[i].ry();
+            sumXY += pts[i].rx() * pts[i].ry();
+            sumX2 += pts[i].rx() * pts[i].rx();
+        }
+
+        double xMean = sumX / nPoints;
+        double yMean = sumY / nPoints;
+        double denominator = sumX2 - sumX * xMean;
+
+        if(denominator == 0.0){
+            denominator = 0.000001;
+        }
+
+        mSlope = (sumXY - (sumX * yMean)) / denominator;
+        mIntercept = yMean - (mSlope * xMean);
+    }
+
+    double getYforX(double x)
+    {
+        return (mSlope * x) + mIntercept;
+    }
+};
+
 const int CHANGE_DELAY = 1000;
+
+const QColor T_COLOR = Qt::red;
+const QColor H_COLOR = Qt::blue;
+const QColor P_COLOR = Qt::darkYellow;
+const QColor A_COLOR = Qt::gray;
+const QColor D_COLOR = Qt::darkBlue;
 
 static QMap<QString, QString> TEXT_SUFFIXES{{"Alltel", "message.alltel.com"},
                                             {"AT&T", "txt.att.net"},

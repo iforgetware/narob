@@ -11,7 +11,7 @@ class PreviousPredictionsWidget : public TableDisplayWidgetBase
 
 public:
     explicit PreviousPredictionsWidget(PredictionsModel *model,
-                                       QWidget* parent = 0);
+                                       QWidget* parent = nullptr);
 
 private:
     PredictionsModel* mPredictionsModel;

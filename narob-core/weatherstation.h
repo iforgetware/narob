@@ -18,6 +18,7 @@ class WeatherStationPort : public QObject
 
 public:
     WeatherStationPort();
+    ~WeatherStationPort();
 
 private:
     void openComPort();
@@ -96,6 +97,7 @@ private slots:
 
 signals:
     void newWeatherWritten();
+    void sendObservation(Observation o);
     void sendStatus(QString status);
 };
 

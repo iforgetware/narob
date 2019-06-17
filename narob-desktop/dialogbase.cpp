@@ -32,5 +32,4 @@ QModelIndex DialogBase::indexForField(const QString &field)
 {
     return mModel->index(mRow,
                          mModel->fieldIndex(field));
-
 }

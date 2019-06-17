@@ -170,6 +170,37 @@ WeatherStation::WeatherStation(ObservationsModel *model, QObject *parent) :
     connect(mWeatherStationPort, &WeatherStationPort::sendStationData,
             this, &WeatherStation::handleStationData);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // check mRunning before any serial IO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     mRunning = true;
     mComPortThread->start();
 }
@@ -220,6 +251,9 @@ void WeatherStation::writeToDB()
     cDT.setDate(QDate::currentDate());
     cDT.setTime(QTime(cT.hour(), cT.minute()));
 
+    double temp = mTemps / mSampleCount;
+    int dA = mDAs / mSampleCount;
+
     double windAverageY = mWYs / mSampleCount;
     double windAverageX = mWXs / mSampleCount;
 
@@ -231,22 +265,26 @@ void WeatherStation::writeToDB()
                                                     windAverageX));
 
     o.setValue("dateTime", cDT);
-    o.setValue("temperature", formatNum(mTemps / mSampleCount, 1));
+    o.setValue("temperature", formatNum(temp, 1));
     o.setValue("humidity", formatNum(mHums / mSampleCount, 1));
     o.setValue("pressure", formatNum(mPres / mSampleCount, 2));
     o.setValue("vaporPressure", formatNum(mVPs / mSampleCount, 2));
-    o.setValue("densityAltitude", mDAs / mSampleCount);
+    o.setValue("dewPoint", formatNum(mDPts / mSampleCount, 1));
+    o.setValue("densityAltitude", dA);
     o.setValue("windSpeed", static_cast<int>(windSpeed));
     o.setValue("windDirection", static_cast<int>(windDirection));
     o.setValue("windGust", mWGustSpeed);
     o.setValue("windGustDirection", mWGustDir);
+    o.setValue("samples", mSampleCount);
 
-    if(o.value("temperature").toDouble() > 0.0){
+    if((temp > 0.0) && (dA > -1000) && (dA < 20000)){
+        mLastTime = cT;
 
         mObservationsModel->addRow(o);
 
         QString s = "      ";
         emit newWeatherWritten();
+        emit sendObservation(o);
         emit sendStatus(QString("Weather @ %0 ->   "
                                 "Temperature: %1"
                                 + s +
@@ -263,7 +301,8 @@ void WeatherStation::writeToDB()
                                 "Gust: %7 MPH"
                                 + s +
                                 "Gust Direction: %8"
-                                "")
+                                + s +
+                                "Samples: %9")
                         .arg(cDT.time().toString("h:mm AP"))
                         .arg(o.value("temperature").toDouble())
                         .arg(o.value("humidity").toDouble())
@@ -273,31 +312,37 @@ void WeatherStation::writeToDB()
                         .arg(o.value("windDirection").toInt())
                         .arg(o.value("windGust").toInt())
                         .arg(o.value("windGustDirection").toInt())
+                        .arg(o.value("samples").toInt())
                         );
-
-        mTemps = 0;
-        mHums = 0;
-        mPres = 0;
-        mVPs = 0;
-        mDPts = 0;
-        mDAs = 0;
-        mWSpeeds = 0;
-        mWDirs = 0;
-
-        mWXs = 0;
-        mWYs = 0;
-
-        mWGustSpeed = 0;
-        mWGustDir = 0;
-
-        mSampleCount = 0;
-        mLastTime = cT;
     }
+
+    mTemps = 0;
+    mHums = 0;
+    mPres = 0;
+    mVPs = 0;
+    mDPts = 0;
+    mDAs = 0;
+    mWSpeeds = 0;
+    mWDirs = 0;
+
+    mWXs = 0;
+    mWYs = 0;
+
+    mWGustSpeed = 0;
+    mWGustDir = 0;
+
+    mSampleCount = 0;
 }
 
 void WeatherStation::handleStationData(QByteArray data)
 {
     mLoopPacket = data;
+
+//    double t = val16(12) / 10.0;
+//    double h = val8(33);
+//    double p = val16(7) / 1000.0;
+//    int wS = val8(14);
+//    double wD = val16(16);
 
     double t = val16(12) / 10.0;
     double h = val8(33);
@@ -311,6 +356,7 @@ void WeatherStation::handleStationData(QByteArray data)
     mDAs += calcDA(t, h, p);
     mVPs += mVaporPressure; // this is set in calcDA
                             // not elegant
+    mDPts += val16(30);
 
     mWYs += -wS * qSin(qDegreesToRadians(wD));
     mWXs += -wS * qCos(qDegreesToRadians(wD));
@@ -359,6 +405,14 @@ WeatherStationPort::WeatherStationPort() :
     openComPort();
 
     mReadTimer->start(4000);
+}
+
+WeatherStationPort::~WeatherStationPort()
+{
+    if(mComPort->isOpen())
+    {
+        mComPort->close();
+    }
 }
 
 void WeatherStationPort::openComPort()
@@ -429,7 +483,7 @@ void WeatherStationPort::openComPort()
 
 void WeatherStationPort::readStation()
 {
-    mComPort->write("LOOP\n");
+    mComPort->write("LPS 2 1\n");
 
     QThread::sleep(2);
 
@@ -443,10 +497,10 @@ void WeatherStationPort::readStation()
     if(rawData.length() > 50 && rawData.contains("LOO")){
         emit sendStationData(rawData.mid(rawData.indexOf("LOO")));
     }else{
-        qDebug("Bad Loop Packet - WRITE CODE");
-        qDebug() << "Packet data -> " << rawData;
-//        mComPort->flush();
+        qDebug() << "Bad Loop Packet -> " << rawData << " <- WRITE CODE";
         mComPort->write("\n");
+        QThread::sleep(2);
+        QByteArray junk = mComPort->readAll();
     }
 
     return;

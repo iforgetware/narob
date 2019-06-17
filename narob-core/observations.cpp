@@ -1,6 +1,10 @@
 #include <QSqlQuery>
 
+#include <QThread>
+
 #include "observations.h"
+
+using namespace std;
 
 Observations::Observations() :
     DbTableBase("observations",
@@ -56,4 +60,24 @@ Observation ObservationsModel::observationForTime(QDateTime dateTime)
     query.clear();
 
     return observation;
+}
+
+unique_ptr<vector<unique_ptr<Observation>>> ObservationsModel::observationsForToday()
+{
+    auto observationsVector = make_unique<vector<unique_ptr<Observation>>>();
+
+    QDate date = QDate::currentDate();
+
+    for(int row = rowCount() - 1; row >= 0 ; row--){
+        if(record(row).value("dateTime").toDate() == date)
+        {
+            auto observation = make_unique<Observation>();
+
+            observation->populate(record(row));
+
+            observationsVector->push_back(move(observation));
+        }
+    }
+
+    return observationsVector;
 }
