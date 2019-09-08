@@ -21,7 +21,7 @@ WeatherGraphWidget::WeatherGraphWidget(QWidget *parent) :
 
     mChartView->setRenderHint(QPainter::Antialiasing);
     mChartView->chart()->setTitle("Weather Trends");
-    mXAxis->setFormat("h:mm AP");
+    mXAxis->setFormat("M/d h:mm AP");
     mChartView->chart()->addAxis(mXAxis, Qt::AlignBottom);
     mXAxis->setRange(QDateTime::currentDateTime().addSecs(60),
                      QDateTime::currentDateTime().addSecs(120));
@@ -64,7 +64,8 @@ WeatherGraphWidget::WeatherGraphWidget(QWidget *parent) :
 
     ObservationsModel observationsModel;
 
-    auto observations = observationsModel.observationsForToday();
+//    auto observations = observationsModel.observationsForToday();
+    auto observations = observationsModel.observationsForDays(2);
 
     for(auto&& observation : *observations)
     {

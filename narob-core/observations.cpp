@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include <QSqlQuery>
 
 #include <QThread>
@@ -69,8 +71,10 @@ unique_ptr<vector<unique_ptr<Observation>>> ObservationsModel::observationsForTo
     QDate date = QDate::currentDate();
 
     for(int row = rowCount() - 1; row >= 0 ; row--){
-        if(record(row).value("dateTime").toDate() == date)
-        {
+        if(row % 100 == 0){
+            qDebug() << "row " << row;
+        }
+        if(record(row).value("dateTime").toDate() == date){
             auto observation = make_unique<Observation>();
 
             observation->populate(record(row));
@@ -78,6 +82,33 @@ unique_ptr<vector<unique_ptr<Observation>>> ObservationsModel::observationsForTo
             observationsVector->push_back(move(observation));
         }
     }
+
+    return observationsVector;
+}
+
+unique_ptr<vector<unique_ptr<Observation>>> ObservationsModel::observationsForDays(const int days)
+{
+    auto observationsVector = make_unique<vector<unique_ptr<Observation>>>();
+
+    QDateTime startDateTime;
+    startDateTime.setDate(QDate::currentDate().addDays(-days));
+
+    QSqlQuery query;
+    query.prepare("SELECT * FROM observations "
+                  "WHERE dateTime >= :startDateTime");
+    query.bindValue(":startDateTime", startDateTime);
+
+    query.exec();
+
+    while(query.next()){
+        auto observation = make_unique<Observation>();
+
+        observation->populate(query.record());
+
+        observationsVector->push_back(move(observation));
+    }
+
+    query.clear();
 
     return observationsVector;
 }
