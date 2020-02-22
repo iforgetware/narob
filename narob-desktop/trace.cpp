@@ -69,3 +69,12 @@ void Trace::newPoint(QPointF p)
 
     mSeries->append(p);
 }
+
+void Trace::clear()
+{
+    mSeries->clear();
+    mMin = -1000000;
+    mMax = 1000000;
+    mAxis->setMin(mMin);
+    mAxis->setMax(mMax);
+}

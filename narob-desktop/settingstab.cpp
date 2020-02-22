@@ -19,6 +19,10 @@ SettingsTab::SettingsTab(QWidget *parent) :
     ui->emailUserEdit->setText(Settings::get("emailUser").toString());
     ui->emailPWEdit->setText(Settings::get("emailPW").toString());
     ui->emailHostEdit->setText(Settings::get("emailHost").toString());
+    ui->useOffsetsCheckBox->setChecked(Settings::get("useOffsets").toBool());
+    ui->tempOffsetSpinBox->setValue(Settings::get("tempOffset").toDouble());
+    ui->humOffsetSpinBox->setValue(Settings::get("humOffset").toDouble());
+    ui->useConsoleCheckBox->setChecked(Settings::get("useConsole").toBool());
 
     displayUpdate();
 
@@ -71,15 +75,29 @@ void SettingsTab::onSaveButtonClicked()
         Settings::set("emailHost", ui->emailHostEdit->text());
     }
 
+    Settings::set("useOffsets", ui->useOffsetsCheckBox->isChecked());
+
+    Settings::set("tempOffset", ui->tempOffsetSpinBox->value());
+
+    Settings::set("humOffset", ui->humOffsetSpinBox->value());
+
+    Settings::set("useConsole", ui->useConsoleCheckBox->isChecked());
+
     displayUpdate();
 }
 
 void SettingsTab::onClearButtonClicked()
 {
+    ui->windAdjustmentSpinBox->setValue(0.0);
+    ui->weightAdjustmentSpinBox->setValue(0.0);
+    ui->textNumberEdit->clear();
     ui->emailUserEdit->clear();
     ui->emailPWEdit->clear();
     ui->emailHostEdit->clear();
-    ui->textNumberEdit->clear();
+//    ui->useOffsetsCheckBox->setChecked(false);
+    ui->tempOffsetSpinBox->setValue(0.0);
+    ui->humOffsetSpinBox->setValue(0.0);
+//    ui->useConsoleCheckBox->setChecked(false);
 }
 
 void SettingsTab::onUpdateLogbookButtonClicked()
@@ -141,5 +159,15 @@ void SettingsTab::displayUpdate()
                               .arg(Settings::get("emailPW").toString()));
     ui->emailHostLabel->setText(QString("Email host -> %1")
                                 .arg(Settings::get("emailHost").toString()));
+    ui->useOffsetsCheckBox->setText(QString("Use Value Offsets -> %1")
+                                    .arg(Settings::get("useOffsets").toBool()
+                                         ? "Yes" : "No"));
+    ui->tempOffsetLabel->setText(QString("Temperature Offset -> %1")
+                                 .arg(Settings::get("tempOffset").toString()));
+    ui->humOffsetLabel->setText(QString("Humidity Offset -> %1")
+                                 .arg(Settings::get("humOffset").toString()));
+    ui->useConsoleCheckBox->setText(QString("Use Values From Console -> %1")
+                                    .arg(Settings::get("useConsole").toBool()
+                                         ? "Yes" : "No"));
 }
 

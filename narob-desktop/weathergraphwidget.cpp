@@ -13,7 +13,8 @@ WeatherGraphWidget::WeatherGraphWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WeatherGraphWidget),
     mChartView(new QChartView(new QChart(), this)),
-    mXAxis(new QDateTimeAxis(mChartView))
+    mXAxis(new QDateTimeAxis(mChartView)),
+    mFactorTimer(new QTimer(this))
 {
     ui->setupUi(this);
 
@@ -62,10 +63,38 @@ WeatherGraphWidget::WeatherGraphWidget(QWidget *parent) :
                         D_COLOR,
                         this);
 
+    mDaysSpinBox = new QSpinBox(this);
+    mDaysSpinBox->setSuffix(" Past Days of Weather");
+
+    QFrame* controlFrame = new QFrame(this);
+    QHBoxLayout* cFLayout = new QHBoxLayout(controlFrame);
+
+    cFLayout->addSpacerItem(new QSpacerItem(1,
+                                            1,
+                                            QSizePolicy::Expanding,
+                                            QSizePolicy::Fixed));
+    cFLayout->addWidget(mDaysSpinBox);
+    cFLayout->addSpacerItem(new QSpacerItem(1,
+                                            1,
+                                            QSizePolicy::Expanding,
+                                            QSizePolicy::Fixed));
+
+    controlFrame->setLayout(cFLayout);
+
+    connect(mDaysSpinBox,
+            QOverload<int>::of(&QSpinBox::valueChanged),
+            this,
+            &WeatherGraphWidget::onFactorChange);
+
+    connect(mFactorTimer, &QTimer::timeout,
+            this, &WeatherGraphWidget::handleGraphDaysChange);
+
+    ui->gridLayout->addWidget(controlFrame);
+
     ObservationsModel observationsModel;
 
 //    auto observations = observationsModel.observationsForToday();
-    auto observations = observationsModel.observationsForDays(2);
+    auto observations = observationsModel.observationsForDays(0);
 
     for(auto&& observation : *observations)
     {
@@ -96,4 +125,29 @@ void WeatherGraphWidget::handleNewWeather(Observation o)
     mHTrace->newPoint(xMS, o.value("humidity").toDouble());
     mPTrace->newPoint(xMS, o.value("pressure").toDouble());
     mDTrace->newPoint(xMS, o.value("densityAltitude").toDouble());
+}
+
+void WeatherGraphWidget::handleGraphDaysChange()
+{
+    mTTrace->clear();
+    mHTrace->clear();
+    mPTrace->clear();
+    mDTrace->clear();
+
+    mXAxis->setRange(QDateTime::currentDateTime().addSecs(60),
+                     QDateTime::currentDateTime().addSecs(120));
+
+    ObservationsModel observationsModel;
+
+    auto observations = observationsModel.observationsForDays(mDaysSpinBox->value());
+
+    for(auto&& observation : *observations)
+    {
+        handleNewWeather(*observation);
+    }
+}
+
+void WeatherGraphWidget::onFactorChange()
+{
+    mFactorTimer->start(CHANGE_DELAY);
 }

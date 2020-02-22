@@ -28,6 +28,7 @@ public:
     void newPoint(double x, double y);
     void newPoint(QPointF p);
     void hide(){mSeries->hide(); mAxis->hide();}
+    void clear();
 
 private:
     QXYSeries *mSeries;

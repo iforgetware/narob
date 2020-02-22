@@ -1,5 +1,7 @@
 #include "weatherstation.h"
 
+#include "settings.h"
+
 #include <QSerialPortInfo>
 #include <QDate>
 #include <QDebug>
@@ -282,7 +284,7 @@ void WeatherStation::writeToDB()
 
         mObservationsModel->addRow(o);
 
-        QString s = "      ";
+        QString s = "   ";
         emit newWeatherWritten();
         emit sendObservation(o);
         emit sendStatus(QString("Weather @ %0 ->   "
@@ -314,6 +316,8 @@ void WeatherStation::writeToDB()
                         .arg(o.value("windGustDirection").toInt())
                         .arg(o.value("samples").toInt())
                         );
+    }else{
+        emit sendStatus("BAD WEATHER DATA - Not written to DB!");
     }
 
     mTemps = 0;
@@ -338,17 +342,64 @@ void WeatherStation::handleStationData(QByteArray data)
 {
     mLoopPacket = data;
 
-//    double t = val16(12) / 10.0;
-//    double h = val8(33);
-//    double p = val16(7) / 1000.0;
-//    int wS = val8(14);
-//    double wD = val16(16);
+    double t;
+    double h;
+    double wS;
+    double wD;
 
-    double t = val16(12) / 10.0;
-    double h = val8(33);
     double p = val16(7) / 1000.0;
-    int wS = val8(14);
-    double wD = val16(16);
+
+    if(Settings::get("useConsole").toBool()){
+        t = val16(9) / 10.0;
+        h = val8(11);
+        wD = 0;
+        wS = 0;
+    }else{
+        t = val16(12) / 10.0;
+        h = val8(33);
+        wS = val8(14);
+        wD = val16(16);
+    }
+
+    if(Settings::get("useOffsets").toBool()){
+        t = t + Settings::get("tempOffset").toDouble();
+        h = h + Settings::get("humOffset").toDouble();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// hacks for reversing wind directions
+// add code and button in UI
+
+//    if(wD > 0 && wD < 181){
+//        wD = wD + 180;
+//    }else if(wD > 180 && wD < 360){
+//        wD = wD - 180;
+//    }else{
+//        wD = 0;
+//    }
+
+
+
+
+
+
+
+
+
 
     mTemps += t;
     mHums += h;

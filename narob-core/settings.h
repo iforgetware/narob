@@ -16,7 +16,11 @@ const QHash<QString, QVariant> DEFAULT_SETTINGS{{"windAdjustment", 0.0},
                                                 {"textProvider", ""},
                                                 {"emailUser", ""},
                                                 {"emailPW", ""},
-                                                {"emailHost", ""}};
+                                                {"emailHost", ""},
+                                                {"useOffsets", false},
+                                                {"tempOffset", 0.0},
+                                                {"humOffset", 0.0},
+                                                {"useConsole", false}};
 
 
 class NAROBCORESHARED_EXPORT Settings

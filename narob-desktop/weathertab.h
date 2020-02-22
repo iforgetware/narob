@@ -32,9 +32,13 @@ private:
     void startWeatherStation();
 
     ObservationsModel *mObservationsModel;
+    QLabel *mAdjustmentLabel;
     ObservationsWidget *mObservationsWidget;
     WeatherGraphWidget *mWeatherGraphWidget;
     WeatherStation *mWeatherStation;
+
+private slots:
+    void updateAdjustmentDisplay();
 };
 
 #endif // WEATHERTAB_H

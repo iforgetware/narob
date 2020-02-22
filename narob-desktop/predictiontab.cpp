@@ -354,7 +354,9 @@ void PredictionTab::pageLine(QString line, QString field, int decimals)
         mPage.append(QString(line)
                      .arg(QString::number(mCurrentPrediction
                                          .value(field)
-                                         .toDouble())));
+                                         .toDouble()
+                                          ,'f',
+                                          decimals)));
     }
 }
 

@@ -6,6 +6,8 @@
 #include <QLineSeries>
 #include <QScatterSeries>
 #include <QDateTimeAxis>
+#include <QTimer>
+#include <QSpinBox>
 
 #include "observations.h"
 #include "trace.h"
@@ -36,8 +38,15 @@ private:
     Trace *mPTrace;
     Trace *mDTrace;
 
+    QSpinBox *mDaysSpinBox;
+    QTimer *mFactorTimer;
+
 public slots:
     void handleNewWeather(Observation o);
+
+private slots:
+    void onFactorChange();
+    void handleGraphDaysChange();
 };
 
 #endif // WEATHERGRAPHWIDGET_H
