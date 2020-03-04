@@ -10,6 +10,7 @@
 #include "tickets.h"
 #include "vehicles.h"
 #include "races.h"
+#include "observations.h"
 
 #include "narob-core_global.h"
 
@@ -86,13 +87,20 @@ public:
                         const int trackId,
                         const int raceId,
                         const int ticketId);
-    void predictClocks(QDateTime dateTime,
+    void predictByTime(QDateTime dateTime,
                        double riderWeight,
                        int vehicleWeight,
                        double windAdjustment,
                        double weightAdjustment,
                        bool allForVehicle,
                        bool allForTrack);
+    void predictByObservation(Observation observation,
+                              double riderWeight,
+                              int vehicleWeight,
+                              double windAdjustment,
+                              double weightAdjustment,
+                              bool allForVehicle,
+                              bool allForTrack);
     QVector<Prediction*> adjacentPredictions();
     Points eighthPoints(){return mEighthPoints;}
     Points quarterPoints(){return mQuarterPoints;}
@@ -101,6 +109,7 @@ public:
 
 private:
     void getWeather();
+    void predictClocks();
     void predictClock(const QString &clock);
     double windCorrection(std::shared_ptr<Ticket> ticket);
     double weightCorrection(std::shared_ptr<Ticket> ticket);

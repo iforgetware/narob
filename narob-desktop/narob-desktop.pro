@@ -52,7 +52,8 @@ SOURCES += \
     dialogbase.cpp \
     previouspredictionswidget.cpp \
     predictionswidget.cpp \
-    ticketpredictionsdialog.cpp
+    ticketpredictionsdialog.cpp \
+    calculatortab.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -84,7 +85,8 @@ HEADERS += \
     dialogbase.h \
     previouspredictionswidget.h \
     predictionswidget.h \
-    ticketpredictionsdialog.h
+    ticketpredictionsdialog.h \
+    calculatortab.h
 
 FORMS += \
     mainwindow.ui \
@@ -103,7 +105,8 @@ FORMS += \
     ticketentrytab.ui \
     logbooktab.ui \
     predictiontab.ui \
-    ticketpredictionsdialog.ui
+    ticketpredictionsdialog.ui \
+    calculatortab.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../narob-core/release/ -lnarob-core
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../narob-core/debug/ -lnarob-core

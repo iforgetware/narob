@@ -12,6 +12,7 @@
 #include "trackhistorytab.h"
 #include "logbooktab.h"
 #include "predictiontab.h"
+#include "calculatortab.h"
 
 namespace Ui {
 class RaceControlTab;
@@ -36,6 +37,7 @@ private:
     TrackHistoryTab *mTrackHistoryTab;
     LogbookTab *mLogbookTab;
     PredictionTab *mPredictionTab;
+    CalculatorTab *mCalculatorTab;
 };
 
 #endif // RACECONTROLTAB_H

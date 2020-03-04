@@ -22,6 +22,10 @@ RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
     mPredictionTab(new PredictionTab(mTicketsModel,
                                      vehicle,
                                      race,
+                                     this)),
+    mCalculatorTab(new CalculatorTab(mTicketsModel,
+                                     vehicle,
+                                     race,
                                      this))
 {
     ui->setupUi(this);
@@ -32,6 +36,7 @@ RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
     ui->tabWidget->addTab(mTrackHistoryTab, "Track History");
     ui->tabWidget->addTab(mLogbookTab, "Logbook");
     ui->tabWidget->addTab(mPredictionTab, "Predictions");
+    ui->tabWidget->addTab(mCalculatorTab, "Calculators");
 }
 
 RaceControlTab::~RaceControlTab()

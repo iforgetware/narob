@@ -38,7 +38,7 @@ Prediction::Prediction(TicketsModel *model,
     setValue("ticketId", mTicketId);
 }
 
-void Prediction::predictClocks(QDateTime dateTime,
+void Prediction::predictByTime(QDateTime dateTime,
                                double riderWeight,
                                int vehicleWeight,
                                double windAdjustment,
@@ -61,13 +61,62 @@ void Prediction::predictClocks(QDateTime dateTime,
     mAllForTrack = allForTrack;
     mAllForVehicle = allForVehicle;
 
+    getWeather();
+
+    predictClocks();
+}
+
+void Prediction::predictByObservation(Observation observation,
+                                      double riderWeight,
+                                      int vehicleWeight,
+                                      double windAdjustment,
+                                      double weightAdjustment,
+                                      bool allForVehicle,
+                                      bool allForTrack)
+{
+    setValue("temperature", observation.value("temperature"));
+    setValue("humidity", observation.value("humidity"));
+    setValue("pressure", observation.value("pressure"));
+    setValue("vaporPressure", observation.value("vaporPressure"));
+    setValue("dewPoint", observation.value("dewPoint"));
+    setValue("densityAltitude", observation.value("densityAltitude"));
+    setValue("windSpeed", observation.value("windSpeed"));
+    setValue("windGust", observation.value("windGust"));
+    setValue("windDirection", observation.value("windDirection"));
+
+    mTemperature = value("temperature").toDouble();
+    mHumidity = value("humidity").toDouble();
+    mPressure = value("pressure").toDouble();
+    mVaporPressure = value("vaporPressure").toDouble();
+    mDewPoint = value("dewPoint").toDouble();
+    mDensityAltitude = value("densityAltitude").toInt();
+    mWindSpeed = value("windSpeed").toInt();
+    mWindGust = value("windGust").toInt();
+    mWindDirection = value("windDirection").toInt();
+
+    setValue("dateTime", QDateTime(QDate(0, 0, 0), QTime(0, 0)));
+    setValue("riderWeight", riderWeight);
+    setValue("vehicleWeight", vehicleWeight);
+    setValue("windAdjustment", windAdjustment);
+    setValue("weightAdjustment", weightAdjustment);
+    setValue("allForVehicle", allForVehicle);
+    setValue("allForTrack", allForTrack);
+
+    mRiderWeight = riderWeight;
+    mVehicleWeight = vehicleWeight;
+    mWindAdjustment = windAdjustment;
+    mWeightAdjustment = weightAdjustment;
+    mAllForTrack = allForTrack;
+    mAllForVehicle = allForVehicle;
+
+    predictClocks();
+}
+void Prediction::predictClocks(){
     mTickets = mTicketsModel->predictionTickets(mAllForTrack,
                                                 mAllForVehicle,
                                                 mTrackId,
                                                 mRaceId,
                                                 mTicketId);
-
-    getWeather();
 
     mEighthLine = Line();
     mEighthPoints = Points();
@@ -80,7 +129,6 @@ void Prediction::predictClocks(QDateTime dateTime,
     predictClock("thousand");
     predictClock("quarter");
 }
-
 QVector<Prediction*> Prediction::adjacentPredictions(){
     QVector<Prediction*> aPredictions;
 
@@ -95,7 +143,7 @@ QVector<Prediction*> Prediction::adjacentPredictions(){
                                                 mRaceId,
                                                 mTicketId);
 
-        prediction->predictClocks(QDateTime(ticketDateTime.date(),
+        prediction->predictByTime(QDateTime(ticketDateTime.date(),
                                             startTime.addSecs(i * 60)),
                                   mRiderWeight,
                                   mVehicleWeight,

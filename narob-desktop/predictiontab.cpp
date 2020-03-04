@@ -206,7 +206,7 @@ void PredictionTab::UpdateAllModels()
 
 void PredictionTab::makePrediction()
 {
-    mCurrentPrediction.predictClocks(QDateTime(),
+    mCurrentPrediction.predictByTime(QDateTime(),
                                      ui->riderWeightSpinBox->value(),
                                      ui->vehicleWeightSpinBox->value(),
                                      ui->windAdjustmentSpinBox->value(),

@@ -58,6 +58,17 @@ class NAROBCORESHARED_EXPORT Observation : public DbRecordBase
 {
 public:
     explicit Observation();
+
+    void calcDA();
+
+private:
+    double mRelHP;
+    double mAirDensity;
+    double mRelAirDensity;
+    double mDensityAltitude;
+    double mVirtualTemperature;
+    double mVaporPressure;
+    double mDynoFactor;
 };
 
 

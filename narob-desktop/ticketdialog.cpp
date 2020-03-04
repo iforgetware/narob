@@ -263,7 +263,7 @@ void TicketDialog::updateWeather()
 
 void TicketDialog::updatePrediction()
 {
-    mPredictedRun->predictClocks(ui->dateTimeEdit->dateTime(),
+    mPredictedRun->predictByTime(ui->dateTimeEdit->dateTime(),
                                  ui->riderWeightSpinBox->value(),
                                  ui->vehicleWeightSpinBox->value(),
                                  ui->windAdjustmentSpinBox->value(),
