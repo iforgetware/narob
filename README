@@ -1,5 +1,5 @@
 narob is weather station and ET prediction software for drag racing.
-It currently works with the Altronics Performaire weather station.
+It currently works with Davis weather stations, and there is some old code for the Altronics Performaire weather station.
 In-lanes paging can be setup if the PC running it has an internet connection.
 I use my phone as a hotspot.
 It uses email-to-text addresses based on the service provider of the recieving phone.
