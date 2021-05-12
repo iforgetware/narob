@@ -64,10 +64,10 @@ void VehicleDialog::createUi()
 void VehicleDialog::updateRunCounts(){
     int vehicleId = indexForField("id").data().toInt();
 
-    TicketsModel ticketsModel(vehicleId, this);
+    TicketsLogbookModel ticketsLogbookModel(vehicleId, this);
 
-    int oR = ticketsModel.ticketsSinceDateTime(ui->lastOilChangeEdit->dateTime());
-    int tR = ticketsModel.ticketsSinceDateTime(ui->lastTireChangeEdit->dateTime());
+    int oR = ticketsLogbookModel.ticketsSinceDateTime(ui->lastOilChangeEdit->dateTime());
+    int tR = ticketsLogbookModel.ticketsSinceDateTime(ui->lastTireChangeEdit->dateTime());
 
     if(oR == -1) oR = 0;
     if(tR == -1) tR = 0;

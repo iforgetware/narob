@@ -25,6 +25,7 @@ private slots:
     void onClearButtonClicked();
     void onUpdateLogbookButtonClicked();
     void onCleanDatabaseButtonClicked();
+    void onUpdateSplitsButtonClicked();
     void onTestWeatherButtonClicked();
     void onTestTPButtonClicked();
     void onTestWindButtonClicked();
@@ -32,6 +33,7 @@ private slots:
     void displayUpdate();
 
 signals:
+    void updateSplits();
     void updateLogbook();
     void testWeather();
     void testTP();

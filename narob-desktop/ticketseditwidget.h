@@ -15,17 +15,20 @@ class TicketsEditWidget : public TableEditWidgetBase
     Q_OBJECT
 
 public:
-    explicit TicketsEditWidget(TicketsModel *model,
+    explicit TicketsEditWidget(TicketsLogbookModel *tLModel,
                                std::shared_ptr<Vehicle> vehicle,
                                std::shared_ptr<Race> race,
                                QWidget *parent = nullptr);
+
+signals:
+    void ticketsUpdated();
 
 private slots:
     void addTicket();
     void editTicket();
 
 private:
-    TicketsModel *mTicketsModel;
+    TicketsLogbookModel* mTicketsLogbookModel;
     TicketsRaceModel* mTicketsRaceModel;
 
     std::shared_ptr<Vehicle> mVehicle;

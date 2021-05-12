@@ -3,7 +3,7 @@
 
 #include <QDebug>
 
-TrackHistoryTab::TrackHistoryTab(TicketsModel* model,
+TrackHistoryTab::TrackHistoryTab(std::shared_ptr<Vehicle> vehicle,
                                  int trackId,
                                  QWidget *parent) :
     QWidget(parent),
@@ -11,10 +11,10 @@ TrackHistoryTab::TrackHistoryTab(TicketsModel* model,
 {
     ui->setupUi(this);
 
-    mTicketsWidget = new TicketsWidget(model,
-                                       trackId,
-                                       this);
-    ui->gridLayout->addWidget(mTicketsWidget, 0, 0);
+    mTrackHistoryWidget = new TrackHistoryWidget(vehicle,
+                                                 trackId,
+                                                 this);
+    ui->gridLayout->addWidget(mTrackHistoryWidget, 0, 0);
 }
 
 TrackHistoryTab::~TrackHistoryTab()
@@ -24,5 +24,5 @@ TrackHistoryTab::~TrackHistoryTab()
 
 void TrackHistoryTab::updateAllModels()
 {
-    mTicketsWidget->updateModel();
+    mTrackHistoryWidget->updateModel();
 }

@@ -20,6 +20,8 @@ public:
     WeatherStationPort();
     ~WeatherStationPort();
 
+    bool isOpen(){return mComPort->isOpen();}
+
 private:
     void openComPort();
 //    void wakeStation();
@@ -28,10 +30,8 @@ private:
 
     QTimer *mReadTimer;
 
-    QByteArray mReadData = "";
-    QByteArray mLine = "";
-
-    bool mRunning;
+    QByteArray mReadData;
+    QByteArray mLine;
 
 public slots:
     void readStation();
@@ -53,10 +53,9 @@ public:
                             QObject *parent = nullptr);
     ~WeatherStation();
 
-    bool isRunning(){ return mRunning; }
+    bool isRunning(){ return mWeatherStationPort->isOpen(); }
 
 private:
-    int calcDA(double t, double h, double p);
     int val8(int p);
     int val16(int p);
     void writeToDB();
@@ -70,20 +69,10 @@ private:
     bool mRunning;
     ObservationsModel *mObservationsModel;
 
-    double mRelHP;
-    double mAirDensity;
-    double mRelAirDensity;
-    double mDensityAltitude;
-    double mVirtualTemperature;
-    double mVaporPressure;
-    double mDynoFactor;
-
     double mTemps;
     double mHums;
     double mPres;
-    double mVPs;
     double mDPts;
-    int mDAs;
     int mWSpeeds;
     int mWDirs;
     double mWXs;

@@ -7,7 +7,9 @@
 
 #include <QDebug>
 
-TicketDialog::TicketDialog(std::shared_ptr<Vehicle> vehicle,
+TicketDialog::TicketDialog(TicketsLogbookModel *tLModel,
+                           TicketsRaceModel *tRModel,
+                           std::shared_ptr<Vehicle> vehicle,
                            std::shared_ptr<Race> race,
                            int row,
                            QWidget *parent) :
@@ -16,7 +18,8 @@ TicketDialog::TicketDialog(std::shared_ptr<Vehicle> vehicle,
     mVehicle(vehicle),
     mRace(race),
     mObservationsModel(new ObservationsModel(this)),
-    mTicketsModel(new TicketsModel(vehicle->value("id").toInt(), this)),
+    mTicketsLogbookModel(tLModel),
+    mTicketsRaceModel(tRModel),
     mDateTimer(new QTimer(this)),
     mFactorTimer(new QTimer(this))
 {
@@ -33,7 +36,7 @@ TicketDialog::TicketDialog(std::shared_ptr<Vehicle> vehicle,
 
     mId = mModel->data(indexForField("id")).toInt();
 
-    mPredictedRun = new Prediction(mTicketsModel,
+    mPredictedRun = new Prediction(mTicketsLogbookModel,
                                    mVehicle->value("id").toInt(),
                                    mRace->value("trackId").toInt(),
                                    mRace->value("id").toInt(),
@@ -50,7 +53,7 @@ TicketDialog::TicketDialog(std::shared_ptr<Vehicle> vehicle,
                         mRace->value("id"));
 
         ui->vehicleWeightSpinBox->setValue(mVehicle->value("weight").toInt());
-        ui->riderWeightSpinBox->setValue(mTicketsModel->lastWeight());
+        ui->riderWeightSpinBox->setValue(mTicketsLogbookModel->lastWeight());
 
         QDateTime cDT;
         cDT.setDate(QDate::currentDate());
@@ -75,6 +78,8 @@ TicketDialog::TicketDialog(std::shared_ptr<Vehicle> vehicle,
         formatClockEdit("eighth", ui->eighthEdit, ui->eighthGoodCheckBox);
         formatClockEdit("thousand", ui->thousandEdit, ui->thousandGoodCheckBox);
         formatClockEdit("quarter", ui->quarterEdit, ui->quarterGoodCheckBox);
+
+        updateSplits();
     }
 
     updateWeather();
@@ -83,6 +88,41 @@ TicketDialog::TicketDialog(std::shared_ptr<Vehicle> vehicle,
             &QDateTimeEdit::dateTimeChanged,
             this,
             &TicketDialog::onDateChange);
+
+    connect(ui->sixtyEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::updateSplits);
+
+    connect(ui->threeThirtyEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::updateSplits);
+
+    connect(ui->eighthEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::updateSplits);
+
+    connect(ui->thousandEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::updateSplits);
+
+    connect(ui->quarterEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::updateSplits);
+
+    connect(ui->eighthMPHEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::updateSplits);
+
+    connect(ui->quarterMPHEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::updateSplits);
 
     connect(ui->vehicleWeightSpinBox,
             QOverload<int>::of(&QSpinBox::valueChanged),
@@ -184,7 +224,7 @@ TicketDialog::~TicketDialog()
 
 void TicketDialog::setupModel()
 {
-    mModel = mTicketsModel;
+    mModel = mTicketsRaceModel;
 
     mMapper->setModel(mModel);
 
@@ -259,6 +299,45 @@ void TicketDialog::updateWeather()
     mDateTimer->stop();
 
     updatePrediction();
+}
+
+void TicketDialog::updateSplits()
+{
+    updateSValue("splitST",
+                 fabs(ui->threeThirtyEdit->text().toDouble()) -
+                 fabs(ui->sixtyEdit->text().toDouble())
+                 );
+    updateSValue("splitTE",
+                 fabs(ui->eighthEdit->text().toDouble()) -
+                 fabs(ui->threeThirtyEdit->text().toDouble())
+                 );
+
+    if(fabs(ui->quarterEdit->text().toDouble()) >
+            fabs(ui->eighthEdit->text().toDouble())){
+
+        updateSValue("splitET",
+                     fabs(ui->thousandEdit->text().toDouble()) -
+                     fabs(ui->eighthEdit->text().toDouble())
+                     );
+        updateSValue("splitTQ",
+                     fabs(ui->quarterEdit->text().toDouble()) -
+                     fabs(ui->thousandEdit->text().toDouble())
+                     );
+        updateSValue("splitMPH",
+                     fabs(ui->quarterMPHEdit->text().toDouble()) -
+                     fabs(ui->eighthMPHEdit->text().toDouble())
+                     );
+    }else{
+        updateSValue("splitET", 0);
+        updateSValue("splitTQ", 0);
+        updateSValue("splitMPH", 0);
+    }
+
+    updateSLabel("splitST", ui->splitST, 3);
+    updateSLabel("splitTE", ui->splitTE, 3);
+    updateSLabel("splitET", ui->splitET, 3);
+    updateSLabel("splitTQ", ui->splitTQ, 3);
+    updateSLabel("splitMPH", ui->splitMPH, 2);
 }
 
 void TicketDialog::updatePrediction()
@@ -344,6 +423,11 @@ void TicketDialog::updateWValue(const QString &field)
                     mObservation.value(field));
 }
 
+void TicketDialog::updateSValue(const QString &field, double value)
+{
+    mModel->setData(indexForField(field), value);
+}
+
 void TicketDialog::updatePLabel(const QString &field, QLabel *label)
 {
     formatNumberLabel(mPredictedRun->value(field),
@@ -352,6 +436,13 @@ void TicketDialog::updatePLabel(const QString &field, QLabel *label)
 }
 
 void TicketDialog::updateWLabel(const QString &field, QLabel *label, const int decimals)
+{
+    formatNumberLabel(mModel->data(indexForField(field)),
+                      label,
+                      decimals);
+}
+
+void TicketDialog::updateSLabel(const QString &field, QLabel *label, const int decimals)
 {
     formatNumberLabel(mModel->data(indexForField(field)),
                       label,
@@ -408,6 +499,8 @@ void TicketDialog::onButtonBoxAccepted()
     handleClockGood(ui->eighthEdit, ui->eighthGoodCheckBox);
     handleClockGood(ui->thousandEdit, ui->thousandGoodCheckBox);
     handleClockGood(ui->quarterEdit, ui->quarterGoodCheckBox);
+
+    updateSplits();
 
     mMapper->submit();
     mModel->submitAll();

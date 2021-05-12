@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "ticketswidget.h"
+#include "logbookwidget.h"
 
 namespace Ui {
 class LogbookTab;
@@ -14,14 +14,14 @@ class LogbookTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit LogbookTab(TicketsModel* model,
+    explicit LogbookTab(TicketsLogbookModel *tLModel,
                         QWidget *parent = nullptr);
     ~LogbookTab();
     void updateAllModels();
 
 private:
     Ui::LogbookTab *ui;
-    TicketsWidget *mTicketsWidget;
+    LogbookWidget *mLogbookWidget;
 };
 
 #endif // LOGBOOKTAB_H

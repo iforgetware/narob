@@ -13,6 +13,7 @@ TableDisplayWidgetBase::~TableDisplayWidgetBase()
 
 void TableDisplayWidgetBase::initTable()
 {
+    ui->tableView->setSortingEnabled(true);
     ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 

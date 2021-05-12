@@ -16,6 +16,7 @@ TableEditWidgetBase::~TableEditWidgetBase()
 
 void TableEditWidgetBase::init()
 {
+    ui->tableView->setSortingEnabled(true);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -58,20 +59,6 @@ bool TableEditWidgetBase::selected() const
 
 int TableEditWidgetBase::selectedRow() const
 {
-
-
-
-
-    // may be causing ticket editting error
-
-
-    // this should return the index and not the row number
-    // use index for all lookups?
-
-
-
-
-
     if(selected()){
         qDebug() << ui->tableView->selectionModel()->currentIndex().row();
         return ui->tableView->selectionModel()->currentIndex().row();

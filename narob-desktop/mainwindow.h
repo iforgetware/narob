@@ -32,6 +32,7 @@ private:
     DatabaseManager *mDBM;
 
     Ui::MainWindow *ui;
+
     QVector<RaceControlTab*> mRaceControlTabs;
 
 //    QTimer *memTimer;
@@ -43,6 +44,7 @@ private slots:
     void handleCloseTab(int index);
 
     void handleUpdateLogbook();
+    void handleUpdateSplits();
     void handleTestWeather();
     void handleTestTP();
     void handleTestWind();

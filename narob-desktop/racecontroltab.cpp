@@ -9,21 +9,21 @@ RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
                                QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RaceControlTab),
-    mTicketsModel(new TicketsModel(vehicle->value("id").toInt(),
-                                   this)),
-    mTicketEntryTab(new TicketEntryTab(mTicketsModel,
+    mTicketsLogbookModel(new TicketsLogbookModel(vehicle->value("id").toInt(),
+                                                 this)),
+    mTicketEntryTab(new TicketEntryTab(mTicketsLogbookModel,
                                        vehicle,
                                        race,
                                        this)),
-    mTrackHistoryTab(new TrackHistoryTab(mTicketsModel,
+    mTrackHistoryTab(new TrackHistoryTab(vehicle,
                                          race->value("trackId").toInt(),
                                          this)),
-    mLogbookTab(new LogbookTab(mTicketsModel, this)),
-    mPredictionTab(new PredictionTab(mTicketsModel,
+    mLogbookTab(new LogbookTab(mTicketsLogbookModel, this)),
+    mPredictionTab(new PredictionTab(mTicketsLogbookModel,
                                      vehicle,
                                      race,
                                      this)),
-    mCalculatorTab(new CalculatorTab(mTicketsModel,
+    mCalculatorTab(new CalculatorTab(mTicketsLogbookModel,
                                      vehicle,
                                      race,
                                      this))
@@ -37,17 +37,27 @@ RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
     ui->tabWidget->addTab(mLogbookTab, "Logbook");
     ui->tabWidget->addTab(mPredictionTab, "Predictions");
     ui->tabWidget->addTab(mCalculatorTab, "Calculators");
+
+    connect(mTicketEntryTab, &TicketEntryTab::ticketsUpdated,
+            this, &RaceControlTab::updateAllModels);
 }
 
 RaceControlTab::~RaceControlTab()
 {
+    delete mTicketsLogbookModel;
+
+    delete mTicketEntryTab;
+    delete mTrackHistoryTab;
+    delete mLogbookTab;
     delete mPredictionTab;
+    delete mCalculatorTab;
+
     delete ui;
 }
 
 void RaceControlTab::updateAllModels()
 {
-    mTicketEntryTab->updateAllModels();
+//    mTicketEntryTab->updateAllModels();
     mTrackHistoryTab->updateAllModels();
     mLogbookTab->updateAllModels();
     mPredictionTab->UpdateAllModels();

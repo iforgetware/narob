@@ -27,12 +27,14 @@ public:
                             std::shared_ptr<Race> race,
                             QWidget *parent = nullptr);
     ~RaceControlTab();
+
+public slots:
     void updateAllModels();
 
 private:
     Ui::RaceControlTab *ui;
 
-    TicketsModel* mTicketsModel;
+    TicketsLogbookModel* mTicketsLogbookModel;
     TicketEntryTab *mTicketEntryTab;
     TrackHistoryTab *mTrackHistoryTab;
     LogbookTab *mLogbookTab;

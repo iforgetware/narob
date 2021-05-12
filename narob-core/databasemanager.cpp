@@ -45,8 +45,6 @@ void DatabaseManager::initTables()
 void DatabaseManager::updateLogbook() //DEV ONLY
 {
     QSqlQuery query;
-    query.exec("DROP TABLE IF EXISTS refPTs");
-    debugQuery(query);
     query.exec("DROP TABLE predictions");
     debugQuery(query);
     query.exec("ALTER TABLE tickets RENAME TO ticketsOld");
@@ -200,6 +198,26 @@ void DatabaseManager::clearDatabase() // DEV ONLY
     qDebug("Dropped all database tables - DEV ONLY");
 }
 
+void DatabaseManager::updateSplits() //DEV ONLY
+{
+    QSqlQuery query;
+    query.exec("UPDATE tickets SET "
+               "splitST=ABS(threeThirty)-ABS(sixty),"
+               "splitTE=ABS(eighth)-ABS(threeThirty)");
+
+    debugQuery(query);
+    query.clear();
+
+    query.exec("UPDATE tickets SET "
+               "splitET=ABS(thousand)-ABS(eighth),"
+               "splitTQ=ABS(quarter)-ABS(thousand),"
+               "splitMPH=quarterMPH-eighthMPH "
+               "WHERE ABS(quarter)>ABS(eighth)");
+
+    debugQuery(query);
+    query.clear();
+}
+
 void DatabaseManager::testWeather() // DEV ONLY
 {
     setupTest();
@@ -211,7 +229,7 @@ void DatabaseManager::testWeather() // DEV ONLY
     auto vehicle = vehiclesModel.vehicleForRow(0);
     auto race = racesModel.raceForRow(0);
 
-    TicketsModel ticketsModel(vehicle->value("id").toInt(), this);
+    TicketsLogbookModel ticketsModel(vehicle->value("id").toInt(), this);
     PredictionsModel predictionsModel(vehicle->value("id").toInt(),
                                       race->value("id").toInt(),
                                       0,
@@ -268,13 +286,9 @@ void DatabaseManager::testWeather() // DEV ONLY
 
     qDebug("Weather test - tickets written - DEV ONLY");
 
-    Observation o;
+    Observation o(60.0 + (10 * i), 30.0 + (10 * i), 31.00 - i);
 
     o.setValue("dateTime", QDateTime(QDate(2017, 03, 11), QTime(10 + i, 25)));
-    o.setValue("temperature", 60.0 + (10 * i));
-    o.setValue("humidity", 30.0 + (10 * i));
-    o.setValue("pressure", 31.00 - i);
-    o.setValue("vaporPressure", 0.54);
     o.setValue("dewPoint", 60.1);
     o.setValue("densityAltitude", 1000 * i);
     o.setValue("windSpeed", 0);
@@ -359,7 +373,7 @@ void DatabaseManager::testTP() // DEV ONLY
 
     auto vehicle = vehiclesModel.vehicleForRow(0);
 
-    TicketsModel ticketsModel(vehicle->value("id").toInt(), this);
+    TicketsLogbookModel ticketsModel(vehicle->value("id").toInt(), this);
 
     Ticket t;
     Observation o;
@@ -432,7 +446,7 @@ void DatabaseManager::testWind() // DEV ONLY
     auto vehicle = vehiclesModel.vehicleForRow(0);
     auto race = racesModel.raceForRow(0);
 
-    TicketsModel ticketsModel(vehicle->value("id").toInt(), this);
+    TicketsLogbookModel ticketsModel(vehicle->value("id").toInt(), this);
     PredictionsModel predictionsModel(vehicle->value("id").toInt(),
                                       race->value("id").toInt(),
                                       0,
@@ -484,13 +498,9 @@ void DatabaseManager::testWind() // DEV ONLY
 
     qDebug("Wind test - tickets written - DEV ONLY");
 
-    Observation o;
+    Observation o(80.0, 50.0, 30.00);
 
     o.setValue("dateTime", QDateTime(QDate(2017, 03, 11), QTime(10 + i, 25)));
-    o.setValue("temperature", 80.0);
-    o.setValue("humidity", 50.0);
-    o.setValue("pressure", 30.00);
-    o.setValue("vaporPressure", 0.54);
     o.setValue("dewPoint", 60.1);
     o.setValue("densityAltitude", 1000);
     o.setValue("windSpeed", i);
@@ -570,7 +580,7 @@ void DatabaseManager::testWeight() // DEV ONLY
     auto vehicle = vehiclesModel.vehicleForRow(0);
     auto race = racesModel.raceForRow(0);
 
-    TicketsModel ticketsModel(vehicle->value("id").toInt(), this);
+    TicketsLogbookModel ticketsModel(vehicle->value("id").toInt(), this);
     PredictionsModel predictionsModel(vehicle->value("id").toInt(),
                                       race->value("id").toInt(),
                                       0,
@@ -623,13 +633,9 @@ void DatabaseManager::testWeight() // DEV ONLY
 
     qDebug("Weight test - tickets written - DEV ONLY");
 
-    Observation o;
+    Observation o(80.0, 50.0, 30.00);
 
     o.setValue("dateTime", QDateTime(QDate(2017, 03, 11), QTime(10 + i, 25)));
-    o.setValue("temperature", 80.0);
-    o.setValue("humidity", 50.0);
-    o.setValue("pressure", 30.00);
-    o.setValue("vaporPressure", 0.54);
     o.setValue("dewPoint", 60.1);
     o.setValue("densityAltitude", 1000);
     o.setValue("windSpeed", 0);

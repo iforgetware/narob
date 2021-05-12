@@ -35,6 +35,8 @@ SettingsTab::SettingsTab(QWidget *parent) :
             this, &SettingsTab::onUpdateLogbookButtonClicked);
     connect(ui->cleanDatabaseButton, &QPushButton::clicked,
             this, &SettingsTab::onCleanDatabaseButtonClicked);
+    connect(ui->updateSplitsButton, &QPushButton::clicked,
+            this, &SettingsTab::onUpdateSplitsButtonClicked);
 
     connect(ui->testWeatherButton, &QPushButton::clicked,
             this, &SettingsTab::onTestWeatherButtonClicked);
@@ -113,6 +115,13 @@ void SettingsTab::onCleanDatabaseButtonClicked()
 
     // make list of used predictions
     // delete all unused predictions that are more than a week old
+}
+
+void SettingsTab::onUpdateSplitsButtonClicked()
+{
+    if(ui->enableMaintenanceCheckBox->isChecked()){
+        emit updateSplits();
+    }
 }
 
 void SettingsTab::onTestWeatherButtonClicked()

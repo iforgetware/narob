@@ -8,132 +8,6 @@
 #include <QtMath>
 #include <QThread>
 
-// constants and conversions
-
-static double mb_to_in = 1 / 33.86389;
-static double in_to_mb = 33.86389;
-static double m_per_ft = 0.3048;
-
-double formatNum(double num, int decimals)
-{
-    return QString::number(num, 'f', decimals).toDouble();
-}
-
-double calcVPwobus(double tc)
-// Calculate the saturation vapor pressure given the temperature(celsius)
-// Polynomial from Herman Wobus
-{
-    double eso = 6.1078;
-    double c0 = 0.99999683;
-    double c1 = -0.90826951E-02;
-    double c2 = 0.78736169E-04;
-    double c3 = -0.61117958E-06;
-    double c4 = 0.43884187E-08;
-    double c5 = -0.29883885E-10;
-    double c6 = 0.21874425E-12;
-    double c7 = -0.17892321E-14;
-    double c8 = 0.11112018E-16;
-    double c9 = -0.30994571E-19;
-
-    double pol=c0+tc*
-               (c1+tc*
-                (c2+tc*
-                 (c3+tc*
-                  (c4+tc*
-                   (c5+tc*
-                    (c6+tc*
-                     (c7+tc*
-                      (c8+tc*
-                       (c9)
-                       )
-                      )
-                     )
-                    )
-                   )
-                  )
-                 )
-                );
-
-    return eso/qPow(pol, 8);
-}
-
-double calcDensity(double abspressmb, double e, double tc)
-//  Calculate the air density in kg/m3
-{
-    double Rv=461.4964;
-    double Rd=287.0531;
-
-    double tk=tc+273.15;
-    double pv=e*100.0;
-    double pd= (abspressmb-e)*100.0;
-
-    return (pv/(Rv*tk)) + (pd/(Rd*tk));
-}
-
-double calcAltitude(double d)
-// Calculate the ISA altitude (meters) for a given density (kg/m3)
-{
-    double g=9.80665;
-    double Po=101325.0;
-    double To=288.15;
-    double L=6.5;
-    double R=8.314320;
-    double M=28.9644;
-
-    double D=d*1000.0;
-
-    double p2=( (L*R)/(g*M-L*R) )*qLn( (R*To*D)/(M*Po) );
-
-    double H=-(To/L)*( qExp(p2)-1.0 );
-
-    double h=H*1000.0;
-
-    return h;
-}
-
-double calcZ(double h)
-// Calculate the Z geometric altitude (meters), given the H geopotential altitide (meters)
-{
-    double r=6369E3;
-
-    return (r*h)/(r-h);
-}
-
-double calcH(double z)
-// Calculate the H geopotential altitude (meters), given the Z geometric altitide (meters)
-{
-    double r=6369E3;
-
-    return (r*z)/(r+z);
-}
-
-double calcAs2Press(double As, double h)
-// Calculate the actual pressure (mb)from the altimeter setting (mb) and geopotential altitude (m)
-{
-    double k1=.190263;
-    double k2=8.417286E-5;
-
-    double p=qPow( (qPow(As,k1)-(k2*h)),(1.0/k1) );
-
-    return p;
-}
-
-double calcDynoCorrection(double temp, double abspress, double vapress)
-// Calculate dyno correction given temp(celsius), absolute pressure(inchesHg)  and vapor pressure(inchesHg)
-{
-    double p1=29.235/(abspress-vapress);
-    double p2=qPow( ((temp+273.0)/298.0), 0.5);
-    double p3=(1.18*(p1*p2) - 0.18);
-    return p3;
-}
-
-// Calculate virtual temperature given temp(celsius), absolute pressure(mb)  and vapor pressure(mb)
-
-double calcVirtualTemp(double tc, double abspressmb, double emb){
-
-    double p1=(tc+273.15) / (1- (0.377995*emb/abspressmb) ) ;
-    return p1;
-}
 
 WeatherStation::WeatherStation(ObservationsModel *model, QObject *parent) :
     QObject(parent),
@@ -148,7 +22,6 @@ WeatherStation::WeatherStation(ObservationsModel *model, QObject *parent) :
     mTemps(0),
     mHums(0),
     mPres(0),
-    mVPs(0),
     mDPts(0),
     mWSpeeds(0),
     mWDirs(0),
@@ -164,47 +37,24 @@ WeatherStation::WeatherStation(ObservationsModel *model, QObject *parent) :
     // console should stay awake for two minutes after last command
     // sending requests every 4 seconds or so SHOULD remove the need to re-wake
 
-    mWeatherStationPort->moveToThread(mComPortThread);
+    if(mWeatherStationPort->isOpen()){
+        mWeatherStationPort->moveToThread(mComPortThread);
 
-    connect(mComPortThread, &QThread::finished,
-            mWeatherStationPort, &QObject::deleteLater);
+        connect(mComPortThread, &QThread::finished,
+                mWeatherStationPort, &QObject::deleteLater);
 
-    connect(mWeatherStationPort, &WeatherStationPort::sendStationData,
-            this, &WeatherStation::handleStationData);
+        connect(mWeatherStationPort, &WeatherStationPort::sendStationData,
+                this, &WeatherStation::handleStationData);
 
+        mRunning = true;
+        mComPortThread->start();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // check mRunning before any serial IO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    mRunning = true;
-    mComPortThread->start();
+        if(!mComPortThread->isRunning()){
+            qDebug("Com port thread not started");
+        }
+    }else{
+        qDebug("Weather station not found");
+    }
 }
 
 WeatherStation::~WeatherStation()
@@ -223,38 +73,14 @@ int WeatherStation::val16(int p)
     return (mLoopPacket.at(p + 1) << 8) + static_cast<uchar>(mLoopPacket.at(p));
 }
 
-int WeatherStation::calcDA(double t, double h, double p)
-{
-    double tc = (5.0/9.0) * (t - 32);
-    double es = calcVPwobus(tc);
-    double emb = es * h / 100.0;
-
-    mVaporPressure = emb * mb_to_in;
-
-    double actpressmb = p * in_to_mb;
-
-    mAirDensity = calcDensity(actpressmb, emb, tc);
-    mRelAirDensity = 100.0 * (mAirDensity / 1.225);
-
-    double densaltm = calcAltitude(mAirDensity);
-    double densaltzm = calcZ(densaltm);
-
-    double da = densaltzm / m_per_ft;
-
-    return qRound(da);
-}
-
 void WeatherStation::writeToDB()
 {
-    Observation o;
-
     QDateTime cDT;
     QTime cT = QTime::currentTime();
     cDT.setDate(QDate::currentDate());
     cDT.setTime(QTime(cT.hour(), cT.minute()));
 
     double temp = mTemps / mSampleCount;
-    int dA = mDAs / mSampleCount;
 
     double windAverageY = mWYs / mSampleCount;
     double windAverageX = mWXs / mSampleCount;
@@ -266,18 +92,17 @@ void WeatherStation::writeToDB()
                            qRadiansToDegrees(qAtan2(windAverageY,
                                                     windAverageX));
 
+    Observation o(temp, mHums / mSampleCount, mPres / mSampleCount);
+
     o.setValue("dateTime", cDT);
-    o.setValue("temperature", formatNum(temp, 1));
-    o.setValue("humidity", formatNum(mHums / mSampleCount, 1));
-    o.setValue("pressure", formatNum(mPres / mSampleCount, 2));
-    o.setValue("vaporPressure", formatNum(mVPs / mSampleCount, 2));
     o.setValue("dewPoint", formatNum(mDPts / mSampleCount, 1));
-    o.setValue("densityAltitude", dA);
     o.setValue("windSpeed", static_cast<int>(windSpeed));
     o.setValue("windDirection", static_cast<int>(windDirection));
     o.setValue("windGust", mWGustSpeed);
     o.setValue("windGustDirection", mWGustDir);
     o.setValue("samples", mSampleCount);
+
+    int dA = o.value("densityAltitude").toInt();
 
     if((temp > 0.0) && (dA > -1000) && (dA < 20000)){
         mLastTime = cT;
@@ -323,9 +148,7 @@ void WeatherStation::writeToDB()
     mTemps = 0;
     mHums = 0;
     mPres = 0;
-    mVPs = 0;
     mDPts = 0;
-    mDAs = 0;
     mWSpeeds = 0;
     mWDirs = 0;
 
@@ -366,21 +189,6 @@ void WeatherStation::handleStationData(QByteArray data)
         h = h + Settings::get("humOffset").toDouble();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // hacks for reversing wind directions
 // add code and button in UI
 
@@ -392,21 +200,10 @@ void WeatherStation::handleStationData(QByteArray data)
 //        wD = 0;
 //    }
 
-
-
-
-
-
-
-
-
-
     mTemps += t;
     mHums += h;
     mPres += p;
-    mDAs += calcDA(t, h, p);
-    mVPs += mVaporPressure; // this is set in calcDA
-                            // not elegant
+
     mDPts += val16(30);
 
     mWYs += -wS * qSin(qDegreesToRadians(wD));
@@ -415,7 +212,7 @@ void WeatherStation::handleStationData(QByteArray data)
     mSampleCount += 1;
 
     if(wS > mWGustSpeed){
-        mWGustSpeed = wS;
+        mWGustSpeed = static_cast<int>(wS);
         mWGustDir = static_cast<int>(wD);
     }
 
@@ -445,7 +242,9 @@ WeatherStationPort::WeatherStationPort() :
     QObject(),
 
     mComPort(new QSerialPort(this)),
-    mReadTimer(new QTimer(this))
+    mReadTimer(new QTimer(this)),
+    mReadData(""),
+    mLine("")
 {
     connect(mComPort, &QSerialPort::errorOccurred,
             this, &WeatherStationPort::handleError);
@@ -491,8 +290,7 @@ void WeatherStationPort::openComPort()
     if(mComPort->open(QIODevice::ReadWrite)){
         qDebug("com port open");
     }else{
-        qDebug() << mComPort->error();
-        qDebug("WRITE CODE");
+        qDebug() << mComPort->error() << " <- WRITE CODE";
     }
 }
 
@@ -534,24 +332,29 @@ void WeatherStationPort::openComPort()
 
 void WeatherStationPort::readStation()
 {
-    mComPort->write("LPS 2 1\n");
+    if(mComPort->isOpen()){
+        mComPort->write("LPS 2 1\n");
 
-    QThread::sleep(2);
-
-    QByteArray rawData = mComPort->readAll();
-
-    if(rawData == "\n\r"){
-        qDebug("Got ack response");
-        return;
-    }
-
-    if(rawData.length() > 50 && rawData.contains("LOO")){
-        emit sendStationData(rawData.mid(rawData.indexOf("LOO")));
-    }else{
-        qDebug() << "Bad Loop Packet -> " << rawData << " <- WRITE CODE";
-        mComPort->write("\n");
         QThread::sleep(2);
-        QByteArray junk = mComPort->readAll();
+
+        QByteArray rawData = mComPort->readAll();
+
+        if(rawData == "\n\r"){
+            qDebug("Got ack response");
+            return;
+        }
+
+        if(rawData.length() > 50 && rawData.contains("LOO")){
+            emit sendStationData(rawData.mid(rawData.indexOf("LOO")));
+        }else{
+            qDebug() << "Bad Loop Packet -> " << rawData << " <- WRITE CODE";
+            mComPort->write("\n");
+            QThread::sleep(2);
+            QByteArray junk = mComPort->readAll();
+        }
+    }else{
+        qDebug() << "Cannot read weather station."
+                    "Com Port not open. <- Write CODE";
     }
 
     return;

@@ -1,5 +1,5 @@
 narob is weather station and ET prediction software for drag racing.
-It currently works with the Altronics Performaire weather station.
+It currently works with Davis weather stations, and there is some old code for the Altronics Performaire weather station.
 In-lanes paging can be setup if the PC running it has an internet connection.
 I use my phone as a hotspot.
 It uses email-to-text addresses based on the service provider of the recieving phone.
@@ -8,6 +8,23 @@ to do
     - maintenance intervals in vehiclesWidget
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
+
+v0.5.0
+    - fixed bug preventing editting of past race tickets
+        - moved single Tickets model setup to multiple models
+        - added signals and slots to handle updates
+    - new tab layout for predictions
+    - added current prediciton to prediciton graph
+    - added MPH split and clock intervals to tickets
+    - made all tables sortable by column
+
+v0.4.2
+    - moved DA and associated calcs from WeatherStation to Observation
+    - moved DA calc constants to global header
+    - added calculator tab to race control
+        - required splitting predictClocks into two functions
+            - predictByTime
+            - predictByObservation
 
 v0.4.1
     - expanded weather graphs to multiple days

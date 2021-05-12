@@ -30,7 +30,7 @@ class CalculatorTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit CalculatorTab(TicketsModel* model,
+    explicit CalculatorTab(TicketsLogbookModel* tLModel,
                            std::shared_ptr<Vehicle> vehicle,
                            std::shared_ptr<Race> race,
                            QWidget *parent = nullptr);
@@ -46,7 +46,7 @@ private:
                       QLabel *label);
 
     Ui::CalculatorTab *ui;
-    TicketsModel *mTicketsModel;
+    TicketsLogbookModel *mTicketsLogbookModel;
     PredictionsModel *mPredictionsModel;
     Observation mObservation;
     Prediction mCurrentPrediction;

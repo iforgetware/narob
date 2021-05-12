@@ -26,6 +26,7 @@ public:
 
     static void debugQuery(const QSqlQuery& query);
     void updateLogbook();
+    void updateSplits();
     void testWeather();
     void testTP();
     void testWind();

@@ -1,20 +1,27 @@
 #include "ticketentrytab.h"
 #include "ui_ticketentrytab.h"
 
-TicketEntryTab::TicketEntryTab(TicketsModel* model,
+// #include "racecontroltab.h"
+
+TicketEntryTab::TicketEntryTab(TicketsLogbookModel* tLModel,
                                std::shared_ptr<Vehicle> vehicle,
                                std::shared_ptr<Race> race,
                                QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TicketEntryTab)
+    ui(new Ui::TicketEntryTab),
+    mTicketsLogbookModel(tLModel)
 {
     ui->setupUi(this);
 
-    mTicketsEditWidget = new TicketsEditWidget(model,
+
+    mTicketsEditWidget = new TicketsEditWidget(mTicketsLogbookModel,
                                                vehicle,
                                                race,
                                                this);
     ui->gridLayout->addWidget(mTicketsEditWidget, 0, 0);
+
+    connect(mTicketsEditWidget, &TicketsEditWidget::ticketsUpdated,
+            this, &TicketEntryTab::updateAllModels);
 }
 
 TicketEntryTab::~TicketEntryTab()
@@ -24,5 +31,8 @@ TicketEntryTab::~TicketEntryTab()
 
 void TicketEntryTab::updateAllModels()
 {
-    mTicketsEditWidget->updateModel();
+    emit ticketsUpdated();
+//    mTicketsEditWidget->updateModel();
 }
+
+

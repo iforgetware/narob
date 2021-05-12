@@ -19,15 +19,21 @@ class TicketEntryTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit TicketEntryTab(TicketsModel* model,
+    explicit TicketEntryTab(TicketsLogbookModel* tLModel,
                             std::shared_ptr<Vehicle> vehicle,
                             std::shared_ptr<Race> race,
                             QWidget *parent = nullptr);
     ~TicketEntryTab();
-    void updateAllModels();
+
+signals:
+    void ticketsUpdated();
+
 private:
+    void updateAllModels();
+
     Ui::TicketEntryTab *ui;
     TicketsEditWidget *mTicketsEditWidget;
+    TicketsLogbookModel *mTicketsLogbookModel;
 };
 
 #endif // TICKETENTRYTAB_H

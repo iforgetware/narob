@@ -42,14 +42,14 @@ void WeatherTab::startWeatherStation()
 {
     mWeatherStation = new WeatherStation(mObservationsModel, this);
 
-    connect(mWeatherStation,
-            &WeatherStation::sendStatus,
-            this,
-            &WeatherTab::sendStatus);
-
     //mWeatherStation->openComPort();
 
     if(mWeatherStation->isRunning()){
+        connect(mWeatherStation,
+                &WeatherStation::sendStatus,
+                this,
+                &WeatherTab::sendStatus);
+
         connect(mWeatherStation,
                 &WeatherStation::newWeatherWritten,
                 mObservationsWidget,

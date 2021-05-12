@@ -4,19 +4,19 @@
 
 #include "ticketdialog.h"
 
-TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
+TicketsEditWidget::TicketsEditWidget(TicketsLogbookModel *tLModel,
                                      std::shared_ptr<Vehicle> vehicle,
                                      std::shared_ptr<Race> race,
                                      QWidget *parent) :
     TableEditWidgetBase("Tickets", parent),
-    mTicketsModel(model),
+    mTicketsLogbookModel(tLModel),
+    mTicketsRaceModel(new TicketsRaceModel(vehicle->value("id").toInt(),
+                                           race->value("id").toInt(),
+                                           this)),
     mVehicle(vehicle),
     mRace(race)
 {
-    mModel = mTicketsModel;
-
-    mTicketsRaceModel = new TicketsRaceModel(mRace->value("id").toInt(), this);
-    mTicketsRaceModel->setSourceModel(mTicketsModel);
+    mModel = mTicketsRaceModel;
 
     ui->tableView->setModel(mTicketsRaceModel);
 
@@ -41,7 +41,9 @@ TicketsEditWidget::TicketsEditWidget(TicketsModel *model,
 
 void TicketsEditWidget::addTicket()
 {
-    TicketDialog *ticketDialog = new TicketDialog(mVehicle,
+    TicketDialog *ticketDialog = new TicketDialog(mTicketsLogbookModel,
+                                                  mTicketsRaceModel,
+                                                  mVehicle,
                                                   mRace,
                                                   -1,
                                                   this);
@@ -49,12 +51,15 @@ void TicketsEditWidget::addTicket()
             this,&TicketsEditWidget::updateModel);
 
     ticketDialog->exec();
+    emit ticketsUpdated();
 }
 
 void TicketsEditWidget::editTicket()
 {
     if(selected()){
-        TicketDialog *ticketDialog = new TicketDialog(mVehicle,
+        TicketDialog *ticketDialog = new TicketDialog(mTicketsLogbookModel,
+                                                      mTicketsRaceModel,
+                                                      mVehicle,
                                                       mRace,
                                                       selectedRow(),
                                                       this);
@@ -62,5 +67,6 @@ void TicketsEditWidget::editTicket()
                 this,&TicketsEditWidget::updateModel);
 
         ticketDialog->exec();
+        emit ticketsUpdated();
     }
 }

@@ -16,7 +16,7 @@ Vehicle::Vehicle() :
 
 int Vehicle::passesSinceOilChange() const
 {
-    TicketsModel ticketsModel(value("id").toInt());
+    TicketsLogbookModel ticketsModel(value("id").toInt());
 
     return ticketsModel.ticketsSinceDateTime(value("lastOilChange")
                                              .toDateTime());
@@ -24,7 +24,7 @@ int Vehicle::passesSinceOilChange() const
 
 int Vehicle::passesSinceTireChange() const
 {
-    TicketsModel ticketsModel(value("id").toInt());
+    TicketsLogbookModel ticketsModel(value("id").toInt());
 
     return ticketsModel.ticketsSinceDateTime(value("lastTireChange")
                                              .toDateTime());

@@ -85,7 +85,7 @@ const QColor P_COLOR = Qt::darkYellow;
 const QColor A_COLOR = Qt::gray;
 const QColor D_COLOR = Qt::darkBlue;
 
-static QMap<QString, QString> TEXT_SUFFIXES{{"Alltel", "message.alltel.com"},
+const QMap<QString, QString> TEXT_SUFFIXES{{"Alltel", "message.alltel.com"},
                                             {"AT&T", "txt.att.net"},
                                             {"Boost Mobile", "myboostmobile.com"},
                                             {"Cricket Wireless", "mms.cricketwireless.net"},
@@ -95,6 +95,16 @@ static QMap<QString, QString> TEXT_SUFFIXES{{"Alltel", "message.alltel.com"},
                                             {"Verizon", "vtext.com"},
                                             {"Virgin Mobile", "vmobl.com"},
                                             {"Republic Wireless", "text.republicwireless.com"}};
+
+const double IN_TO_MB = 33.86389;
+const double MB_TO_IN = 1 / IN_TO_MB;
+const double FT_TO_M = 0.3048;
+const double M_TO_FT = 1 / FT_TO_M;
+
+inline double formatNum(double num, int decimals)
+{
+    return QString::number(num, 'f', decimals).toDouble();
+}
 
 #if defined(NAROBCORE_LIBRARY)
 #  define NAROBCORESHARED_EXPORT Q_DECL_EXPORT

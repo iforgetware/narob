@@ -16,7 +16,7 @@ Predictions::Predictions() :
 }
 
 
-Prediction::Prediction(TicketsModel *model,
+Prediction::Prediction(TicketsLogbookModel *tLModel,
                        const int vehicleId,
                        const int trackId,
                        const int raceId,
@@ -27,7 +27,7 @@ Prediction::Prediction(TicketsModel *model,
     mTrackId(trackId),
     mRaceId(raceId),
     mTicketId(ticketId),
-    mTicketsModel(model),
+    mTicketsLogbookModel(tLModel),
     mEighthPoints(Points()),
     mQuarterPoints(Points()),
     mEighthLine(Line()),
@@ -112,11 +112,11 @@ void Prediction::predictByObservation(Observation observation,
     predictClocks();
 }
 void Prediction::predictClocks(){
-    mTickets = mTicketsModel->predictionTickets(mAllForTrack,
-                                                mAllForVehicle,
-                                                mTrackId,
-                                                mRaceId,
-                                                mTicketId);
+    mTickets = mTicketsLogbookModel->predictionTickets(mAllForTrack,
+                                                       mAllForVehicle,
+                                                       mTrackId,
+                                                       mRaceId,
+                                                       mTicketId);
 
     mEighthLine = Line();
     mEighthPoints = Points();
@@ -137,7 +137,7 @@ QVector<Prediction*> Prediction::adjacentPredictions(){
     QTime startTime = ticketTime.addSecs(-300);
 
     for(int i = 0; i < 11; i++){
-        Prediction *prediction = new Prediction(mTicketsModel,
+        Prediction *prediction = new Prediction(mTicketsLogbookModel,
                                                 mVehicleId,
                                                 mTrackId,
                                                 mRaceId,

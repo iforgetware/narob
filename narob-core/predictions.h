@@ -82,7 +82,7 @@ public:
 class NAROBCORESHARED_EXPORT Prediction : public DbRecordBase
 {
 public:
-    explicit Prediction(TicketsModel *model,
+    explicit Prediction(TicketsLogbookModel *tLModel,
                         const int vehicleId,
                         const int trackId,
                         const int raceId,
@@ -124,7 +124,7 @@ private:
     double mWeightAdjustment;
     bool mAllForVehicle;
     bool mAllForTrack;
-    TicketsModel *mTicketsModel;
+    TicketsLogbookModel* mTicketsLogbookModel;
     std::unique_ptr<std::vector<std::shared_ptr<Ticket>>> mTickets;
 
     double mTemperature;

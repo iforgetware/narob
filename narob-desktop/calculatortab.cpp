@@ -2,18 +2,18 @@
 #include "ui_calculatortab.h"
 #include "settings.h"
 
-CalculatorTab::CalculatorTab(TicketsModel *model,
+CalculatorTab::CalculatorTab(TicketsLogbookModel *tLModel,
                              std::shared_ptr<Vehicle> vehicle,
                              std::shared_ptr<Race> race,
                              QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CalculatorTab),
-    mTicketsModel(model),
+    mTicketsLogbookModel(tLModel),
     mPredictionsModel(new PredictionsModel(vehicle->value("id").toInt(),
                                            race->value("id").toInt(),
                                            0,
                                            this)),
-    mCurrentPrediction(Prediction(model,
+    mCurrentPrediction(Prediction(tLModel,
                                   vehicle->value("id").toInt(),
                                   race->value("trackId").toInt(),
                                   race->value("id").toInt(),
@@ -39,7 +39,7 @@ CalculatorTab::CalculatorTab(TicketsModel *model,
     setupGraph();
 
     ui->vehicleWeightSpinBox->setValue(vehicle->value("weight").toInt());
-    ui->riderWeightSpinBox->setValue(mTicketsModel->lastWeight());
+    ui->riderWeightSpinBox->setValue(mTicketsLogbookModel->lastWeight());
 
     ui->weightAdjustmentSpinBox->setValue(vehicle->value("weightAdjustment")
                                           .toDouble());
@@ -195,10 +195,7 @@ void CalculatorTab::makePrediction()
     mObservation.setValue("temperature", ui->temperatureEdit->text());
     mObservation.setValue("humidity", ui->humidityEdit->text());
     mObservation.setValue("pressure", ui->pressureEdit->text());
-//    mObservation.setValue("vaporPressure", formatNum(mVPs / mSampleCount, 2));
-//    mObservation.setValue("dewPoint", formatNum(mDPts / mSampleCount, 1));
-//    mObservation.setValue("densityAltitude", dA);
-//    mObservation.calcDA();
+    mObservation.calcDA();
     mObservation.setValue("windSpeed", ui->windSpeedEdit->text());
     mObservation.setValue("windDirection", ui->windDirectionEdit->text());
     mObservation.setValue("windGust", 0);
@@ -212,6 +209,9 @@ void CalculatorTab::makePrediction()
                                             ui->weightAdjustmentSpinBox->value(),
                                             ui->vehicleTicketsCheckBox->isChecked(),
                                             ui->trackTicketsCheckBox->isChecked());
+
+    ui->vaporPressure->setText(mObservation.value("vaporPressure").toString());
+    ui->densityAltitude->setText(mObservation.value("densityAltitude").toString());
 
     mEighthMedian->clear();
     mEighthRunsScatter->clear();

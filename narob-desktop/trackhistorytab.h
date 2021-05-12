@@ -6,7 +6,7 @@
 #include "vehicles.h"
 #include "tracks.h"
 #include "tickets.h"
-#include "ticketswidget.h"
+#include "trackhistorywidget.h"
 
 namespace Ui {
 class TrackHistoryTab;
@@ -17,15 +17,17 @@ class TrackHistoryTab : public QWidget
     Q_OBJECT
 
 public:
-    explicit TrackHistoryTab(TicketsModel* model,
+    explicit TrackHistoryTab(//TicketsLogbookModel* model,
+                             std::shared_ptr<Vehicle> vehicle,
                              int trackId,
-                             QWidget* parent = 0);
+                             QWidget* parent = nullptr);
     ~TrackHistoryTab();
     void updateAllModels();
 
 private:
     Ui::TrackHistoryTab* ui;
-    TicketsWidget *mTicketsWidget;
+    TrackHistoryWidget *mTrackHistoryWidget;
+    TicketsTrackModel *mTicketsTrackModel;
 };
 
 #endif // TRACKHISTORYTAB_H

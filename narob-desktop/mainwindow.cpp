@@ -92,6 +92,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->settingsTab, &SettingsTab::updateLogbook,
             this, &MainWindow::handleUpdateLogbook);
+    connect(ui->settingsTab, &SettingsTab::updateSplits,
+            this, &MainWindow::handleUpdateSplits);
 
     connect(ui->settingsTab, &SettingsTab::testWeather,
             this, &MainWindow::handleTestWeather);
@@ -214,6 +216,12 @@ void MainWindow::handleCloseTab(int index)
 void MainWindow::handleUpdateLogbook()
 {
     mDBM->updateLogbook();
+    updateAllModels();
+}
+
+void MainWindow::handleUpdateSplits()
+{
+    mDBM->updateSplits();
     updateAllModels();
 }
 

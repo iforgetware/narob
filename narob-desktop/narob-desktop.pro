@@ -22,10 +22,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    currentpredictiontab.cpp \
+    logbookwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     dashboardtab.cpp \
+    predictiongraphtab.cpp \
+    previouspredictionstab.cpp \
     trace.cpp \
+    trackhistorywidget.cpp \
     weathergraphwidget.cpp \
     weathertab.cpp \
     settingstab.cpp \
@@ -43,7 +48,6 @@ SOURCES += \
     raceswidget.cpp \
     vehicleswidget.cpp \
     vehicledialog.cpp \
-    ticketswidget.cpp \
     ticketdialog.cpp \
     observationswidget.cpp \
     providerbox.cpp \
@@ -56,9 +60,14 @@ SOURCES += \
     calculatortab.cpp
 
 HEADERS += \
+    currentpredictiontab.h \
+    logbookwidget.h \
     mainwindow.h \
     dashboardtab.h \
+    predictiongraphtab.h \
+    previouspredictionstab.h \
     trace.h \
+    trackhistorywidget.h \
     weathergraphwidget.h \
     weathertab.h \
     settingstab.h \
@@ -76,7 +85,6 @@ HEADERS += \
     racedialog.h \
     vehicleswidget.h \
     vehicledialog.h \
-    ticketswidget.h \
     ticketdialog.h \
     observationswidget.h \
     providerbox.h \
@@ -89,8 +97,12 @@ HEADERS += \
     calculatortab.h
 
 FORMS += \
+    currentpredictiontab.ui \
     mainwindow.ui \
     dashboardtab.ui \
+    predictiongraphtab.ui \
+    predictiontab_copy.ui \
+    previouspredictionstab.ui \
     weathergraphwidget.ui \
     weathertab.ui \
     settingstab.ui \

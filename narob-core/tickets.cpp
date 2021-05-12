@@ -19,20 +19,12 @@ Ticket::Ticket() :
 {
 }
 
-TicketsModel::TicketsModel(int vehicleId,
-                           QObject *parent) :
+TicketsModel::TicketsModel(QObject *parent) :
     ModelBase("tickets",
               TICKET_FIELDS,
-              parent),
-    mVehicleId(vehicleId)
+              parent)
 {
-    QString filter = QString("vehicleId = %1").arg(mVehicleId);
-
-    setFilter(filter);
-
     setSort(fieldIndex("dateTime"), Qt::DescendingOrder);
-
-    select();
 }
 
 QVariant TicketsModel::data(const QModelIndex &item, int role) const
@@ -54,7 +46,51 @@ QVariant TicketsModel::data(const QModelIndex &item, int role) const
     return QSqlRelationalTableModel::data(item, role);
 }
 
-unique_ptr<vector<shared_ptr<Ticket>>> TicketsModel::predictionTickets(
+TicketsLogbookModel::TicketsLogbookModel(int vehicleId,
+                           QObject *parent) :
+    TicketsModel(parent),
+    mVehicleId(vehicleId)
+{
+    QString filter = QString("vehicleId = %1").arg(mVehicleId);
+
+    setFilter(filter);
+
+    select();
+}
+
+TicketsTrackModel::TicketsTrackModel(int vehicleId,
+                                     int trackId,
+                                     QObject *parent) :
+    TicketsModel(parent),
+    mVehicleId(vehicleId),
+    mTrackId(trackId)
+{
+    QString filter = QString("vehicleId = %1 AND trackId = %2")
+                     .arg(mVehicleId)
+                     .arg(mTrackId);
+
+    setFilter(filter);
+
+    select();
+}
+
+TicketsRaceModel::TicketsRaceModel(int vehicleId,
+                                   int raceId,
+                                   QObject *parent) :
+    TicketsModel(parent),
+    mVehicleId(vehicleId),
+    mRaceId(raceId)
+{
+    QString filter = QString("vehicleId = %1 AND raceId = %2")
+                     .arg(mVehicleId)
+                     .arg(mRaceId);
+
+    setFilter(filter);
+
+    select();
+}
+
+unique_ptr<vector<shared_ptr<Ticket>>> TicketsLogbookModel::predictionTickets(
         bool allForTrack,
         bool allForVehicle,
         int trackId,
@@ -90,7 +126,7 @@ unique_ptr<vector<shared_ptr<Ticket>>> TicketsModel::predictionTickets(
     return ticketsVector;
 }
 
-double TicketsModel::lastWeight()
+double TicketsLogbookModel::lastWeight()
 {
     double riderWeight = 0;
 
@@ -101,7 +137,7 @@ double TicketsModel::lastWeight()
     return riderWeight;
 }
 
-int TicketsModel::ticketsSinceDateTime(const QDateTime dateTime) const
+int TicketsLogbookModel::ticketsSinceDateTime(const QDateTime dateTime) const
 {
     if(dateTime.isValid()){
         QSqlQuery query;
@@ -122,31 +158,31 @@ int TicketsModel::ticketsSinceDateTime(const QDateTime dateTime) const
 }
 
 
-TicketsRaceModel::TicketsRaceModel(int raceId, QObject *parent) :
-    QSortFilterProxyModel(parent),
-    mRaceId(raceId)
-{
-}
+//TicketsRaceModel::TicketsRaceModel(int raceId, QObject *parent) :
+//    QSortFilterProxyModel(parent),
+//    mRaceId(raceId)
+//{
+//}
 
-bool TicketsRaceModel::filterAcceptsRow(int sourceRow,
-                                        const QModelIndex &sourceParent) const
-{
-    QModelIndex raceIndex = sourceModel()->index(sourceRow, 3, sourceParent);
+//bool TicketsRaceModel::filterAcceptsRow(int sourceRow,
+//                                        const QModelIndex &sourceParent) const
+//{
+//    QModelIndex raceIndex = sourceModel()->index(sourceRow, 3, sourceParent);
 
-    return sourceModel()->data(raceIndex).toInt() == mRaceId;
-}
+//    return sourceModel()->data(raceIndex).toInt() == mRaceId;
+//}
 
 
-TicketsTrackModel::TicketsTrackModel(int trackId, QObject *parent) :
-    QSortFilterProxyModel(parent),
-    mTrackId(trackId)
-{
-}
+//TicketsTrackModel::TicketsTrackModel(int trackId, QObject *parent) :
+//    QSortFilterProxyModel(parent),
+//    mTrackId(trackId)
+//{
+//}
 
-bool TicketsTrackModel::filterAcceptsRow(int sourceRow,
-                                         const QModelIndex &sourceParent) const
-{
-    QModelIndex trackIndex = sourceModel()->index(sourceRow, 2, sourceParent);
+//bool TicketsTrackModel::filterAcceptsRow(int sourceRow,
+//                                         const QModelIndex &sourceParent) const
+//{
+//    QModelIndex trackIndex = sourceModel()->index(sourceRow, 2, sourceParent);
 
-    return sourceModel()->data(trackIndex).toInt() == mTrackId;
-}
+//    return sourceModel()->data(trackIndex).toInt() == mTrackId;
+//}
