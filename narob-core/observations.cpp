@@ -150,6 +150,33 @@ Observation::Observation() :
 {
 }
 
+void Observation::overrideObservation(double t,
+                                      double h,
+                                      double p,
+                                      int da,
+                                      int wd,
+                                      int ws)
+{
+    if(t != 0.0){
+        setValue("temperature", formatNum(t, 1));
+    }
+    if(h != 0.0){
+        setValue("humidity", formatNum(h, 1));
+    }
+    if(p != 0.0){
+        setValue("pressure", formatNum(p, 2));
+    }
+    if(da != 0){
+        setValue("densityAltitude", da);
+    }
+    if(wd != 0){
+        setValue("windDirection", wd);
+    }
+    if(ws != 0){
+        setValue("windSpeed", ws);
+    }
+}
+
 void Observation::calcDA()
 {
     double t = value("temperature").toDouble();
@@ -223,28 +250,6 @@ Observation ObservationsModel::observationForTime(QDateTime dateTime)
     return observation;
 }
 
-unique_ptr<vector<unique_ptr<Observation>>> ObservationsModel::observationsForToday()
-{
-    auto observationsVector = make_unique<vector<unique_ptr<Observation>>>();
-
-    QDate date = QDate::currentDate();
-
-    for(int row = rowCount() - 1; row >= 0 ; row--){
-        if(row % 100 == 0){
-            qDebug() << "row " << row;
-        }
-        if(record(row).value("dateTime").toDate() == date){
-            auto observation = make_unique<Observation>();
-
-            observation->populate(record(row));
-
-            observationsVector->push_back(move(observation));
-        }
-    }
-
-    return observationsVector;
-}
-
 unique_ptr<vector<unique_ptr<Observation>>> ObservationsModel::observationsForDays(const int days)
 {
     auto observationsVector = make_unique<vector<unique_ptr<Observation>>>();
@@ -254,8 +259,10 @@ unique_ptr<vector<unique_ptr<Observation>>> ObservationsModel::observationsForDa
 
     QSqlQuery query;
     query.prepare("SELECT * FROM observations "
-                  "WHERE dateTime >= :startDateTime");
+                  "WHERE dateTime >= :startDateTime "
+                  "AND id % :step  = 0");
     query.bindValue(":startDateTime", startDateTime);
+    query.bindValue(":step", days + 1);
 
     query.exec();
 

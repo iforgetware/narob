@@ -18,15 +18,16 @@ RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
     mTrackHistoryTab(new TrackHistoryTab(vehicle,
                                          race->value("trackId").toInt(),
                                          this)),
-    mLogbookTab(new LogbookTab(mTicketsLogbookModel, this)),
-    mPredictionTab(new PredictionTab(mTicketsLogbookModel,
-                                     vehicle,
-                                     race,
-                                     this)),
-    mCalculatorTab(new CalculatorTab(mTicketsLogbookModel,
-                                     vehicle,
-                                     race,
-                                     this))
+    mLogbookTab(new LogbookTab(mTicketsLogbookModel,
+                               this)),
+    mAutoTab(new AutoTab(mTicketsLogbookModel,
+                         vehicle,
+                         race,
+                         this)),
+    mManualTab(new ManualTab(mTicketsLogbookModel,
+                             vehicle,
+                             race,
+                             this))
 {
     ui->setupUi(this);
 
@@ -35,8 +36,8 @@ RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
     ui->tabWidget->addTab(mTicketEntryTab, "Ticket Entry");
     ui->tabWidget->addTab(mTrackHistoryTab, "Track History");
     ui->tabWidget->addTab(mLogbookTab, "Logbook");
-    ui->tabWidget->addTab(mPredictionTab, "Predictions");
-    ui->tabWidget->addTab(mCalculatorTab, "Calculators");
+    ui->tabWidget->addTab(mAutoTab, "Auto Predictions");
+    ui->tabWidget->addTab(mManualTab, "Manual Prediction");
 
     connect(mTicketEntryTab, &TicketEntryTab::ticketsUpdated,
             this, &RaceControlTab::updateAllModels);
@@ -49,16 +50,16 @@ RaceControlTab::~RaceControlTab()
     delete mTicketEntryTab;
     delete mTrackHistoryTab;
     delete mLogbookTab;
-    delete mPredictionTab;
-    delete mCalculatorTab;
+    delete mAutoTab;
+    delete mManualTab;
 
     delete ui;
 }
 
 void RaceControlTab::updateAllModels()
 {
-//    mTicketEntryTab->updateAllModels();
     mTrackHistoryTab->updateAllModels();
     mLogbookTab->updateAllModels();
-    mPredictionTab->UpdateAllModels();
+    mAutoTab->updateAllModels();
+    mManualTab->updateAllModels();
 }

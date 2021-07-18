@@ -61,6 +61,21 @@ TicketDialog::TicketDialog(TicketsLogbookModel *tLModel,
                           QTime::currentTime().minute()));
         ui->dateTimeEdit->setDateTime(cDT);
 
+
+
+
+
+
+
+
+
+
+        // add light good check box
+        // this poses a problem
+        // can't be negative because they exist
+        // maybe blank? maybe seperate field?
+
+
         ui->sixtyGoodCheckBox->setChecked(true);
         ui->threeThirtyGoodCheckBox->setChecked(true);
         ui->eighthGoodCheckBox->setChecked(true);
@@ -72,6 +87,15 @@ TicketDialog::TicketDialog(TicketsLogbookModel *tLModel,
         formatDoubleEdit("eighthMPH", ui->eighthMPHEdit, 2);
         formatDoubleEdit("quarterMPH", ui->quarterMPHEdit, 2);
         formatDoubleEdit("dial", ui->dialEdit, 2);
+
+
+
+
+
+
+
+
+        // add light edit
 
         formatClockEdit("sixty", ui->sixtyEdit, ui->sixtyGoodCheckBox);
         formatClockEdit("threeThirty", ui->threeThirtyEdit, ui->threeThirtyGoodCheckBox);
@@ -243,6 +267,12 @@ void TicketDialog::setupModel()
     mMapper->addMapping(ui->vehicleWeightSpinBox, mModel->fieldIndex("vehicleWeight"));
     mMapper->addMapping(ui->riderWeightSpinBox, mModel->fieldIndex("riderWeight"));
     mMapper->addMapping(ui->notesEdit, mModel->fieldIndex("notes"));
+    mMapper->addMapping(ui->temperatureEdit, mModel->fieldIndex("temperatureM"));
+    mMapper->addMapping(ui->humidityEdit, mModel->fieldIndex("humidityM"));
+    mMapper->addMapping(ui->pressureEdit, mModel->fieldIndex("pressureM"));
+    mMapper->addMapping(ui->densityAltitudeEdit, mModel->fieldIndex("densityAltitudeM"));
+    mMapper->addMapping(ui->windDirectionEdit, mModel->fieldIndex("windDirectionM"));
+    mMapper->addMapping(ui->windSpeedEdit, mModel->fieldIndex("windSpeedM"));
 }
 
 void vInt(QLineEdit *edit)
@@ -342,13 +372,58 @@ void TicketDialog::updateSplits()
 
 void TicketDialog::updatePrediction()
 {
-    mPredictedRun->predictByTime(ui->dateTimeEdit->dateTime(),
-                                 ui->riderWeightSpinBox->value(),
-                                 ui->vehicleWeightSpinBox->value(),
-                                 ui->windAdjustmentSpinBox->value(),
-                                 ui->weightAdjustmentSpinBox->value(),
-                                 ui->vehicleTicketsCheckBox->isChecked(),
-                                 ui->trackTicketsCheckBox->isChecked());
+
+
+
+
+
+
+    // need to split this out so that manual weather input triggers
+    // predict by observation
+
+    // add a checkbox ( and flag in ticket record ) for manual weather entry
+    // set them anytime a weather param is editted
+    //
+    // OR
+    // store any manual entries and check them whenever using weather
+
+    // will need to involve updateWeather
+
+
+
+    double t = ui->temperatureEdit->text().toDouble();
+    double h = ui->humidityEdit->text().toDouble();
+    double p = ui->pressureEdit->text().toDouble();
+    int da = ui->densityAltitudeEdit->text().toInt();
+    int wd = ui->windDirectionEdit->text().toInt();
+    int ws = ui->windSpeedEdit->text().toInt();
+
+
+    // copy this wherever needed
+    // like the prediction tabs
+
+
+
+
+    if(t != 0.0 || h != 0.0 || p != 0.0 || da!= 0 || wd != 0 || ws != 0){
+        mObservation.overrideObservation(t, h, p, da,wd,ws);
+
+        mPredictedRun->predictByObservation(mObservation,
+                                            ui->riderWeightSpinBox->value(),
+                                            ui->vehicleWeightSpinBox->value(),
+                                            ui->windAdjustmentSpinBox->value(),
+                                            ui->weightAdjustmentSpinBox->value(),
+                                            ui->vehicleTicketsCheckBox->isChecked(),
+                                            ui->trackTicketsCheckBox->isChecked());
+    }else{
+        mPredictedRun->predictByTime(ui->dateTimeEdit->dateTime(),
+                                     ui->riderWeightSpinBox->value(),
+                                     ui->vehicleWeightSpinBox->value(),
+                                     ui->windAdjustmentSpinBox->value(),
+                                     ui->weightAdjustmentSpinBox->value(),
+                                     ui->vehicleTicketsCheckBox->isChecked(),
+                                     ui->trackTicketsCheckBox->isChecked());
+    }
 
     updatePLabel("sixtyD", ui->sixtyD);
     updatePLabel("threeThirtyD", ui->threeThirtyD);
@@ -391,6 +466,15 @@ void TicketDialog::formatDoubleEdit(const QString &field,
     edit->setText(QString::number(number, 'f', decimals));
 }
 
+
+
+
+
+
+
+// see note at wrappers
+
+
 void TicketDialog::formatNumberLabel(const QVariant &value,
                                      QLabel *label,
                                      const int decimals)
@@ -428,6 +512,27 @@ void TicketDialog::updateSValue(const QString &field, double value)
     mModel->setData(indexForField(field), value);
 }
 
+
+
+
+
+
+
+
+
+
+
+// these wrappers can probably be removed
+// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+
+
+
+
+
+
+
+
 void TicketDialog::updatePLabel(const QString &field, QLabel *label)
 {
     formatNumberLabel(mPredictedRun->value(field),
@@ -448,6 +553,11 @@ void TicketDialog::updateSLabel(const QString &field, QLabel *label, const int d
                       label,
                       decimals);
 }
+
+
+
+
+
 
 void TicketDialog::onShowPredictionsClicked()
 {
@@ -494,6 +604,14 @@ void TicketDialog::onFactorChange()
 
 void TicketDialog::onButtonBoxAccepted()
 {
+
+
+
+
+
+
+    // add light edit
+
     handleClockGood(ui->sixtyEdit, ui->sixtyGoodCheckBox);
     handleClockGood(ui->threeThirtyEdit, ui->threeThirtyGoodCheckBox);
     handleClockGood(ui->eighthEdit, ui->eighthGoodCheckBox);

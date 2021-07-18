@@ -1,3 +1,21 @@
+
+
+
+
+
+
+
+
+
+
+// remove maintenance and testing frames
+// add color and size to highlight Save and Clear buttons
+
+
+
+
+
+
 #ifndef SETTINGSTAB_H
 #define SETTINGSTAB_H
 

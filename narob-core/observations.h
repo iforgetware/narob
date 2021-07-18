@@ -64,6 +64,13 @@ public:
     Observation(double t, double h, double p);
     explicit Observation();
 
+    void overrideObservation(double t,
+                             double h,
+                             double p,
+                             int da,
+                             int wd,
+                             int ws);
+
     void calcDA();
 };
 
@@ -77,7 +84,6 @@ public:
 
     Observation lastObservation();
     Observation observationForTime(QDateTime dateTime);
-    std::unique_ptr<std::vector<std::unique_ptr<Observation>>> observationsForToday();
     std::unique_ptr<std::vector<std::unique_ptr<Observation>>> observationsForDays(const int days);
 };
 

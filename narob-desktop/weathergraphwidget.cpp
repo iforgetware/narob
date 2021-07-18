@@ -93,7 +93,6 @@ WeatherGraphWidget::WeatherGraphWidget(QWidget *parent) :
 
     ObservationsModel observationsModel;
 
-//    auto observations = observationsModel.observationsForToday();
     auto observations = observationsModel.observationsForDays(0);
 
     for(auto&& observation : *observations)

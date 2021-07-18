@@ -6,16 +6,15 @@ TicketPredictionsDialog::TicketPredictionsDialog(PredictionsModel *predictionsMo
                                                  QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TicketPredictionsDialog),
-    mPredictionsModel(predictionsModel)
+    mPredictionsModel(predictionsModel),
+    mPredictionsWidget(new PredictionsWidget(mPredictionsModel,
+                                             this))
 {
     ui->setupUi(this);
 
     foreach(Prediction* prediction, predictedRun->adjacentPredictions()){
         mPredictionsModel->addRow(*prediction);
     }
-
-    mPredictionsWidget = new PredictionsWidget(mPredictionsModel,
-                                               this);
 
     ui->gridLayout_2->addWidget(mPredictionsWidget, 0, 0);
 }

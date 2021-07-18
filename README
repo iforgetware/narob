@@ -9,6 +9,11 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.5.1
+    - changed manual tab to manual prediction
+    - added manual weather value entries for ticket
+        - still need to work manual values into predictions
+
 v0.5.0
     - fixed bug preventing editting of past race tickets
         - moved single Tickets model setup to multiple models
@@ -21,7 +26,7 @@ v0.5.0
 v0.4.2
     - moved DA and associated calcs from WeatherStation to Observation
     - moved DA calc constants to global header
-    - added calculator tab to race control
+    - added manual tab to race control
         - required splitting predictClocks into two functions
             - predictByTime
             - predictByObservation

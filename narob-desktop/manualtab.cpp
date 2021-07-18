@@ -1,29 +1,30 @@
-#include "calculatortab.h"
-#include "ui_calculatortab.h"
-#include "settings.h"
+#include "manualtab.h"
+#include "ui_manualtab.h"
 
-CalculatorTab::CalculatorTab(TicketsLogbookModel *tLModel,
-                             std::shared_ptr<Vehicle> vehicle,
-                             std::shared_ptr<Race> race,
-                             QWidget *parent) :
+ManualTab::ManualTab(TicketsLogbookModel *tLModel,
+                     std::shared_ptr<Vehicle> vehicle,
+                     std::shared_ptr<Race> race,
+                     QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::CalculatorTab),
-    mTicketsLogbookModel(tLModel),
-    mPredictionsModel(new PredictionsModel(vehicle->value("id").toInt(),
-                                           race->value("id").toInt(),
-                                           0,
-                                           this)),
+    ui(new Ui::ManualTab),
     mCurrentPrediction(Prediction(tLModel,
                                   vehicle->value("id").toInt(),
                                   race->value("trackId").toInt(),
                                   race->value("id").toInt(),
                                   0)),
+    mPredictionsModel(new PredictionsModel(vehicle->value("id").toInt(),
+                                           race->value("id").toInt(),
+                                           0,
+                                           this)),
+    mTicketsLogbookModel(tLModel),
     mFactorTimer(new QTimer(this)),
     mChartView(new QChartView(new QChart(), this)),
     mEighthMedian(new QLineSeries),
     mQuarterMedian(new QLineSeries),
     mEighthRunsScatter(new QScatterSeries),
     mQuarterRunsScatter(new QScatterSeries),
+    mECPScatter(new QScatterSeries),
+    mQCPScatter(new QScatterSeries),
     mEighthDAAxis(new QValueAxis(mChartView)),
     mEighthETAxis(new QValueAxis(mChartView)),
     mQuarterDAAxis(new QValueAxis(mChartView)),
@@ -32,7 +33,7 @@ CalculatorTab::CalculatorTab(TicketsLogbookModel *tLModel,
 {
     ui->setupUi(this);
 
-    ui->gridLayout_6->addWidget(mChartView, 1, 0, 1, -1);
+    ui->gridLayout_6->addWidget(mChartView, 2, 0, 1, -1);
 
     mChartView->setRenderHint(QPainter::Antialiasing);
 
@@ -45,52 +46,6 @@ CalculatorTab::CalculatorTab(TicketsLogbookModel *tLModel,
                                           .toDouble());
     ui->windAdjustmentSpinBox->setValue(vehicle->value("windAdjustment")
                                         .toDouble());
-
-    connect(ui->vehicleWeightSpinBox,
-            QOverload<int>::of(&QSpinBox::valueChanged),
-            this,
-            &CalculatorTab::onFactorChange);
-
-    connect(ui->riderWeightSpinBox,
-            QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this,
-            &CalculatorTab::onFactorChange);
-
-    connect(ui->windAdjustmentSpinBox,
-            QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this,
-            &CalculatorTab::onFactorChange);
-
-    connect(ui->weightAdjustmentSpinBox,
-            QOverload<double>::of(&QDoubleSpinBox::valueChanged),
-            this,
-            &CalculatorTab::onFactorChange);
-
-    connect(ui->trackTicketsCheckBox,
-            &QCheckBox::stateChanged,
-            this,
-            &CalculatorTab::onTrackTicketsCheckboxChange);
-
-    connect(ui->vehicleTicketsCheckBox,
-            &QCheckBox::stateChanged,
-            this,
-            &CalculatorTab::onVehicleTicketsCheckboxChange);
-
-    connect(ui->humidityEdit,
-            &QLineEdit::textChanged,
-            this,
-            &CalculatorTab::onFactorChange);
-
-    connect(ui->pressureEdit,
-            &QLineEdit::textChanged,
-            this,
-            &CalculatorTab::onFactorChange);
-
-    connect(mFactorTimer, &QTimer::timeout,
-            this, &CalculatorTab::makePrediction);
-
-    connect(ui->lengthToggleButton, &QPushButton::clicked,
-            this, &CalculatorTab::onLengthToggle);
 
     for(QLabel *label: {ui->temperatureLabel,
                         ui->sixtyT,
@@ -136,60 +91,81 @@ CalculatorTab::CalculatorTab(TicketsLogbookModel *tLModel,
                         ui->quarterD}){
         label->setStyleSheet("color: " + D_COLOR.name());
     }
+
+    connect(ui->vehicleWeightSpinBox,
+            QOverload<int>::of(&QSpinBox::valueChanged),
+            this,
+            &ManualTab::onFactorChange);
+
+    connect(ui->riderWeightSpinBox,
+            QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            this,
+            &ManualTab::onFactorChange);
+
+    connect(ui->windAdjustmentSpinBox,
+            QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            this,
+            &ManualTab::onFactorChange);
+
+    connect(ui->weightAdjustmentSpinBox,
+            QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+            this,
+            &ManualTab::onFactorChange);
+
+    connect(ui->trackTicketsCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &ManualTab::onTrackTicketsCheckboxChange);
+
+    connect(ui->vehicleTicketsCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &ManualTab::onVehicleTicketsCheckboxChange);
+
+    connect(mFactorTimer, &QTimer::timeout,
+            this, &ManualTab::makePrediction);
+
+    connect(ui->lengthToggleButton, &QPushButton::clicked,
+            this, &ManualTab::onLengthToggle);
+
+    connect(ui->temperatureEdit,
+            &QLineEdit::textChanged,
+            this,
+            &ManualTab::onFactorChange);
+
+    connect(ui->humidityEdit,
+            &QLineEdit::textChanged,
+            this,
+            &ManualTab::onFactorChange);
+
+    connect(ui->pressureEdit,
+            &QLineEdit::textChanged,
+            this,
+            &ManualTab::onFactorChange);
+
+    connect(ui->windSpeedEdit,
+            &QLineEdit::textChanged,
+            this,
+            &ManualTab::onFactorChange);
+
+    connect(ui->windDirectionEdit,
+            &QLineEdit::textChanged,
+            this,
+            &ManualTab::onFactorChange);
 }
 
-CalculatorTab::~CalculatorTab()
+ManualTab::~ManualTab()
 {
     delete mFactorTimer;
     delete ui;
 }
 
-void CalculatorTab::setupGraph()
+void ManualTab::updateAllModels()
 {
-    mEighthDAAxis->setLinePenColor(Qt::black);
-    mEighthDAAxis->setLabelFormat("%i");
-    mEighthETAxis->setLinePenColor(Qt::black);
-    mEighthETAxis->setLabelFormat("%5.2f");
-    mEighthMedian->setName("Median");
-    mEighthMedian->setColor(Qt::blue);
-    mEighthRunsScatter->setName("Runs Used");
-    mEighthRunsScatter->setColor(Qt::red);
-
-    mChartView->chart()->addSeries(mEighthMedian);
-    mChartView->chart()->addSeries(mEighthRunsScatter);
-    mChartView->chart()->addAxis(mEighthDAAxis, Qt::AlignBottom);
-    mChartView->chart()->addAxis(mEighthETAxis, Qt::AlignLeft);
-    mEighthMedian->attachAxis(mEighthDAAxis);
-    mEighthMedian->attachAxis(mEighthETAxis);
-    mEighthRunsScatter->attachAxis(mEighthDAAxis);
-    mEighthRunsScatter->attachAxis(mEighthETAxis);
-
-    mQuarterDAAxis->setLinePenColor(Qt::black);
-    mQuarterDAAxis->setLabelFormat("%i");
-    mQuarterETAxis->setLinePenColor(Qt::black);
-    mQuarterETAxis->setLabelFormat("%5.2f");
-    mQuarterMedian->setName("Median");
-    mQuarterMedian->setColor(Qt::blue);
-    mQuarterRunsScatter->setName("Runs Used");
-    mQuarterRunsScatter->setColor(Qt::red);
-
-    mChartView->chart()->addSeries(mQuarterMedian);
-    mChartView->chart()->addSeries(mQuarterRunsScatter);
-    mChartView->chart()->addAxis(mQuarterDAAxis, Qt::AlignBottom);
-    mChartView->chart()->addAxis(mQuarterETAxis, Qt::AlignLeft);
-    mQuarterMedian->attachAxis(mQuarterDAAxis);
-    mQuarterMedian->attachAxis(mQuarterETAxis);
-    mQuarterRunsScatter->attachAxis(mQuarterDAAxis);
-    mQuarterRunsScatter->attachAxis(mQuarterETAxis);
-
-    mEighthRunsScatter->hide();
-    mEighthMedian->hide();
-    mEighthDAAxis->hide();
-    mEighthETAxis->hide();
+    makePrediction();
 }
 
-
-void CalculatorTab::makePrediction()
+void ManualTab::makePrediction()
 {
     mObservation.setValue("dateTime", QDateTime(QDate(0, 0, 0), QTime(0, 0)));
     mObservation.setValue("temperature", ui->temperatureEdit->text());
@@ -213,73 +189,75 @@ void CalculatorTab::makePrediction()
     ui->vaporPressure->setText(mObservation.value("vaporPressure").toString());
     ui->densityAltitude->setText(mObservation.value("densityAltitude").toString());
 
-    mEighthMedian->clear();
-    mEighthRunsScatter->clear();
-    mQuarterMedian->clear();
-    mQuarterRunsScatter->clear();
-
-    double eDAMin = -1000000;
-    double eDAMax = 1000000;
-
-    double qDAMin = -1000000;
-    double qDAMax = 1000000;
-
-    for(QPointF p : mCurrentPrediction.eighthPoints()){
-        double x = p.x();
-
-        if(eDAMin < -999999 || x < eDAMin){
-            eDAMin = x;
-        }
-
-        if(eDAMax > 999999 || x > eDAMax){
-            eDAMax = x;
-        }
-
-        mEighthRunsScatter->append(x, p.y());
-    }
-
-    for(QPointF p : mCurrentPrediction.quarterPoints()){
-        double x = p.x();
-
-        if(qDAMin < -999999 || x < qDAMin){
-            qDAMin = x;
-        }
-
-        if(qDAMax > 999999 || x > qDAMax){
-            qDAMax = x;
-        }
-
-        mQuarterRunsScatter->append(x, p.y());
-    }
-
-    double eMDAMin = eDAMin - 100;
-    double eMETMin = mCurrentPrediction.eighthLine().getYforX(eMDAMin);
-    mEighthMedian->append(eMDAMin, eMETMin);
-
-    double eMDAMax = eDAMax + 100;
-    double eMETMax = mCurrentPrediction.eighthLine().getYforX(eMDAMax);
-    mEighthMedian->append(eMDAMax, eMETMax);
-
-    double qMDAMin = qDAMin - 100;
-    double qMETMin = mCurrentPrediction.quarterLine().getYforX(qMDAMin);
-    mQuarterMedian->append(qMDAMin, qMETMin);
-
-    double qMDAMax = qDAMax + 100;
-    double qMETMax = mCurrentPrediction.quarterLine().getYforX(qMDAMax);
-    mQuarterMedian->append(qMDAMax, qMETMax);
-
-    mEighthDAAxis->setRange(eMDAMin, eMDAMax);
-    mEighthETAxis->setRange(eMETMin, eMETMax);
-
-    mQuarterDAAxis->setRange(qMDAMin, qMDAMax);
-    mQuarterETAxis->setRange(qMETMin, qMETMax);
-
     updateDisplay();
+
+    updateGraph();
 
     mFactorTimer->stop();
 }
 
-void CalculatorTab::updateDisplay()
+void ManualTab::setupGraph()
+{
+    mEighthDAAxis->setLinePenColor(Qt::black);
+    mEighthDAAxis->setLabelFormat("%i");
+    mEighthETAxis->setLinePenColor(Qt::black);
+    mEighthETAxis->setLabelFormat("%5.2f");
+    mEighthMedian->setName("Median");
+    mEighthMedian->setColor(Qt::blue);
+    mEighthRunsScatter->setName("Runs Used");
+    mEighthRunsScatter->setColor(Qt::green);
+
+    mChartView->chart()->addSeries(mEighthMedian);
+    mChartView->chart()->addSeries(mEighthRunsScatter);
+    mChartView->chart()->addAxis(mEighthDAAxis, Qt::AlignBottom);
+    mChartView->chart()->addAxis(mEighthETAxis, Qt::AlignLeft);
+    mEighthMedian->attachAxis(mEighthDAAxis);
+    mEighthMedian->attachAxis(mEighthETAxis);
+    mEighthRunsScatter->attachAxis(mEighthDAAxis);
+    mEighthRunsScatter->attachAxis(mEighthETAxis);
+
+    mQuarterDAAxis->setLinePenColor(Qt::black);
+    mQuarterDAAxis->setLabelFormat("%i");
+    mQuarterETAxis->setLinePenColor(Qt::black);
+    mQuarterETAxis->setLabelFormat("%5.2f");
+    mQuarterMedian->setName("Median");
+    mQuarterMedian->setColor(Qt::blue);
+    mQuarterRunsScatter->setName("Runs Used");
+    mQuarterRunsScatter->setColor(Qt::green);
+
+    mChartView->chart()->addSeries(mQuarterMedian);
+    mChartView->chart()->addSeries(mQuarterRunsScatter);
+    mChartView->chart()->addAxis(mQuarterDAAxis, Qt::AlignBottom);
+    mChartView->chart()->addAxis(mQuarterETAxis, Qt::AlignLeft);
+    mQuarterMedian->attachAxis(mQuarterDAAxis);
+    mQuarterMedian->attachAxis(mQuarterETAxis);
+    mQuarterRunsScatter->attachAxis(mQuarterDAAxis);
+    mQuarterRunsScatter->attachAxis(mQuarterETAxis);
+
+    mECPScatter->setName("Current Prediction");
+    mECPScatter->setColor(Qt::black);
+    mECPScatter->setMarkerShape(QScatterSeries::MarkerShapeRectangle);
+
+    mQCPScatter->setName("Current Prediction");
+    mQCPScatter->setColor(Qt::black);
+    mQCPScatter->setMarkerShape(QScatterSeries::MarkerShapeRectangle);
+
+    mChartView->chart()->addSeries(mECPScatter);
+    mECPScatter->attachAxis(mEighthDAAxis);
+    mECPScatter->attachAxis(mEighthETAxis);
+
+    mChartView->chart()->addSeries(mQCPScatter);
+    mQCPScatter->attachAxis(mQuarterDAAxis);
+    mQCPScatter->attachAxis(mQuarterETAxis);
+
+    mEighthRunsScatter->hide();
+    mEighthMedian->hide();
+    mECPScatter->hide();
+    mEighthDAAxis->hide();
+    mEighthETAxis->hide();
+}
+
+void ManualTab::updateDisplay()
 {
     updatePLabel("sixtyD", ui->sixtyD);
     updatePLabel("threeThirtyD", ui->threeThirtyD);
@@ -312,7 +290,87 @@ void CalculatorTab::updateDisplay()
     updatePLabel("quarterP", ui->quarterP);
 }
 
-void CalculatorTab::updatePLabel(const QString &field, QLabel *label)
+void ManualTab::updateGraph()
+{
+    mEighthMedian->clear();
+    mEighthRunsScatter->clear();
+    mECPScatter->clear();
+
+    mQuarterMedian->clear();
+    mQuarterRunsScatter->clear();
+    mQCPScatter->clear();
+
+    double eDAMin = mCurrentPrediction.value("densityAltitude").toDouble();
+    double eDAMax = eDAMin;
+    double qDAMin = eDAMin;
+    double qDAMax = eDAMin;
+
+    mECPScatter->append(eDAMax,
+                        mCurrentPrediction.value("eighthD").toDouble());
+
+    mQCPScatter->append(qDAMax,
+                        mCurrentPrediction.value("quarterD").toDouble());
+
+    for(QPointF p : mCurrentPrediction.eighthPoints()){
+        double x = p.x();
+
+        if(x < eDAMin){
+            eDAMin = x;
+        }
+
+        if(x > eDAMax){
+            eDAMax = x;
+        }
+
+        mEighthRunsScatter->append(x, p.y());
+    }
+
+    for(QPointF p : mCurrentPrediction.quarterPoints()){
+        double x = p.x();
+
+        if(x < qDAMin){
+            qDAMin = x;
+        }
+
+        if(x > qDAMax){
+            qDAMax = x;
+        }
+
+        mQuarterRunsScatter->append(x, p.y());
+    }
+
+
+    // had mod on butters...
+    //
+    // double edge = 0.25;
+    // and edge was subtracted from ETMin's and added to ETMax's
+    //
+
+
+    double eMDAMin = eDAMin - 100;
+    double eMETMin = mCurrentPrediction.eighthLine().getYforX(eMDAMin);
+    mEighthMedian->append(eMDAMin, eMETMin);
+
+    double eMDAMax = eDAMax + 100;
+    double eMETMax = mCurrentPrediction.eighthLine().getYforX(eMDAMax);
+    mEighthMedian->append(eMDAMax, eMETMax);
+
+    double qMDAMin = qDAMin - 100;
+    double qMETMin = mCurrentPrediction.quarterLine().getYforX(qMDAMin);
+    mQuarterMedian->append(qMDAMin, qMETMin);
+
+    double qMDAMax = qDAMax + 100;
+    double qMETMax = mCurrentPrediction.quarterLine().getYforX(qMDAMax);
+    mQuarterMedian->append(qMDAMax, qMETMax);
+
+    mEighthDAAxis->setRange(eMDAMin, eMDAMax);
+    mEighthETAxis->setRange(eMETMin, eMETMax);
+
+    mQuarterDAAxis->setRange(qMDAMin, qMDAMax);
+    mQuarterETAxis->setRange(qMETMin, qMETMax);
+}
+
+void ManualTab::updatePLabel(const QString &field, QLabel *label)
 {
     if(mCurrentPrediction.value(field).toDouble() == 0.0){
         label->setText("");
@@ -324,7 +382,7 @@ void CalculatorTab::updatePLabel(const QString &field, QLabel *label)
     }
 }
 
-void CalculatorTab::onTrackTicketsCheckboxChange(){
+void ManualTab::onTrackTicketsCheckboxChange(){
     if(ui->trackTicketsCheckBox->isChecked()){
             ui->vehicleTicketsCheckBox->setCheckState(Qt::Unchecked);
     }
@@ -332,7 +390,7 @@ void CalculatorTab::onTrackTicketsCheckboxChange(){
     onFactorChange();
 }
 
-void CalculatorTab::onVehicleTicketsCheckboxChange(){
+void ManualTab::onVehicleTicketsCheckboxChange(){
     if(ui->vehicleTicketsCheckBox->isChecked()){
         ui->trackTicketsCheckBox->setCheckState(Qt::Unchecked);
     }
@@ -340,12 +398,12 @@ void CalculatorTab::onVehicleTicketsCheckboxChange(){
     onFactorChange();
 }
 
-void CalculatorTab::onFactorChange()
+void ManualTab::onFactorChange()
 {
     mFactorTimer->start(CHANGE_DELAY);
 }
 
-void CalculatorTab::onLengthToggle()
+void ManualTab::onLengthToggle()
 {
     mQuarterGraph = !mQuarterGraph;
 
@@ -354,11 +412,13 @@ void CalculatorTab::onLengthToggle()
         mEighthRunsScatter->hide();
         mEighthDAAxis->hide();
         mEighthETAxis->hide();
+        mECPScatter->hide();
 
         mQuarterMedian->show();
         mQuarterRunsScatter->show();
         mQuarterDAAxis->show();
         mQuarterETAxis->show();
+        mQCPScatter->show();
 
         ui->lengthLabel->setText("1/4 Mile Predictions");
         ui->lengthToggleButton->setText("Show 1/8");
@@ -367,11 +427,13 @@ void CalculatorTab::onLengthToggle()
         mQuarterRunsScatter->hide();
         mQuarterDAAxis->hide();
         mQuarterETAxis->hide();
+        mQCPScatter->hide();
 
         mEighthMedian->show();
         mEighthRunsScatter->show();
         mEighthDAAxis->show();
         mEighthETAxis->show();
+        mECPScatter->show();
 
         ui->lengthLabel->setText("1/8 Mile Predictions");
         ui->lengthToggleButton->setText("Show 1/4");

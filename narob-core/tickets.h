@@ -54,6 +54,13 @@ const Fields TICKET_FIELDS{
             Field("windGust", "W Gust", 70, 0),
             Field("windGustDirection", "G Dir", 60, 0),
 
+            Field("densityAltitudeM", "D Alt M", 50, 0),
+            Field("temperatureM", "Temp M", 50, 1),
+            Field("humidityM", "Humid M",50, 1),
+            Field("pressureM", "Pres M", 50, 2),
+            Field("windSpeedM", "W Sp M", 70, 0),
+            Field("windDirectionM", "W D M", 60, 0),
+
             Field("notes", "Notes", 0, 0)};
 
 
@@ -127,36 +134,5 @@ private:
     int mVehicleId;
     int mRaceId;
 };
-
-//class NAROBCORESHARED_EXPORT TicketsRaceModel : public QSortFilterProxyModel
-//{
-//    Q_OBJECT
-
-//public:
-//    TicketsRaceModel(int raceId, QObject* parent);
-
-//protected:
-//    bool filterAcceptsRow(int sourceRow,
-//                          const QModelIndex &sourceParent) const;
-
-//private:
-//    int mRaceId;
-//};
-
-
-//class NAROBCORESHARED_EXPORT TicketsTrackModel : public QSortFilterProxyModel
-//{
-//    Q_OBJECT
-
-//public:
-//    TicketsTrackModel(int trackId, QObject* parent);
-
-//protected:
-//    bool filterAcceptsRow(int sourceRow,
-//                          const QModelIndex &sourceParent) const;
-
-//private:
-//    int mTrackId;
-//};
 
 #endif // TICKETS_H

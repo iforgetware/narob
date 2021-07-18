@@ -1,4 +1,4 @@
-#-------------------------------------------------
+ZZ#-------------------------------------------------
 #
 # Project created by QtCreator 2018-01-17T17:25:03
 #
@@ -22,13 +22,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    currentpredictiontab.cpp \
+    autotab.cpp \
     logbookwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     dashboardtab.cpp \
-    predictiongraphtab.cpp \
-    previouspredictionstab.cpp \
+    manualtab.cpp \
+    previouspredictionsdialog.cpp \
     trace.cpp \
     trackhistorywidget.cpp \
     weathergraphwidget.cpp \
@@ -38,7 +38,6 @@ SOURCES += \
     ticketentrytab.cpp \
     trackhistorytab.cpp \
     logbooktab.cpp \
-    predictiontab.cpp \
     delegates.cpp \
     tableeditwidgetbase.cpp \
     tablewidgetbase.cpp \
@@ -56,16 +55,15 @@ SOURCES += \
     dialogbase.cpp \
     previouspredictionswidget.cpp \
     predictionswidget.cpp \
-    ticketpredictionsdialog.cpp \
-    calculatortab.cpp
+    ticketpredictionsdialog.cpp
 
 HEADERS += \
-    currentpredictiontab.h \
+    autotab.h \
     logbookwidget.h \
     mainwindow.h \
     dashboardtab.h \
-    predictiongraphtab.h \
-    previouspredictionstab.h \
+    manualtab.h \
+    previouspredictionsdialog.h \
     trace.h \
     trackhistorywidget.h \
     weathergraphwidget.h \
@@ -75,7 +73,6 @@ HEADERS += \
     trackhistorytab.h \
     ticketentrytab.h \
     logbooktab.h \
-    predictiontab.h \
     delegates.h \
     tableeditwidgetbase.h \
     tablewidgetbase.h \
@@ -93,16 +90,14 @@ HEADERS += \
     dialogbase.h \
     previouspredictionswidget.h \
     predictionswidget.h \
-    ticketpredictionsdialog.h \
-    calculatortab.h
+    ticketpredictionsdialog.h
 
 FORMS += \
-    currentpredictiontab.ui \
+    autotab.ui \
     mainwindow.ui \
     dashboardtab.ui \
-    predictiongraphtab.ui \
-    predictiontab_copy.ui \
-    previouspredictionstab.ui \
+    manualtab.ui \
+    previouspredictionsdialog.ui \
     weathergraphwidget.ui \
     weathertab.ui \
     settingstab.ui \
@@ -116,9 +111,7 @@ FORMS += \
     trackhistorytab.ui \
     ticketentrytab.ui \
     logbooktab.ui \
-    predictiontab.ui \
-    ticketpredictionsdialog.ui \
-    calculatortab.ui
+    ticketpredictionsdialog.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../narob-core/release/ -lnarob-core
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../narob-core/debug/ -lnarob-core

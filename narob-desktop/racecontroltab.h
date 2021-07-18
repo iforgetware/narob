@@ -11,8 +11,8 @@
 #include "ticketentrytab.h"
 #include "trackhistorytab.h"
 #include "logbooktab.h"
-#include "predictiontab.h"
-#include "calculatortab.h"
+#include "autotab.h"
+#include "manualtab.h"
 
 namespace Ui {
 class RaceControlTab;
@@ -38,8 +38,8 @@ private:
     TicketEntryTab *mTicketEntryTab;
     TrackHistoryTab *mTrackHistoryTab;
     LogbookTab *mLogbookTab;
-    PredictionTab *mPredictionTab;
-    CalculatorTab *mCalculatorTab;
+    AutoTab *mAutoTab;
+    ManualTab *mManualTab;
 };
 
 #endif // RACECONTROLTAB_H

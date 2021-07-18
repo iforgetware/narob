@@ -1,5 +1,5 @@
-#ifndef CALCULATORTAB_H
-#define CALCULATORTAB_H
+#ifndef MANUALTAB_H
+#define MANUALTAB_H
 
 #include <memory>
 
@@ -22,40 +22,48 @@
 QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
-class CalculatorTab;
+class ManualTab;
 }
 
-class CalculatorTab : public QWidget
+class ManualTab : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit CalculatorTab(TicketsLogbookModel* tLModel,
-                           std::shared_ptr<Vehicle> vehicle,
-                           std::shared_ptr<Race> race,
-                           QWidget *parent = nullptr);
-    ~CalculatorTab();
+    explicit ManualTab(TicketsLogbookModel* tLModel,
+                       std::shared_ptr<Vehicle> vehicle,
+                       std::shared_ptr<Race> race,
+                       QWidget *parent = nullptr);
+    ~ManualTab();
+
+public slots:
+    void updateAllModels();
 
 private:
     void setupGraph();
     void updateDisplay();
-    void formatNumberLabel(const QVariant &value,
-                           QLabel *label,
-                           const int decimals);
+    void updateGraph();
     void updatePLabel(const QString &field,
                       QLabel *label);
 
-    Ui::CalculatorTab *ui;
-    TicketsLogbookModel *mTicketsLogbookModel;
-    PredictionsModel *mPredictionsModel;
-    Observation mObservation;
+    Ui::ManualTab *ui;
+
     Prediction mCurrentPrediction;
+
+    PredictionsModel *mPredictionsModel;
+    TicketsLogbookModel *mTicketsLogbookModel;
+
+    Observation mObservation;
+
     QTimer *mFactorTimer;
+
     QChartView *mChartView;
     QLineSeries *mEighthMedian;
     QLineSeries *mQuarterMedian;
     QScatterSeries *mEighthRunsScatter;
     QScatterSeries *mQuarterRunsScatter;
+    QScatterSeries *mECPScatter;
+    QScatterSeries *mQCPScatter;
     QValueAxis *mEighthDAAxis;
     QValueAxis *mEighthETAxis;
     QValueAxis *mQuarterDAAxis;
@@ -70,4 +78,4 @@ private slots:
     void onLengthToggle();
 };
 
-#endif // CALCULATORTAB_H
+#endif // MANUALTAB_H

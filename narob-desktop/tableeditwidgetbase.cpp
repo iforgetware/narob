@@ -60,7 +60,6 @@ bool TableEditWidgetBase::selected() const
 int TableEditWidgetBase::selectedRow() const
 {
     if(selected()){
-        qDebug() << ui->tableView->selectionModel()->currentIndex().row();
         return ui->tableView->selectionModel()->currentIndex().row();
     }else{
         return 0;

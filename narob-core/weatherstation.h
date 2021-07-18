@@ -1,3 +1,19 @@
+// need a general weather station class
+// extended by classes for each type of station
+// override the readStation() method for each type
+// add initStation() and wakeStation() methods as needed
+
+
+
+
+
+
+
+
+
+
+
+
 #ifndef WEATHERSTATION_H
 #define WEATHERSTATION_H
 
