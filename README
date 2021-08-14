@@ -9,6 +9,9 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.5.1.1
+    - manual weather values now effect predictions
+
 v0.5.1
     - changed manual tab to manual prediction
     - added manual weather value entries for ticket

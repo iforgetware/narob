@@ -67,7 +67,6 @@ public:
     void overrideObservation(double t,
                              double h,
                              double p,
-                             int da,
                              int wd,
                              int ws);
 

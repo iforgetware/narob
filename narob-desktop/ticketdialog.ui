@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1156</width>
+    <width>1164</width>
     <height>700</height>
    </rect>
   </property>
@@ -1111,39 +1111,22 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="1" column="2">
-       <widget class="QLabel" name="fromWSLabel">
-        <property name="text">
-         <string>From WS</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="3">
-       <widget class="QLineEdit" name="windDirectionEdit"/>
-      </item>
-      <item row="8" column="2">
-       <widget class="QLabel" name="densityAltitude">
-        <property name="text">
-         <string>dAlt</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="currentDewPointLabel">
+      <item row="0" column="0" colspan="4" alignment="Qt::AlignHCenter">
+       <widget class="QLabel" name="weatherLabel">
         <property name="font">
          <font>
-          <pointsize>13</pointsize>
+          <pointsize>20</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>Dew Point</string>
+         <string>Weather</string>
         </property>
        </widget>
       </item>
       <item row="9" column="2">
-       <widget class="QLabel" name="windSpeed">
+       <widget class="QLabel" name="windDirection">
         <property name="text">
-         <string>wSpeed</string>
+         <string>wDir</string>
         </property>
        </widget>
       </item>
@@ -1159,8 +1142,195 @@
         </property>
        </widget>
       </item>
+      <item row="11" column="2">
+       <widget class="QLabel" name="windGustDir">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>gDir</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="3">
+       <widget class="QLineEdit" name="windSpeedEdit"/>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="pressure">
+        <property name="text">
+         <string>pres</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="currentWindGustLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Wind Gust</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="fromWSLabel">
+        <property name="text">
+         <string>From WS</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="currentWindDirectionLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Wind Direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="currentVaporPressureLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Vapor Pressure</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="currentDewPointLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Dew Point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="currentWindGustDirLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Gust Direction</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QLabel" name="densityAltitude">
+        <property name="text">
+         <string>dAlt</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="temperature">
+        <property name="text">
+         <string>temp</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QLineEdit" name="pressureEdit"/>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="humidity">
+        <property name="text">
+         <string>hum</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLabel" name="ManualLabel">
+        <property name="text">
+         <string>Manual</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QLabel" name="dewPoint">
+        <property name="text">
+         <string>dPoint</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
+       <widget class="QLabel" name="windSpeed">
+        <property name="text">
+         <string>wSpeed</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="currentPressureLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Pressure</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QLabel" name="windGust">
+        <property name="text">
+         <string>wGust</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="currentDensityALabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Density Altitude</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="3">
        <widget class="QLineEdit" name="humidityEdit"/>
+      </item>
+      <item row="8" column="0" alignment="Qt::AlignRight">
+       <widget class="QLabel" name="currentWindSpeedLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Wind Speed</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="vaporPressure">
+        <property name="text">
+         <string>vPres</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QLineEdit" name="temperatureEdit"/>
       </item>
       <item row="3" column="0" alignment="Qt::AlignRight">
        <widget class="QLabel" name="currentHumidityLabel">
@@ -1180,188 +1350,8 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="2">
-       <widget class="QLabel" name="pressure">
-        <property name="text">
-         <string>pres</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="currentDensityALabel">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Density Altitude</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="currentWindGustDirLabel">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Gust Direction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="2">
-       <widget class="QLabel" name="windDirection">
-        <property name="text">
-         <string>wDir</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="currentWindDirectionLabel">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Wind Direction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="currentWindSpeedLabel">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Wind Speed</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QLabel" name="temperature">
-        <property name="text">
-         <string>temp</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="2">
-       <widget class="QLabel" name="dewPoint">
-        <property name="text">
-         <string>dPoint</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="3">
-       <widget class="QLineEdit" name="pressureEdit"/>
-      </item>
-      <item row="5" column="2">
-       <widget class="QLabel" name="vaporPressure">
-        <property name="text">
-         <string>vPres</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLabel" name="humidity">
-        <property name="text">
-         <string>hum</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="currentWindGustLabel">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Wind Gust</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="2">
-       <widget class="QLabel" name="windGustDir">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>gDir</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLabel" name="ManualLabel">
-        <property name="text">
-         <string>Manual</string>
-        </property>
-       </widget>
-      </item>
       <item row="9" column="3">
-       <widget class="QLineEdit" name="windSpeedEdit"/>
-      </item>
-      <item row="0" column="0" colspan="4" alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="weatherLabel">
-        <property name="font">
-         <font>
-          <pointsize>20</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Weather</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="3">
-       <widget class="QLineEdit" name="temperatureEdit"/>
-      </item>
-      <item row="11" column="2">
-       <widget class="QLabel" name="windGust">
-        <property name="text">
-         <string>wGust</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" alignment="Qt::AlignRight">
-       <widget class="QLabel" name="currentPressureLabel">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Pressure</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="3">
-       <widget class="QLineEdit" name="densityAltitudeEdit"/>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="currentVaporPressureLabel">
-        <property name="font">
-         <font>
-          <pointsize>13</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Vapor Pressure</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="3">
-       <widget class="QPushButton" name="calcDAButton">
-        <property name="text">
-         <string>Calc DA</string>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="windDirectionEdit"/>
       </item>
      </layout>
     </widget>

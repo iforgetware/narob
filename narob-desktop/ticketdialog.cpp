@@ -178,6 +178,31 @@ TicketDialog::TicketDialog(TicketsLogbookModel *tLModel,
             this,
             &TicketDialog::onVehicleTicketsCheckboxChange);
 
+    connect(ui->temperatureEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::onDateChange);
+
+    connect(ui->humidityEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::onDateChange);
+
+    connect(ui->pressureEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::onDateChange);
+
+    connect(ui->windSpeedEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::onDateChange);
+
+    connect(ui->windDirectionEdit,
+            &QLineEdit::textChanged,
+            this,
+            &TicketDialog::onDateChange);
+
     connect(mDateTimer, &QTimer::timeout,
             this, &TicketDialog::updateWeather);
 
@@ -270,7 +295,6 @@ void TicketDialog::setupModel()
     mMapper->addMapping(ui->temperatureEdit, mModel->fieldIndex("temperatureM"));
     mMapper->addMapping(ui->humidityEdit, mModel->fieldIndex("humidityM"));
     mMapper->addMapping(ui->pressureEdit, mModel->fieldIndex("pressureM"));
-    mMapper->addMapping(ui->densityAltitudeEdit, mModel->fieldIndex("densityAltitudeM"));
     mMapper->addMapping(ui->windDirectionEdit, mModel->fieldIndex("windDirectionM"));
     mMapper->addMapping(ui->windSpeedEdit, mModel->fieldIndex("windSpeedM"));
 }
@@ -303,6 +327,18 @@ void TicketDialog::createUi()
 void TicketDialog::updateWeather()
 {
     mObservation = mObservationsModel->observationForTime(ui->dateTimeEdit->dateTime());
+
+    double t = ui->temperatureEdit->text().toDouble();
+    double h = ui->humidityEdit->text().toDouble();
+    double p = ui->pressureEdit->text().toDouble();
+    int wd = ui->windDirectionEdit->text().toInt();
+    int ws = ui->windSpeedEdit->text().toInt();
+
+    if(t != 0.0 || h != 0.0 || p != 0.0 || wd != 0 || ws != 0){
+        mObservation.overrideObservation(t, h, p, wd, ws);
+    }
+
+    mObservation.calcDA();
 
     updateWValue("temperature");
     updateWValue("humidity");
@@ -372,58 +408,13 @@ void TicketDialog::updateSplits()
 
 void TicketDialog::updatePrediction()
 {
-
-
-
-
-
-
-    // need to split this out so that manual weather input triggers
-    // predict by observation
-
-    // add a checkbox ( and flag in ticket record ) for manual weather entry
-    // set them anytime a weather param is editted
-    //
-    // OR
-    // store any manual entries and check them whenever using weather
-
-    // will need to involve updateWeather
-
-
-
-    double t = ui->temperatureEdit->text().toDouble();
-    double h = ui->humidityEdit->text().toDouble();
-    double p = ui->pressureEdit->text().toDouble();
-    int da = ui->densityAltitudeEdit->text().toInt();
-    int wd = ui->windDirectionEdit->text().toInt();
-    int ws = ui->windSpeedEdit->text().toInt();
-
-
-    // copy this wherever needed
-    // like the prediction tabs
-
-
-
-
-    if(t != 0.0 || h != 0.0 || p != 0.0 || da!= 0 || wd != 0 || ws != 0){
-        mObservation.overrideObservation(t, h, p, da,wd,ws);
-
-        mPredictedRun->predictByObservation(mObservation,
-                                            ui->riderWeightSpinBox->value(),
-                                            ui->vehicleWeightSpinBox->value(),
-                                            ui->windAdjustmentSpinBox->value(),
-                                            ui->weightAdjustmentSpinBox->value(),
-                                            ui->vehicleTicketsCheckBox->isChecked(),
-                                            ui->trackTicketsCheckBox->isChecked());
-    }else{
-        mPredictedRun->predictByTime(ui->dateTimeEdit->dateTime(),
-                                     ui->riderWeightSpinBox->value(),
-                                     ui->vehicleWeightSpinBox->value(),
-                                     ui->windAdjustmentSpinBox->value(),
-                                     ui->weightAdjustmentSpinBox->value(),
-                                     ui->vehicleTicketsCheckBox->isChecked(),
-                                     ui->trackTicketsCheckBox->isChecked());
-    }
+    mPredictedRun->predictByObservation(mObservation,
+                                        ui->riderWeightSpinBox->value(),
+                                        ui->vehicleWeightSpinBox->value(),
+                                        ui->windAdjustmentSpinBox->value(),
+                                        ui->weightAdjustmentSpinBox->value(),
+                                        ui->vehicleTicketsCheckBox->isChecked(),
+                                        ui->trackTicketsCheckBox->isChecked());
 
     updatePLabel("sixtyD", ui->sixtyD);
     updatePLabel("threeThirtyD", ui->threeThirtyD);
@@ -466,15 +457,6 @@ void TicketDialog::formatDoubleEdit(const QString &field,
     edit->setText(QString::number(number, 'f', decimals));
 }
 
-
-
-
-
-
-
-// see note at wrappers
-
-
 void TicketDialog::formatNumberLabel(const QVariant &value,
                                      QLabel *label,
                                      const int decimals)
@@ -486,6 +468,27 @@ void TicketDialog::formatNumberLabel(const QVariant &value,
     }else{
         label->setText(QString::number(value.toInt()));
     }
+}
+
+void TicketDialog::updatePLabel(const QString &field, QLabel *label)
+{
+    formatNumberLabel(mPredictedRun->value(field),
+                      label,
+                      3);
+}
+
+void TicketDialog::updateWLabel(const QString &field, QLabel *label, const int decimals)
+{
+    formatNumberLabel(mModel->data(indexForField(field)),
+                      label,
+                      decimals);
+}
+
+void TicketDialog::updateSLabel(const QString &field, QLabel *label, const int decimals)
+{
+    formatNumberLabel(mModel->data(indexForField(field)),
+                      label,
+                      decimals);
 }
 
 void TicketDialog::formatClockEdit(const QString &field,
@@ -511,53 +514,6 @@ void TicketDialog::updateSValue(const QString &field, double value)
 {
     mModel->setData(indexForField(field), value);
 }
-
-
-
-
-
-
-
-
-
-
-
-// these wrappers can probably be removed
-// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
-
-
-
-
-
-
-
-
-void TicketDialog::updatePLabel(const QString &field, QLabel *label)
-{
-    formatNumberLabel(mPredictedRun->value(field),
-                      label,
-                      3);
-}
-
-void TicketDialog::updateWLabel(const QString &field, QLabel *label, const int decimals)
-{
-    formatNumberLabel(mModel->data(indexForField(field)),
-                      label,
-                      decimals);
-}
-
-void TicketDialog::updateSLabel(const QString &field, QLabel *label, const int decimals)
-{
-    formatNumberLabel(mModel->data(indexForField(field)),
-                      label,
-                      decimals);
-}
-
-
-
-
-
 
 void TicketDialog::onShowPredictionsClicked()
 {

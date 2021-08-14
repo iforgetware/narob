@@ -54,7 +54,6 @@ const Fields TICKET_FIELDS{
             Field("windGust", "W Gust", 70, 0),
             Field("windGustDirection", "G Dir", 60, 0),
 
-            Field("densityAltitudeM", "D Alt M", 50, 0),
             Field("temperatureM", "Temp M", 50, 1),
             Field("humidityM", "Humid M",50, 1),
             Field("pressureM", "Pres M", 50, 2),
@@ -75,6 +74,12 @@ class NAROBCORESHARED_EXPORT Ticket : public DbRecordBase
 {
 public:
     explicit Ticket();
+
+    double temperature();
+    double humidity();
+    double pressure();
+    int windSpeed();
+    int windDirection();
 };
 
 class NAROBCORESHARED_EXPORT TicketsModel : public ModelBase

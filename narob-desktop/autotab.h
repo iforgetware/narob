@@ -7,6 +7,7 @@
 #include "vehicles.h"
 #include "tickets.h"
 #include "races.h"
+#include "observations.h"
 #include "trace.h"
 
 #include <QWidget>
@@ -39,6 +40,8 @@ public slots:
     void updateAllModels();
 
 private:
+    void startAutoTimer();
+    void stopAutoTimer();
     void setupGraph();
     void updateDisplay();
     void updateGraph();
@@ -56,6 +59,8 @@ private:
 
     PredictionsModel *mPredictionsModel;
     TicketsLogbookModel *mTicketsLogbookModel;
+
+    Observation mObservation;
 
     QString mPage;
 
@@ -78,6 +83,7 @@ private:
 private slots:
     void autoPredict();
     void makePrediction();
+    void onAutoCheckboxChange();
     void onTrackTicketsCheckboxChange();
     void onVehicleTicketsCheckboxChange();
     void onFactorChange();

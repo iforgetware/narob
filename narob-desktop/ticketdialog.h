@@ -79,6 +79,7 @@ private slots:
     void onDateChange();
     void onTrackTicketsCheckboxChange();
     void onVehicleTicketsCheckboxChange();
+//    void onWeatherEdit();
     void onFactorChange();
     void onButtonBoxAccepted();
 };

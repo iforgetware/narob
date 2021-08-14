@@ -101,6 +101,11 @@ AutoTab::AutoTab(TicketsLogbookModel *tLModel,
         label->setStyleSheet("color: " + D_COLOR.name());
     }
 
+    connect(ui->autoPredictCheckBox,
+            &QCheckBox::stateChanged,
+            this,
+            &AutoTab::onAutoCheckboxChange);
+
     connect(ui->vehicleWeightSpinBox,
             QOverload<int>::of(&QSpinBox::valueChanged),
             this,
@@ -143,23 +148,7 @@ AutoTab::AutoTab(TicketsLogbookModel *tLModel,
     connect(ui->previousPredictionsButton, &QPushButton::clicked,
             this, &AutoTab::onShowPreviousPredictionsClicked);
 
-
-
-
-
-
-    // connect auto timer start to checking the on/off box
-    // either don't allow AFV or AFT if off or turn it on when they
-    // are selected
-
-
-
-
-
-
-
-
-    mAutoTimer->start(60000);
+    startAutoTimer();
 }
 
 AutoTab::~AutoTab()
@@ -167,6 +156,16 @@ AutoTab::~AutoTab()
     delete mAutoTimer;
     delete mFactorTimer;
     delete ui;
+}
+
+void AutoTab::startAutoTimer()
+{
+    mAutoTimer->start(60000);
+}
+
+void AutoTab::stopAutoTimer()
+{
+    mAutoTimer->stop();
 }
 
 void AutoTab::updateAllModels()
@@ -505,9 +504,21 @@ void AutoTab::mailSent(QString status)
     }
 }
 
+void AutoTab::onAutoCheckboxChange(){
+    if(ui->autoPredictCheckBox->isChecked()){
+        startAutoTimer();
+        onFactorChange();
+    }else{
+        stopAutoTimer();
+    }
+}
+
 void AutoTab::onTrackTicketsCheckboxChange(){
     if(ui->trackTicketsCheckBox->isChecked()){
-            ui->vehicleTicketsCheckBox->setCheckState(Qt::Unchecked);
+        startAutoTimer();
+        ui->vehicleTicketsCheckBox->setCheckState(Qt::Unchecked);
+    }else if(ui->vehicleTicketsCheckBox->isChecked()){
+        stopAutoTimer();
     }
 
     onFactorChange();
@@ -515,7 +526,10 @@ void AutoTab::onTrackTicketsCheckboxChange(){
 
 void AutoTab::onVehicleTicketsCheckboxChange(){
     if(ui->vehicleTicketsCheckBox->isChecked()){
+        startAutoTimer();
         ui->trackTicketsCheckBox->setCheckState(Qt::Unchecked);
+    }else if(ui->trackTicketsCheckBox->isChecked()){
+        stopAutoTimer();
     }
 
     onFactorChange();

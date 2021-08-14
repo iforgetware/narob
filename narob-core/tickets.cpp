@@ -19,6 +19,62 @@ Ticket::Ticket() :
 {
 }
 
+double Ticket::temperature()
+{
+    double t = value("temperatureM").toDouble();
+
+    if(t != 0.0){
+        qDebug("temperature overide");
+        return t;
+    }else{
+        return value("temperature").toDouble();
+    }
+}
+
+double Ticket::humidity()
+{
+    double h = value("humidityM").toDouble();
+
+    if(h != 0.0){
+        return h;
+    }else{
+        return value("humidity").toDouble();
+    }
+}
+
+double Ticket::pressure()
+{
+    double p = value("pressureM").toDouble();
+
+    if(p != 0.0){
+        return p;
+    }else{
+        return value("pressure").toDouble();
+    }
+}
+
+int Ticket::windSpeed()
+{
+    int wS = value("windSpeedM").toInt();
+
+    if(wS != 0){
+        return wS;
+    }else{
+        return value("windSpeed").toInt();
+    }
+}
+
+int Ticket::windDirection()
+{
+    int wD = value("windDirectionM").toInt();
+
+    if(wD != 0){
+        return wD;
+    }else{
+        return value("windDirection").toInt();
+    }
+}
+
 TicketsModel::TicketsModel(QObject *parent) :
     ModelBase("tickets",
               TICKET_FIELDS,

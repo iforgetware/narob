@@ -153,7 +153,6 @@ Observation::Observation() :
 void Observation::overrideObservation(double t,
                                       double h,
                                       double p,
-                                      int da,
                                       int wd,
                                       int ws)
 {
@@ -165,9 +164,6 @@ void Observation::overrideObservation(double t,
     }
     if(p != 0.0){
         setValue("pressure", formatNum(p, 2));
-    }
-    if(da != 0){
-        setValue("densityAltitude", da);
     }
     if(wd != 0){
         setValue("windDirection", wd);

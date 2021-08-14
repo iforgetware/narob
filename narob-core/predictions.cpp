@@ -191,11 +191,12 @@ void Prediction::predictClock(const QString &clock)
                                    + (windCorrection(ticket) / factor)
                                    + (weightCorrection(ticket) / factor);
 
-            tPoints.append(QPointF(ticket->value("temperature").toDouble(),
+            tPoints.append(QPointF(ticket->temperature(),
                                    adjustedClock));
-            hPoints.append(QPointF(ticket->value("humidity").toDouble(),
+            if(ticket->temperature() > 500)qDebug("big temp");
+            hPoints.append(QPointF(ticket->humidity(),
                                    adjustedClock));
-            pPoints.append(QPointF(ticket->value("pressure").toDouble(),
+            pPoints.append(QPointF(ticket->pressure(),
                                    adjustedClock));
             dPoints.append(QPointF(ticket->value("densityAltitude").toInt(),
                                    adjustedClock));
@@ -280,7 +281,9 @@ void Prediction::getWeather()
 double windFactor(int windSpeed, int windDirection)
 {
     // wind direction   0 = headwind ( higher ET )
+    //                    = from the north in WS orientation
     //                180 = tailwind ( lower ET )
+    //                    = from the south in WS orientation
 
     return windSpeed *
             qCos(qDegreesToRadians(static_cast<double>(windDirection)));
@@ -292,8 +295,8 @@ double Prediction::windCorrection(shared_ptr<Ticket> ticket)
     double windDifference = 0;
 
     windDifference = windFactor(mWindSpeed, mWindDirection) -
-                     windFactor(ticket->value("windSpeed").toInt(),
-                                 ticket->value("windDirection").toInt());
+                     windFactor(ticket->windSpeed(),
+                                 ticket->windDirection());
     correction = windDifference * mWindAdjustment;
 
     return correction;
