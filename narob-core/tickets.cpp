@@ -80,7 +80,6 @@ TicketsModel::TicketsModel(QObject *parent) :
               TICKET_FIELDS,
               parent)
 {
-    setSort(fieldIndex("dateTime"), Qt::DescendingOrder);
 }
 
 QVariant TicketsModel::data(const QModelIndex &item, int role) const

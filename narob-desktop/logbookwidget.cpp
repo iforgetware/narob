@@ -12,7 +12,7 @@ LogbookWidget::LogbookWidget(TicketsLogbookModel *tLModel,
     mModel = mTicketsLogbookModel;
 
     ui->tableView->setModel(mModel);
-\
+
     setupColumns(TICKET_FIELDS);
 
     ui->tableView->setItemDelegateForColumn(mModel->fieldIndex("trackId"),
@@ -23,4 +23,6 @@ LogbookWidget::LogbookWidget(TicketsLogbookModel *tLModel,
     hide("vehicleId");
 
     initTable();
+
+    mModel->sort(mModel->fieldIndex("dateTime"), Qt::DescendingOrder);
 }

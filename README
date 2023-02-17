@@ -11,6 +11,14 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.5.1.2
+    - fixed prediction timer bug that was turning off outo predictions
+    - fixed date sorting bug in ticket tables
+
+windows switchover
+    - fixed prediction graph problem with negative median slopes
+    - removed some smtp error reporting ( needs another look )
+
 v0.5.1.1
     - manual weather values now effect predictions
 

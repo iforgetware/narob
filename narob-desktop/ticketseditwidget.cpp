@@ -22,6 +22,8 @@ TicketsEditWidget::TicketsEditWidget(TicketsLogbookModel *tLModel,
 
     init();
 
+    mModel->sort(mModel->fieldIndex("dateTime"), Qt::DescendingOrder);
+
     setupColumns(TICKET_FIELDS);
 
     connect(mAddButton, &QPushButton::clicked,

@@ -20,7 +20,7 @@ const Fields TICKET_FIELDS{
             Field("trackId", "Track", 150, 0),
             Field("raceId", "Race", 150, 0),
 
-            Field("dateTime", "Date       Time", 160, -3),
+            Field("dateTime", "Date       Time", 180, -3),
 
             Field("lane", "Lane", 50, 0),
             Field("delay", "Delay", 50, 3),

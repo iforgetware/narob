@@ -357,19 +357,19 @@ void AutoTab::updateGraph()
     //
 
 
-    double eMDAMin = eDAMin - 100;
+    double eMDAMin = eDAMin - 500;
     double eMETMin = mCurrentPrediction.eighthLine().getYforX(eMDAMin);
     mEighthMedian->append(eMDAMin, eMETMin);
 
-    double eMDAMax = eDAMax + 100;
+    double eMDAMax = eDAMax + 500;
     double eMETMax = mCurrentPrediction.eighthLine().getYforX(eMDAMax);
     mEighthMedian->append(eMDAMax, eMETMax);
 
-    double qMDAMin = qDAMin - 100;
+    double qMDAMin = qDAMin - 500;
     double qMETMin = mCurrentPrediction.quarterLine().getYforX(qMDAMin);
     mQuarterMedian->append(qMDAMin, qMETMin);
 
-    double qMDAMax = qDAMax + 100;
+    double qMDAMax = qDAMax + 500;
     double qMETMax = mCurrentPrediction.quarterLine().getYforX(qMDAMax);
     mQuarterMedian->append(qMDAMax, qMETMax);
 
@@ -529,8 +529,6 @@ void AutoTab::onTrackTicketsCheckboxChange(){
     if(ui->trackTicketsCheckBox->isChecked()){
         startAutoTimer();
         ui->vehicleTicketsCheckBox->setCheckState(Qt::Unchecked);
-    }else if(ui->vehicleTicketsCheckBox->isChecked()){
-        stopAutoTimer();
     }
 
     onFactorChange();
@@ -540,8 +538,6 @@ void AutoTab::onVehicleTicketsCheckboxChange(){
     if(ui->vehicleTicketsCheckBox->isChecked()){
         startAutoTimer();
         ui->trackTicketsCheckBox->setCheckState(Qt::Unchecked);
-    }else if(ui->trackTicketsCheckBox->isChecked()){
-        stopAutoTimer();
     }
 
     onFactorChange();

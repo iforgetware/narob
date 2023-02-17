@@ -1361,27 +1361,34 @@
  <tabstops>
   <tabstop>dateTimeEdit</tabstop>
   <tabstop>laneComboBox</tabstop>
-  <tabstop>dialEdit</tabstop>
   <tabstop>reactionEdit</tabstop>
   <tabstop>sixtyEdit</tabstop>
+  <tabstop>sixtyGoodCheckBox</tabstop>
   <tabstop>threeThirtyEdit</tabstop>
+  <tabstop>threeThirtyGoodCheckBox</tabstop>
   <tabstop>eighthEdit</tabstop>
+  <tabstop>eighthGoodCheckBox</tabstop>
   <tabstop>eighthMPHEdit</tabstop>
   <tabstop>thousandEdit</tabstop>
+  <tabstop>thousandGoodCheckBox</tabstop>
   <tabstop>quarterEdit</tabstop>
+  <tabstop>quarterGoodCheckBox</tabstop>
+  <tabstop>quarterMPHEdit</tabstop>
+  <tabstop>dialEdit</tabstop>
   <tabstop>delayEdit</tabstop>
   <tabstop>vehicleWeightSpinBox</tabstop>
   <tabstop>riderWeightSpinBox</tabstop>
   <tabstop>notesEdit</tabstop>
-  <tabstop>sixtyGoodCheckBox</tabstop>
-  <tabstop>threeThirtyGoodCheckBox</tabstop>
-  <tabstop>eighthGoodCheckBox</tabstop>
-  <tabstop>thousandGoodCheckBox</tabstop>
-  <tabstop>quarterGoodCheckBox</tabstop>
   <tabstop>trackTicketsCheckBox</tabstop>
   <tabstop>vehicleTicketsCheckBox</tabstop>
   <tabstop>windAdjustmentSpinBox</tabstop>
   <tabstop>weightAdjustmentSpinBox</tabstop>
+  <tabstop>showPredictionsButton</tabstop>
+  <tabstop>temperatureEdit</tabstop>
+  <tabstop>humidityEdit</tabstop>
+  <tabstop>pressureEdit</tabstop>
+  <tabstop>windSpeedEdit</tabstop>
+  <tabstop>windDirectionEdit</tabstop>
  </tabstops>
  <resources/>
  <connections>

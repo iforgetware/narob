@@ -26,4 +26,6 @@ TrackHistoryWidget::TrackHistoryWidget(std::shared_ptr<Vehicle> vehicle,
     hide("trackId");
 
     initTable();
+
+    mModel->sort(mModel->fieldIndex("dateTime"), Qt::DescendingOrder);
 }
