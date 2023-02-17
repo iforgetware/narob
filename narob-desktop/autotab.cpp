@@ -373,6 +373,18 @@ void AutoTab::updateGraph()
     double qMETMax = mCurrentPrediction.quarterLine().getYforX(qMDAMax);
     mQuarterMedian->append(qMDAMax, qMETMax);
 
+    if(eMETMin > eMETMax){
+        double holder = eMETMin;
+        eMETMin = eMETMax;
+        eMETMax = holder;
+    }
+
+    if(qMETMin > qMETMax){
+        double holder = qMETMin;
+        qMETMin = qMETMax;
+        qMETMax = holder;
+    }
+
     mEighthDAAxis->setRange(eMDAMin, eMDAMax);
     mEighthETAxis->setRange(eMETMin, eMETMax);
 

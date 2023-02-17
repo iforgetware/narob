@@ -22,10 +22,10 @@ Smtp::Smtp(QObject *parent) :
     connect(mSocket, &QSslSocket::connected, this, &Smtp::connected);
     connect(mSocket, &QSslSocket::readyRead, this, &Smtp::readyRead);
     connect(mSocket, &QSslSocket::disconnected, this, &Smtp::disconnected);
-    connect(mSocket,
-            static_cast<void (QSslSocket::*)(QAbstractSocket::SocketError)>(&QSslSocket::error),
-            this,
-            &Smtp::errorReceived);
+//    connect(mSocket,
+//            static_cast<void (QSslSocket::*)(QAbstractSocket::SocketError)>(&QSslSocket::error),
+//            this,
+//            &Smtp::errorReceived);
 }
 
 void Smtp::sendMail(const QString &to,
@@ -114,12 +114,12 @@ void Smtp::readyRead()
     }else if(mState == AUTH && responseLine == "250") {
         sendLine("AUTH LOGIN");
         mState = USER;
-    }else if(mState == USER && responseLine == "334") {
-        sendLine(QByteArray().append(mUser).toBase64());
-        mState = PASS;
-    }else if(mState == PASS && responseLine == "334") {
-        sendLine(QByteArray().append(mPass).toBase64());
-        mState = MAIL;
+//    }else if(mState == USER && responseLine == "334") {
+//        sendLine(QByteArray().append(mUser).toBase64());
+//        mState = PASS;
+//    }else if(mState == PASS && responseLine == "334") {
+//        sendLine(QByteArray().append(mPass).toBase64());
+//        mState = MAIL;
     }else if(mState == MAIL && responseLine == "235") {
         sendLine("MAIL FROM:<" + mFrom + ">");
         mState = RCPT;
@@ -141,9 +141,10 @@ void Smtp::readyRead()
     }else{
         // something broke.
         qDebug("SMTP - Page did not send - WRITE CODE");
-        QMessageBox::warning(nullptr,
-                             "Qt Simple SMTP client",
-                             "Unexpected reply from SMTP server:\n\n" + response);
+//          add back in for linnux
+//        QMessageBox::warning(nullptr,
+//                             "Qt Simple SMTP client",
+//                             "Unexpected reply from SMTP server:\n\n" + response);
         mState = CLOSE;
         emit status("Failed to send message");
     }

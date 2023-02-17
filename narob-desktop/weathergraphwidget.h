@@ -12,8 +12,6 @@
 #include "observations.h"
 #include "trace.h"
 
-QT_CHARTS_USE_NAMESPACE
-
 namespace Ui {
 class WeatherGraphWidget;
 }

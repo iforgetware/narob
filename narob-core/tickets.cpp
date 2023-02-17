@@ -213,7 +213,6 @@ int TicketsLogbookModel::ticketsSinceDateTime(const QDateTime dateTime) const
     }
 }
 
-
 //TicketsRaceModel::TicketsRaceModel(int raceId, QObject *parent) :
 //    QSortFilterProxyModel(parent),
 //    mRaceId(raceId)
