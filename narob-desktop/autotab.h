@@ -38,6 +38,8 @@ public:
 
 public slots:
     void updateAllModels();
+    void onPointHover(QPointF point);
+    void onPointClick(QPointF point, bool state);
 
 private:
     void startAutoTimer();

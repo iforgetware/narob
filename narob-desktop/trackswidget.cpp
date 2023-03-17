@@ -11,8 +11,6 @@ TracksWidget::TracksWidget(QWidget *parent) :
 
     ui->tableView->setModel(mTracksModel);
 
-    setupColumns(TRACK_FIELDS);
-
     init();
 
     connect(mAddButton, &QPushButton::clicked,
@@ -23,6 +21,8 @@ TracksWidget::TracksWidget(QWidget *parent) :
 
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &TracksWidget::editTrack);
+
+    setupColumns(TRACK_FIELDS);
 
     hide("elevation");
 }

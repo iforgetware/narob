@@ -15,12 +15,10 @@ TrackHistoryWidget::TrackHistoryWidget(std::shared_ptr<Vehicle> vehicle,
     ui->tableView->setModel(ticketsTrackModel);
     mModel = ticketsTrackModel;
 
-    setupColumns(TICKET_FIELDS);
-
-    ui->tableView->setItemDelegateForColumn(mModel->fieldIndex("trackId"),
-                                            new TrackColumnDelegate(this));
     ui->tableView->setItemDelegateForColumn(mModel->fieldIndex("raceId"),
                                             new RaceColumnDelegate(this));
+
+    setupColumns(TICKET_FIELDS);
 
     hide("vehicleId");
     hide("trackId");

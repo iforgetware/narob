@@ -11,8 +11,6 @@ VehiclesWidget::VehiclesWidget(QWidget *parent) :
 
     ui->tableView->setModel(mVehiclesModel);
 
-    setupColumns(VEHICLE_FIELDS);
-
 
 
 
@@ -36,6 +34,8 @@ VehiclesWidget::VehiclesWidget(QWidget *parent) :
 
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &VehiclesWidget::editVehicle);
+
+    setupColumns(VEHICLE_FIELDS);
 
     hide("weight");
     hide("windAdjustment");

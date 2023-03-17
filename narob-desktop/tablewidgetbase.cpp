@@ -22,7 +22,6 @@ TableWidgetBase::~TableWidgetBase()
 void TableWidgetBase::setupColumns(const Fields &fields)
 {
     foreach(Field field, fields){
-        ui->tableView->setColumnWidth(mModel->fieldIndex(field.mColumn), field.mWidth);
         switch (field.mDelegate){
         case -3:
             ui->tableView->setItemDelegateForColumn(mModel->fieldIndex(field.mColumn),
@@ -62,6 +61,8 @@ void TableWidgetBase::setupColumns(const Fields &fields)
         default:
             break;
         }
+        ui->tableView->resizeColumnsToContents();
+
     }
 }
 

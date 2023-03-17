@@ -11,8 +11,6 @@ RacesWidget::RacesWidget(QWidget *parent) :
 
     ui->tableView->setModel(mRacesModel);
 
-    setupColumns(RACE_FIELDS);
-
     init();
 
     connect(mAddButton, &QPushButton::clicked,
@@ -23,6 +21,8 @@ RacesWidget::RacesWidget(QWidget *parent) :
 
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &RacesWidget::editRace);
+
+    setupColumns(RACE_FIELDS);
 
     hide("trackId");
 }

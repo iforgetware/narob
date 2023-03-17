@@ -10,19 +10,19 @@
 #include "narob-core_global.h"
 
 const Fields VEHICLE_FIELDS{
-            Field("id", "id", 0, 0),
+            Field("id", "id", 0),
 
-            Field("number", "Number", 70, -4),
-            Field("compClass", "Class", 70, -4),
-            Field("weight", "Weight", 60, 0),
+            Field("number", "Number", -4),
+            Field("compClass", "Class", -4),
+            Field("weight", "Weight", 0),
 
-            Field("windAdjustment", "Wn Adj", 60, 3),
-            Field("weightAdjustment", "Wt Adj", 60, 3),
-            Field("textNumber", "Text Number", 110, -4),
-            Field("textProvider", "Text Provider", 110, -4),
+            Field("windAdjustment", "Wn Adj", 3),
+            Field("weightAdjustment", "Wt Adj", 3),
+            Field("textNumber", "Text Number", -4),
+            Field("textProvider", "Text Provider", -4),
 
-            Field("lastOilChange", "Last Oil Change", 160, -3),
-            Field("lastTireChange", "Last Tire Change", 160, -3)};
+            Field("lastOilChange", "Last Oil Change", -3),
+            Field("lastTireChange", "Last Tire Change", -3)};
 
 
 class Vehicles : public DbTableBase

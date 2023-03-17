@@ -11,6 +11,13 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.5.1.3
+    - made column widths auto-sized
+        - removed mWidth from Field in all locations
+    - lowered minimum DA check for valid weather from -1000 to -2000
+    - fixed bug in ticket deletion
+        - deleted tickets weren't being removed from prediction group/graph
+
 v0.5.1.2
     - fixed prediction timer bug that was turning off outo predictions
     - fixed date sorting bug in ticket tables

@@ -10,10 +10,10 @@
 #include "narob-core_global.h"
 
 const Fields RACE_FIELDS{
-            Field("id", "id", 0, 0),
-            Field("date", "Date", 100, -2),
-            Field("name", "Name", 150, -4),
-            Field("trackId", "Track", 150, 0)};
+            Field("id", "id", 0),
+            Field("date", "Date", -2),
+            Field("name", "Name", -4),
+            Field("trackId", "Track", 0)};
 
 
 class Races : public DbTableBase

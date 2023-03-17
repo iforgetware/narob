@@ -73,4 +73,5 @@ void TableEditWidgetBase::deleteSelectedRow()
         mModel->submitAll();
         updateModel();
     }
+    emit rowsUpdated();
 }

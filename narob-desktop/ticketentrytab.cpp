@@ -20,7 +20,7 @@ TicketEntryTab::TicketEntryTab(TicketsLogbookModel* tLModel,
                                                this);
     ui->gridLayout->addWidget(mTicketsEditWidget, 0, 0);
 
-    connect(mTicketsEditWidget, &TicketsEditWidget::ticketsUpdated,
+    connect(mTicketsEditWidget, &TicketsEditWidget::rowsUpdated,
             this, &TicketEntryTab::updateAllModels);
 }
 

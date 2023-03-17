@@ -20,6 +20,9 @@ public:
 
     void deleteSelectedRow();
 
+signals:
+    void rowsUpdated();
+
 protected:
     QPushButton *mAddButton;
     QPushButton *mEditButton;

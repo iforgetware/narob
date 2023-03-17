@@ -21,7 +21,7 @@ public:
                                QWidget *parent = nullptr);
 
 signals:
-    void ticketsUpdated();
+//    void ticketsUpdated();
 
 private slots:
     void addTicket();

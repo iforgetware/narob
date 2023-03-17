@@ -148,6 +148,9 @@ AutoTab::AutoTab(TicketsLogbookModel *tLModel,
     connect(ui->previousPredictionsButton, &QPushButton::clicked,
             this, &AutoTab::onShowPreviousPredictionsClicked);
 
+    connect(mQuarterRunsScatter, &QScatterSeries::clicked,
+            this, &AutoTab::onPointHover);
+
     startAutoTimer();
 }
 
@@ -594,4 +597,10 @@ void AutoTab::onShowPreviousPredictionsClicked()
     ticketPredictionsDialog->exec();
 
     delete ticketPredictionsDialog;
+}
+
+void AutoTab::onPointHover(QPointF point)
+{
+    qDebug() << point;
+//    qDebug() << state;
 }

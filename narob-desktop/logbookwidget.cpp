@@ -13,12 +13,12 @@ LogbookWidget::LogbookWidget(TicketsLogbookModel *tLModel,
 
     ui->tableView->setModel(mModel);
 
-    setupColumns(TICKET_FIELDS);
-
     ui->tableView->setItemDelegateForColumn(mModel->fieldIndex("trackId"),
                                             new TrackColumnDelegate(this));
     ui->tableView->setItemDelegateForColumn(mModel->fieldIndex("raceId"),
                                             new RaceColumnDelegate(this));
+
+    setupColumns(TICKET_FIELDS);
 
     hide("vehicleId");
 

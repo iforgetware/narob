@@ -22,10 +22,6 @@ TicketsEditWidget::TicketsEditWidget(TicketsLogbookModel *tLModel,
 
     init();
 
-    mModel->sort(mModel->fieldIndex("dateTime"), Qt::DescendingOrder);
-
-    setupColumns(TICKET_FIELDS);
-
     connect(mAddButton, &QPushButton::clicked,
             this, &TicketsEditWidget::addTicket);
 
@@ -35,10 +31,14 @@ TicketsEditWidget::TicketsEditWidget(TicketsLogbookModel *tLModel,
     connect(ui->tableView, &QTableView::doubleClicked,
             this, &TicketsEditWidget::editTicket);
 
+    setupColumns(TICKET_FIELDS);
+
     hide("vehicleId");
     hide("trackId");
     hide("raceId");
     hide("predictionId");
+
+    mModel->sort(mModel->fieldIndex("dateTime"), Qt::DescendingOrder);
 }
 
 void TicketsEditWidget::addTicket()
@@ -53,7 +53,7 @@ void TicketsEditWidget::addTicket()
             this,&TicketsEditWidget::updateModel);
 
     ticketDialog->exec();
-    emit ticketsUpdated();
+    emit rowsUpdated();
 }
 
 void TicketsEditWidget::editTicket()
@@ -69,6 +69,6 @@ void TicketsEditWidget::editTicket()
                 this,&TicketsEditWidget::updateModel);
 
         ticketDialog->exec();
-        emit ticketsUpdated();
+        emit rowsUpdated();
     }
 }

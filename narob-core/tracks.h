@@ -8,11 +8,11 @@
 #include "narob-core_global.h"
 
 const Fields TRACK_FIELDS{
-            Field("id", "id", 0, 0),
-            Field("name", "Name", 150, -4),
-            Field("elevation", "Elev", 50, 0),
-            Field("bearing", "Bear", 50, 0),
-            Field("radio", "Radio", 50, 1)};
+            Field("id", "id", 0),
+            Field("name", "Name", -4),
+            Field("elevation", "Elev", 0),
+            Field("bearing", "Bear", 0),
+            Field("radio", "Radio", 1)};
 
 
 class Tracks : public DbTableBase

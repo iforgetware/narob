@@ -104,7 +104,7 @@ void WeatherStation::writeToDB()
 
     int dA = o.value("densityAltitude").toInt();
 
-    if((temp > 0.0) && (dA > -1000) && (dA < 20000)){
+    if((temp > 0.0) && (dA > -2000) && (dA < 20000)){
         mLastTime = cT;
 
         mObservationsModel->addRow(o);

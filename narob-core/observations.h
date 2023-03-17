@@ -13,23 +13,23 @@
 #include "narob-core_global.h"
 
 const Fields OBSERVATION_FIELDS{
-            Field("id", "id", 0, 0),
-            Field("dateTime", "Date       Time", 160, -3),
-            Field("temperature", "Temp", 50, 1),
-            Field("humidity", "Humid",50, 1),
-            Field("pressure", "Pres", 50, 2),
-            Field("vaporPressure", "V Pres", 50, 2),
-            Field("dewPoint", "D Point", 60, 1),
-            Field("densityAltitude", "D Alt", 60, 0),
-            Field("windSpeed", "W Speed", 70, 0),
-            Field("windDirection", "W Dir", 60, 0),
-            Field("windGust", "G Speed", 70, 0),
-            Field("windGustDirection", "G Dir", 60, 0),
-            Field("relAirDensity", "R Den", 60, 1),
-            Field("dynoCorrectionFactor", "Dyno", 60, 3),
-            Field("relativeHP", "R HP", 60, 1),
-            Field("virtualTemp", "V Temp", 60, 1),
-            Field("samples", "Sam", 60, 0)
+            Field("id", "id", 0),
+            Field("dateTime", "Date       Time", -3),
+            Field("temperature", "Temp", 1),
+            Field("humidity", "Humid", 1),
+            Field("pressure", "Pres", 2),
+            Field("vaporPressure", "V Pres", 2),
+            Field("dewPoint", "D Point", 1),
+            Field("densityAltitude", "D Alt", 0),
+            Field("windSpeed", "W Speed", 0),
+            Field("windDirection", "W Dir", 0),
+            Field("windGust", "G Speed", 0),
+            Field("windGustDirection", "G Dir", 0),
+            Field("relAirDensity", "R Den", 1),
+            Field("dynoCorrectionFactor", "Dyno", 3),
+            Field("relativeHP", "R HP", 1),
+            Field("virtualTemp", "V Temp", 1),
+            Field("samples", "Sam", 0)
 };
 
 
