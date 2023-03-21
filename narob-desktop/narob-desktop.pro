@@ -23,6 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     autotab.cpp \
+    callout.cpp \
     logbookwidget.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -59,6 +60,7 @@ SOURCES += \
 
 HEADERS += \
     autotab.h \
+    callout.h \
     logbookwidget.h \
     mainwindow.h \
     dashboardtab.h \

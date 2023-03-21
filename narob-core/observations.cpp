@@ -267,7 +267,7 @@ unique_ptr<vector<unique_ptr<Observation>>> ObservationsModel::observationsForDa
 
         observation->populate(query.record());
 
-        observationsVector->push_back(move(observation));
+        observationsVector->push_back(std::move(observation));
     }
 
     query.clear();

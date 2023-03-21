@@ -20,8 +20,6 @@ public:
                                std::shared_ptr<Race> race,
                                QWidget *parent = nullptr);
 
-signals:
-//    void ticketsUpdated();
 
 private slots:
     void addTicket();

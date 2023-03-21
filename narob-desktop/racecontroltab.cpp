@@ -41,6 +41,9 @@ RaceControlTab::RaceControlTab(std::shared_ptr<Vehicle> vehicle,
 
     connect(mTicketEntryTab, &TicketEntryTab::ticketsUpdated,
             this, &RaceControlTab::updateAllModels);
+
+    connect(mAutoTab, &AutoTab::selectionUpdated,
+            this, &RaceControlTab::updateAllModels);
 }
 
 RaceControlTab::~RaceControlTab()
@@ -58,8 +61,10 @@ RaceControlTab::~RaceControlTab()
 
 void RaceControlTab::updateAllModels()
 {
+    mTicketEntryTab->updateAllModels();
     mTrackHistoryTab->updateAllModels();
     mLogbookTab->updateAllModels();
     mAutoTab->updateAllModels();
     mManualTab->updateAllModels();
+    qDebug("race control tab update all models");
 }

@@ -22,6 +22,7 @@ void DashboardTab::updateAllModels()
     ui->tracksWidget->updateModel();
     ui->racesWidget->updateModel();
     ui->vehiclesWidget->updateModel();
+    qDebug("dashboard tab update all models");
 }
 
 void DashboardTab::onOpenRaceControlButtonClicked()

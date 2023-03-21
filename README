@@ -11,6 +11,11 @@ to do
     - double click on previous prediction show detail
     - clean databases for live and testing, resolve lock issue
 
+v0.5.2
+    - can now select and remove tickets from prediction set
+        - all clocks are marked bad on chosen ticket
+        - all models and predictions reset
+
 v0.5.1.3
     - made column widths auto-sized
         - removed mWidth from Field in all locations

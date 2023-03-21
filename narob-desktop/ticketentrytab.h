@@ -24,12 +24,12 @@ public:
                             std::shared_ptr<Race> race,
                             QWidget *parent = nullptr);
     ~TicketEntryTab();
+    void updateAllModels();
 
 signals:
     void ticketsUpdated();
 
 private:
-    void updateAllModels();
 
     Ui::TicketEntryTab *ui;
     TicketsEditWidget *mTicketsEditWidget;

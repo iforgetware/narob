@@ -21,4 +21,5 @@ LogbookTab::~LogbookTab()
 void LogbookTab::updateAllModels()
 {
     mLogbookWidget->updateModel();
+    qDebug("logbook tab update all models");
 }

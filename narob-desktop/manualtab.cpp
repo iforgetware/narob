@@ -163,6 +163,7 @@ ManualTab::~ManualTab()
 void ManualTab::updateAllModels()
 {
     makePrediction();
+    qDebug("manual tab update all models");
 }
 
 void ManualTab::makePrediction()

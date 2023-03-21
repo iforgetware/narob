@@ -25,4 +25,5 @@ TrackHistoryTab::~TrackHistoryTab()
 void TrackHistoryTab::updateAllModels()
 {
     mTrackHistoryWidget->updateModel();
+    qDebug("history tab update all models");
 }

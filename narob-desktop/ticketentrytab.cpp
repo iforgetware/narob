@@ -21,7 +21,7 @@ TicketEntryTab::TicketEntryTab(TicketsLogbookModel* tLModel,
     ui->gridLayout->addWidget(mTicketsEditWidget, 0, 0);
 
     connect(mTicketsEditWidget, &TicketsEditWidget::rowsUpdated,
-            this, &TicketEntryTab::updateAllModels);
+            this, &TicketEntryTab::ticketsUpdated);
 }
 
 TicketEntryTab::~TicketEntryTab()
@@ -31,8 +31,8 @@ TicketEntryTab::~TicketEntryTab()
 
 void TicketEntryTab::updateAllModels()
 {
-    emit ticketsUpdated();
-//    mTicketsEditWidget->updateModel();
+    mTicketsEditWidget->updateModel();
+    qDebug("tickets edit tab update all models");
 }
 
 

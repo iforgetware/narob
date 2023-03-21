@@ -187,9 +187,13 @@ void Prediction::predictClock(const QString &clock)
 
     if(!validTickets.empty()  && mTemperature > 0.0){
         for(auto&& ticket : validTickets){
-            double adjustedClock = ticket->value(clock).toDouble()
-                                   + (windCorrection(ticket) / factor)
-                                   + (weightCorrection(ticket) / factor);
+            double aC = ticket->value(clock).toDouble()
+                    + (windCorrection(ticket) / factor)
+                    + (weightCorrection(ticket) / factor);
+
+            double adjustedClock = QString::number(aC,
+                                                   'f',
+                                                   3).toDouble();
 
             tPoints.append(QPointF(ticket->temperature(),
                                    adjustedClock));

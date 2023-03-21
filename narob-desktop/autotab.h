@@ -8,7 +8,8 @@
 #include "tickets.h"
 #include "races.h"
 #include "observations.h"
-#include "trace.h"
+//#include "trace.h"
+#include "callout.h"
 
 #include <QWidget>
 #include <QTimer>
@@ -36,10 +37,11 @@ public:
                      QWidget *parent = nullptr);
     ~AutoTab();
 
+signals:
+    void selectionUpdated();
+
 public slots:
     void updateAllModels();
-    void onPointHover(QPointF point);
-    void onPointClick(QPointF point, bool state);
 
 private:
     void startAutoTimer();
@@ -57,6 +59,10 @@ private:
 
     Ui::AutoTab *ui;
 
+    int mVehicleId;
+    int mTrackId;
+    int mRaceId;
+
     Prediction mCurrentPrediction;
 
     PredictionsModel *mPredictionsModel;
@@ -69,7 +75,8 @@ private:
     QTimer *mAutoTimer;
     QTimer *mFactorTimer;
 
-    QChartView *mChartView;
+    QChartView *mEChartView;
+    QChartView *mQChartView;
     QLineSeries *mEighthMedian;
     QLineSeries *mQuarterMedian;
     QScatterSeries *mEighthRunsScatter;
@@ -80,7 +87,8 @@ private:
     QValueAxis *mEighthETAxis;
     QValueAxis *mQuarterDAAxis;
     QValueAxis *mQuarterETAxis;
-    bool mQuarterGraph;
+    Callout *mEHoverInfo;
+    Callout *mQHoverInfo;
 
 private slots:
     void autoPredict();
@@ -89,8 +97,11 @@ private slots:
     void onTrackTicketsCheckboxChange();
     void onVehicleTicketsCheckboxChange();
     void onFactorChange();
-    void onLengthToggle();
     void onShowPreviousPredictionsClicked();
+    void onEPointHover(QPointF point, bool state);
+    void onQPointHover(QPointF point, bool state);
+    void onEPointClick(QPointF point);
+    void onQPointClick(QPointF point);
 };
 
 #endif // AUTOTAB_H
