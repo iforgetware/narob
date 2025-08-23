@@ -23,12 +23,11 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0" alignment="Qt::AlignHCenter">
+   <item row="0" column="0" alignment="Qt::AlignmentFlag::AlignHCenter">
     <widget class="QLabel" name="title">
      <property name="font">
       <font>
        <pointsize>25</pointsize>
-       <weight>75</weight>
        <bold>true</bold>
       </font>
      </property>

@@ -18,7 +18,6 @@
 #include <QValueAxis>
 #include <QLabel>
 
-QT_CHARTS_USE_NAMESPACE
 
 
 namespace Ui {

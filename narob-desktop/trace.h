@@ -8,7 +8,6 @@
 #include <QScatterSeries>
 #include <QValueAxis>
 
-QT_CHARTS_USE_NAMESPACE
 
 
 class Trace : public QObject
