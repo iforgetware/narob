@@ -113,7 +113,7 @@ AutoTab::AutoTab(TicketsLogbookModel *tLModel,
     }
 
     connect(ui->autoPredictCheckBox,
-            &QCheckBox::stateChanged,
+            &QCheckBox::checkStateChanged,
             this,
             &AutoTab::onAutoCheckboxChange);
 
@@ -138,12 +138,12 @@ AutoTab::AutoTab(TicketsLogbookModel *tLModel,
             &AutoTab::onFactorChange);
 
     connect(ui->trackTicketsCheckBox,
-            &QCheckBox::stateChanged,
+            &QCheckBox::checkStateChanged,
             this,
             &AutoTab::onTrackTicketsCheckboxChange);
 
     connect(ui->vehicleTicketsCheckBox,
-            &QCheckBox::stateChanged,
+            &QCheckBox::checkStateChanged,
             this,
             &AutoTab::onVehicleTicketsCheckboxChange);
 
@@ -232,7 +232,7 @@ void AutoTab::setupGraph()
     mEighthDAAxis->setLinePenColor(Qt::black);
     mEighthDAAxis->setLabelFormat("%i");
     mEighthETAxis->setLinePenColor(Qt::black);
-    mEighthETAxis->setLabelFormat("%5.2f");
+    mEighthETAxis->setLabelFormat("%6.3f");
 
     mEighthMedian->setName("Median");
     mEighthMedian->setColor(D_COLOR);
@@ -259,7 +259,7 @@ void AutoTab::setupGraph()
     mQuarterDAAxis->setLinePenColor(Qt::black);
     mQuarterDAAxis->setLabelFormat("%i");
     mQuarterETAxis->setLinePenColor(Qt::black);
-    mQuarterETAxis->setLabelFormat("%5.2f");
+    mQuarterETAxis->setLabelFormat("%6.3f");
 
     mQuarterMedian->setName("Median");
     mQuarterMedian->setColor(D_COLOR);
@@ -335,14 +335,18 @@ void AutoTab::updateGraph()
     double qDAMin = eDAMin;
     double qDAMax = eDAMin;
 
-    mECPScatter->append(eDAMax,
-                        mCurrentPrediction.value("eighthD").toDouble());
+    double eETMin = mCurrentPrediction.value("eighthD").toDouble();
+    double eETMax = eETMin;
+    double qETMin = mCurrentPrediction.value("quarterD").toDouble();
+    double qETMax = qETMin;
 
-    mQCPScatter->append(qDAMax,
-                        mCurrentPrediction.value("quarterD").toDouble());
+    mECPScatter->append(eDAMax,eETMax);
+
+    mQCPScatter->append(qDAMax,qETMax);
 
     for(QPointF p : mCurrentPrediction.eighthPoints()){
         double x = p.x();
+        double y = p.y();
 
         if(x < eDAMin){
             eDAMin = x;
@@ -352,11 +356,20 @@ void AutoTab::updateGraph()
             eDAMax = x;
         }
 
-        mEighthRunsScatter->append(x, p.y());
+        if(y < eETMin){
+            eETMin = y;
+        }
+
+        if(y > eETMax){
+            eETMax = y;
+        }
+
+        mEighthRunsScatter->append(x, y);
     }
 
     for(QPointF p : mCurrentPrediction.quarterPoints()){
         double x = p.x();
+        double y = p.y();
 
         if(x < qDAMin){
             qDAMin = x;
@@ -366,16 +379,16 @@ void AutoTab::updateGraph()
             qDAMax = x;
         }
 
-        mQuarterRunsScatter->append(x, p.y());
+        if(y < qETMin){
+            qETMin = y;
+        }
+
+        if(y > qETMax){
+            qETMax = y;
+        }
+
+        mQuarterRunsScatter->append(x, y);
     }
-
-
-    // had mod on butters...
-    //
-    // double edge = 0.25;
-    // and edge was subtracted from ETMin's and added to ETMax's
-    //
-
 
     double eMDAMin = eDAMin - 1000;
     double eMETMin = mCurrentPrediction.eighthLine().getYforX(eMDAMin);
@@ -393,23 +406,25 @@ void AutoTab::updateGraph()
     double qMETMax = mCurrentPrediction.quarterLine().getYforX(qMDAMax);
     mQuarterMedian->append(qMDAMax, qMETMax);
 
-    if(eMETMin > eMETMax){
-        double holder = eMETMin;
-        eMETMin = eMETMax;
-        eMETMax = holder;
-    }
+    // if(eMETMin > eMETMax){
+    //     double holder = eMETMin;
+    //     eMETMin = eMETMax;
+    //     eMETMax = holder;
+    // }
 
-    if(qMETMin > qMETMax){
-        double holder = qMETMin;
-        qMETMin = qMETMax;
-        qMETMax = holder;
-    }
+    // if(qMETMin > qMETMax){
+    //     double holder = qMETMin;
+    //     qMETMin = qMETMax;
+    //     qMETMax = holder;
+    // }
+
+    double etEdge = 0.01;
 
     mEighthDAAxis->setRange(eMDAMin, eMDAMax);
-    mEighthETAxis->setRange(eMETMin, eMETMax);
+    mEighthETAxis->setRange(eETMin - etEdge, eETMax + etEdge);
 
     mQuarterDAAxis->setRange(qMDAMin, qMDAMax);
-    mQuarterETAxis->setRange(qMETMin, qMETMax);
+    mQuarterETAxis->setRange(qETMin - etEdge, qETMax + etEdge);
 }
 
 void AutoTab::updatePLabel(const QString &field, QLabel *label)

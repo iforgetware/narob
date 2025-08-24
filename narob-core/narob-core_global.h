@@ -6,6 +6,7 @@
 #include <QPointF>
 #include <QMap>
 #include <QColor>
+#include <QDebug>
 
 struct Field
 {
@@ -59,6 +60,14 @@ struct Line
         double xMean = sumX / nPoints;
         double yMean = sumY / nPoints;
         double denominator = sumX2 - sumX * xMean;
+
+
+
+// rewrite this to return 0 slope
+// check nPoints > 1
+
+
+
 
         if(denominator == 0.0){
             denominator = 0.000001;

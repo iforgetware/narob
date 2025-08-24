@@ -113,12 +113,12 @@ ManualTab::ManualTab(TicketsLogbookModel *tLModel,
             &ManualTab::onFactorChange);
 
     connect(ui->trackTicketsCheckBox,
-            &QCheckBox::stateChanged,
+            &QCheckBox::checkStateChanged,
             this,
             &ManualTab::onTrackTicketsCheckboxChange);
 
     connect(ui->vehicleTicketsCheckBox,
-            &QCheckBox::stateChanged,
+            &QCheckBox::checkStateChanged,
             this,
             &ManualTab::onVehicleTicketsCheckboxChange);
 

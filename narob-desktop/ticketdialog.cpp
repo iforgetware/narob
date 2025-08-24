@@ -169,12 +169,12 @@ TicketDialog::TicketDialog(TicketsLogbookModel *tLModel,
             &TicketDialog::onFactorChange);
 
     connect(ui->trackTicketsCheckBox,
-            &QCheckBox::stateChanged,
+            &QCheckBox::checkStateChanged,
             this,
             &TicketDialog::onTrackTicketsCheckboxChange);
 
     connect(ui->vehicleTicketsCheckBox,
-            &QCheckBox::stateChanged,
+            &QCheckBox::checkStateChanged,
             this,
             &TicketDialog::onVehicleTicketsCheckboxChange);
 
